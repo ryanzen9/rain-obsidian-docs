@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "f96a42df39edc2a0",
+        "id": "060123c4141b3996",
         "type": "tabs",
         "children": [
           {
-            "id": "8ee8f4aeb891bd8d",
+            "id": "664f1d4ef23655ba",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "AI/03.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "03"
+              "title": "新标签页"
             }
           }
         ]
@@ -180,7 +176,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 747.5
+    "width": 474.5
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -194,8 +190,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "f6f50628a48107a7",
+  "active": "664f1d4ef23655ba",
   "lastOpenFiles": [
+    "Coding/Java/Java 的动态代理.md",
+    "Coding/Java",
+    "Coding",
     "AI/00.md",
     "AI/01.md",
     "AI",
