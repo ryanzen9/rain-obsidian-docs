@@ -196,8 +196,9 @@
   },
   "active": "9dd38781ca565866",
   "lastOpenFiles": [
-    "CodeBeyond/MacOS个人配置.md",
+    "CodeBeyond/MacOS Shell 个人配置.md",
     "Development/Java/Java 的动态代理.md",
+    "CodeBeyond/MacOS个人配置.md",
     "Archive/跨源资源共享（CORS）.md",
     "Archive/如何正确保存和传输敏感数据？.md",
     "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
@@ -227,7 +228,6 @@
     "Development/API 技术核心原理：REST,GraphQL,gRPC,tRPC.md",
     "Development",
     "Database/高并发下的竞态插入问题.md",
-    "Database/数据库中事务的四种隔离级别.md",
     "Database",
     "ComputerBasics",
     "CodeBeyond",

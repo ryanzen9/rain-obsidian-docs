@@ -1,10 +1,17 @@
-# Java 代理模式
+---
+title: "Java 代理模式"
+date: 2026-04-16
+author: ""
+tags: []
+categories: []
+draft: true
+---
 
 ## 静态代理
 
 Java 中的静态代理模式通常有两种实现：
 
-**1. 通过继承重写实现** — 代理类继承目标类
+**1. 通过继承重写实现** —— 代理类继承目标类
 
 ```java
 public class Proxy extends Target {
@@ -16,7 +23,7 @@ public class Proxy extends Target {
 }
 ```
 
-**2. 通过关联实现** — 代理类持有目标类的引用，通过调用目标类的方法来实现代理逻辑
+**2. 通过关联实现** —— 代理类持有目标类的引用，通过调用目标类的方法来实现代理逻辑
 
 ```java
 public class Proxy {
@@ -47,7 +54,7 @@ public class Proxy {
 
 程序在运行时生成一个"假实现类"或"假的子类"，对外暴露相同的方法，但内部会拦截方法调用：
 
-```
+```text
 调用代理对象的方法
   -> 进入统一拦截逻辑
   -> 执行前置处理
@@ -220,5 +227,5 @@ public class ProxyFactory {
 
 参考文章：
 
-- https://www.pkslow.com/docs/zh/jdk-cglib-proxy/
-- https://www.cnblogs.com/bytesfly/p/dynamic-proxy-in-java.html
+- [pkslow.com - JDK CGLIB Proxy](https://www.pkslow.com/docs/zh/jdk-cglib-proxy/)
+- [cnblogs.com - Dynamic Proxy in Java](https://www.cnblogs.com/bytesfly/p/dynamic-proxy-in-java.html)
