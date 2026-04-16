@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "060123c4141b3996",
+        "id": "05db755189333c75",
         "type": "tabs",
         "children": [
           {
-            "id": "664f1d4ef23655ba",
+            "id": "9dd38781ca565866",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "ArchitectureDesign/🐳 构建一个健壮的DDD领域驱动设计架构.md",
-                "mode": "source",
-                "source": false
+                "file": "Development/Java/Java 的动态代理.md",
+                "mode": "preview",
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "🐳 构建一个健壮的DDD领域驱动设计架构"
+              "title": "Java 的动态代理"
             }
           }
         ]
@@ -194,15 +194,43 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "664f1d4ef23655ba",
+  "active": "9dd38781ca565866",
   "lastOpenFiles": [
-    "Coding/Java/Java 的动态代理.md",
-    "Coding/Java",
-    "Coding",
-    "AI/00.md",
-    "AI/01.md",
-    "AI",
-    "AI/03.md",
-    "AI/02.md"
+    "CodeBeyond/MacOS个人配置.md",
+    "Development/Java/Java 的动态代理.md",
+    "Archive/跨源资源共享（CORS）.md",
+    "Archive/如何正确保存和传输敏感数据？.md",
+    "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
+    "Clippings/想在国内折腾全屋 Matter？这可能是一场属于极客的「苦修」 - 少数派.md",
+    "Archive/从“能用”到“会用”｜如何写好一个 Skill.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(4)：使用Casbin实现用户角色授权策略.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(3)：使用CQRS模块实现事件驱动.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(2)：使用Passport实现登录认证.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(1)：基础入门与环境搭建.md",
+    "OpenSource/soybean-admin-nestjs",
+    "OpenSource/Oh-My-Codex 使用.md",
+    "OpenSource",
+    "Development/TypeScript/🚀 搭建 nestjs-ddd-gen CLI 脚手架.md",
+    "Development/TypeScript/🚀 四、Prisma 实战指南：构建基于NestJS+Prisma的DDD项目模版.md",
+    "Development/TypeScript/🚀 二、Prisma 实战指南：为什么历史迁移文件是神圣不可侵犯的？.md",
+    "Development/TypeScript/🚀 三、Prisma 实战指南：现代声明式迁移 vs. 传统ORM开发流程.md",
+    "Development/TypeScript/🚀 一、 Prisma 实战指南：从零到一，优雅地构建与演进 NestJS 应用.md",
+    "Development/TypeScript/🚀 Prisma 开发范式.md",
+    "Development/TypeScript/NestJS 模块声明.md",
+    "Development/Flutter/Flutter学习记录.md",
+    "Development/Flutter/Dart相关.md",
+    "Development/如何使用完善的加密算法对数据安全进行保障.md",
+    "Development/TypeScript",
+    "Development/NGINX与SSL证书的相关配置.md",
+    "Development/Java",
+    "Development/Flutter",
+    "Development/API 技术核心原理：REST,GraphQL,gRPC,tRPC.md",
+    "Development",
+    "Database/高并发下的竞态插入问题.md",
+    "Database/数据库中事务的四种隔离级别.md",
+    "Database",
+    "ComputerBasics",
+    "CodeBeyond",
+    "Clippings"
   ]
 }
