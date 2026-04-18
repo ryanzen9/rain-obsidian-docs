@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Development/Java/Java 的动态代理.md",
-                "mode": "preview",
+                "file": "Database/并发事务下的读写问题.md",
+                "mode": "source",
                 "source": true
               },
               "icon": "lucide-file",
-              "title": "Java 的动态代理"
+              "title": "并发事务下的读写问题"
             }
           }
         ]
@@ -196,8 +196,8 @@
   },
   "active": "9dd38781ca565866",
   "lastOpenFiles": [
-    "CodeBeyond/MacOS Shell 个人配置.md",
     "Development/Java/Java 的动态代理.md",
+    "CodeBeyond/MacOS Shell 个人配置.md",
     "CodeBeyond/MacOS个人配置.md",
     "Archive/跨源资源共享（CORS）.md",
     "Archive/如何正确保存和传输敏感数据？.md",
