@@ -8,7 +8,8 @@
 
 **Ghostty Config File**:
 
-```
+```bash
+
 font-family = "Maple Mono NF CN"
 font-thicken = true
 font-size = 12
@@ -16,7 +17,8 @@ adjust-cell-height = 6
 
 theme = "Kanagawa Wave"
 
-background-opacity = 0.95
+background-opacity = 0.90
+background-blur = 20
 macos-titlebar-style = transparent
 window-padding-x = 14
 window-padding-y = 10
