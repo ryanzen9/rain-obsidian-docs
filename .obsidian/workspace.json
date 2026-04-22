@@ -4,21 +4,38 @@
     "type": "split",
     "children": [
       {
+<<<<<<< HEAD
         "id": "2518190cb05363f4",
         "type": "tabs",
         "children": [
           {
             "id": "75329444784bd3c8",
+=======
+        "id": "bfafb548ac189ea0",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6fd2bc79ea934851",
+>>>>>>> 6425b5f (vault backup: 2026-04-22 10:36:27)
             "type": "leaf",
             "state": {
               "type": "split-diff-view",
               "state": {
+<<<<<<< HEAD
                 "aFile": "CodeBeyond/MacOS Shell 个人配置.md",
                 "bFile": "CodeBeyond/MacOS Shell 个人配置.md",
                 "aRef": ""
               },
               "icon": "diff",
               "title": "Diff: MacOS Shell 个人配置  (Working Tree)"
+=======
+                "file": "Database/PostgreSQL 并发事务下的读写问题.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "PostgreSQL 并发事务下的读写问题"
+>>>>>>> 6425b5f (vault backup: 2026-04-22 10:36:27)
             }
           }
         ]
@@ -156,13 +173,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "AI/03.md",
+                "file": "Database/PostgreSQL 并发事务下的读写问题.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "03 的大纲"
+              "title": "PostgreSQL 并发事务下的读写问题 的大纲"
             }
           },
           {
@@ -194,6 +211,7 @@
       "obsidian-git:Open Git source control": false
     }
   },
+<<<<<<< HEAD
   "active": "75329444784bd3c8",
   "lastOpenFiles": [
     "conflict-files-obsidian-git.md",
@@ -202,10 +220,23 @@
     "Development/Java/Java 的动态代理.md",
     "ComputerBasics/深入浅出：从 TCP 到 HTTP，再到 HTTPS 的演进之路.md",
     "CodeBeyond/MacOS个人配置.md",
+=======
+  "active": "6fd2bc79ea934851",
+  "lastOpenFiles": [
+    "Database/PostgreSQL 调优实践.md",
+    "Database/PostgreSQL 并发事务下的读写问题.md",
+    "CodeBeyond/MacOS个人配置.md",
+    "CodeBeyond/MacOS Shell 个人配置.md",
+    "Database/高并发下的竞态插入问题.md",
+    "ArchitectureDesign/🐳 构建一个健壮的DDD领域驱动设计架构.md",
+    "Development/Java/Java 的动态代理.md",
+    "Archive/跨源资源共享（CORS）.md",
+>>>>>>> 6425b5f (vault backup: 2026-04-22 10:36:27)
     "Archive/如何正确保存和传输敏感数据？.md",
     "Archive/干净架构最佳实践 天火技术博客.md",
     "Archive/跨源资源共享（CORS）.md",
     "Archive/从“能用”到“会用”｜如何写好一个 Skill.md",
+<<<<<<< HEAD
     "ArchitectureDesign/🚀 Pnpm + Lerna + Turbo 进行 Monorepo 进行后端项目架构搭建.md",
     "ArchitectureDesign/ORM设计模式：Active Record 和 Data Mapper.md",
     "ArchitectureDesign/🐳 构建一个健壮的DDD领域驱动设计架构.md",
@@ -217,5 +248,31 @@
     "AI",
     "AI/03.md",
     "AI/02.md"
+=======
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(4)：使用Casbin实现用户角色授权策略.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(3)：使用CQRS模块实现事件驱动.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(2)：使用Passport实现登录认证.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(1)：基础入门与环境搭建.md",
+    "OpenSource/soybean-admin-nestjs",
+    "OpenSource/Oh-My-Codex 使用.md",
+    "OpenSource",
+    "Development/TypeScript/🚀 搭建 nestjs-ddd-gen CLI 脚手架.md",
+    "Development/TypeScript/🚀 四、Prisma 实战指南：构建基于NestJS+Prisma的DDD项目模版.md",
+    "Development/TypeScript/🚀 二、Prisma 实战指南：为什么历史迁移文件是神圣不可侵犯的？.md",
+    "Development/TypeScript/🚀 三、Prisma 实战指南：现代声明式迁移 vs. 传统ORM开发流程.md",
+    "Development/TypeScript/🚀 一、 Prisma 实战指南：从零到一，优雅地构建与演进 NestJS 应用.md",
+    "Development/TypeScript/🚀 Prisma 开发范式.md",
+    "Development/TypeScript/NestJS 模块声明.md",
+    "Development/Flutter/Flutter学习记录.md",
+    "Development/Flutter/Dart相关.md",
+    "Development/TypeScript",
+    "Development/Java",
+    "Development/Flutter",
+    "Development",
+    "Database",
+    "ComputerBasics",
+    "CodeBeyond",
+    "Clippings"
+>>>>>>> 6425b5f (vault backup: 2026-04-22 10:36:27)
   ]
 }

@@ -1,14 +1,21 @@
 ---
-date: 2026 年 4 月 1 日 15:35:06
-tags: postgresql, db
+title: PostgreSQL 调优实践
+date: 2026-04-01
+author: Ryan Zeng
+tags:
+  - postgresql
+  - db
+categories: []
+draft: false
 ---
+
 ## 常用参数
 
 ### 内存调优
 
 **shared_buffers**：共享缓冲区，用于设置 PostgreSQL 用于缓存数据的内存大小，通常设置为系统内存的 25% 左右。
 
-PostgreSQL 访问数据时，底层以 page/block 为单位读写。shared_buffers 就是 PG 自己维护的一层页缓存。命中时，读取可以直接从 PG 共享缓存拿；未命中时，再从 OS/磁盘路径取数据，再放入缓存。它的价值不是“把整个库放进内存”，而是让高频访问的热页尽量留在数据库内部缓存中，减少反复 I/O，并让多个会话共享这些页。
+PostgreSQL 访问数据时，底层以 page/block 为单位读写。shared_buffers 就是 PG 自己维护的一层页缓存。命中时，读取可以直接从 PG 共享缓存拿；未命中时，再从 OS/磁盘路径取数据，再放入缓存。它的价值不是"把整个库放进内存"，而是让高频访问的热页尽量留在数据库内部缓存中，减少反复 I/O，并让多个会话共享这些页。
 
 启动级参数，需要重启服务。
 
@@ -31,7 +38,7 @@ WHERE name = 'shared_buffers';
 
 会话级参数
 
-> 不是每个连接，查询，sql的总内存，是每个节点的内存，如：Sort, Hash join, Hash aggregate 等操作符。
+> 不是每个连接，查询，sql 的总内存，是每个节点的内存，如：Sort, Hash join, Hash aggregate 等操作符。
 
 ```sql
 -- work_mem

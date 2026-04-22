@@ -1,10 +1,12 @@
 ---
-Title: 并发事务下的读写问题
-Draft: false
+title: PostgreSQL 并发事务下的读写问题
+date: 2026-04-21
+author: Ryan Zeng
 tags:
   - 数据库
   - ERP
-Author: Ruby Ceng
+categories: []
+draft: false
 ---
 
 ## 一、并发事务下的读问题
@@ -45,8 +47,11 @@ Author: Ruby Ceng
 **场景介绍：**  
 某数据分析平台需要对一个巨大的交易表进行实时（但允许有微小误差）的统计汇总，比如计算当前小时的总交易额。为了追求极致的性能，不希望统计查询被任何正在进行的交易长时间阻塞。
 
-**举例 (以 MySQL 为例):**  
 几乎所有数据库都支持，但很少使用。
+
+> 需要注意的是 PG 虽然接受 UNCOMMITTED ，但它实际上会把 `READ UNCOMMITTED` **按 `READ COMMITTED` 处理**。也就是说，PG 不支持真正的脏读。
+
+**举例（以 MySQL 为例）：**
 
 ```sql
 -- 终端 A
@@ -70,7 +75,7 @@ SELECT balance FROM accounts WHERE id = 1; -- 结果变回 1000
 ### 2. 读已提交 (Read Committed)
 
 **技术说明：**  
-一个事务只能读取到已经提交的事务所做的修改。这个级别解决了"脏读"问题。这是大多数主流数据库（如 PostgreSQL, Oracle, SQL Server）的默认隔离级别。
+一个事务只能读取到已经提交的事务所做的修改。这个级别解决了"脏读"问题。这是 PostgreSQL 的默认隔离级别。
 
 > 同样拥有读一致性，但它是**语句级**的一致性，不是**事务级**的一致性。
 > 单条语句：每条 `SELECT` 只能看到**该语句开始前**已经提交的数据；不会看到未提交数据，也不会看到并发事务在该语句执行过程中提交的变化。也就是说，**单条语句内部是一致的**。
@@ -87,18 +92,21 @@ SELECT balance FROM accounts WHERE id = 1; -- 结果变回 1000
 ```sql
 -- 终端 A
 BEGIN; -- PostgreSQL默认就是READ COMMITTED
-SELECT stock FROM products WHERE id = 'P001'; -- 假设返回 10
+SELECT stock FROM products WHERE id = 'P001'; -- 假设返回 1
 
 -- 终端 B
 BEGIN;
-UPDATE products SET stock = 9 WHERE id = 'P001';
+UPDATE products SET stock = 0 WHERE id = 'P001';
 COMMIT; -- 提交事务
 
 -- 终端 A
 -- 在同一个事务中再次查询
-SELECT stock FROM products WHERE id = 'P001'; -- 查询结果是 9 (不可重复读)
+SELECT stock FROM products WHERE id = 'P001'; -- 结果是 0,继续扣除会发生错误
 COMMIT;
 ```
+
+>**MVCC（Multi-Version Concurrency Control，多版本并发控制）** 是数据库系统中用来实现高并发和事务隔离级别的一种技术。
+>在传统的锁机制中，如果一个事务正在读取数据（加读锁），另一个想要修改该数据的事务就会被阻塞；反之亦然。而 MVCC 的核心思想是：**“读不阻塞写，写不阻塞读”**。它通过为数据保留多个历史版本，让读操作读取旧版本的数据，从而避免了读写冲突，极大地提升了数据库的并发性能。
 
 ### 3. 可重复读 (Repeatable Read)
 
@@ -109,35 +117,38 @@ COMMIT;
 一个银行系统在做一个复杂的日终结算。结算事务需要多次读取某个用户的账户余额来进行不同的计算（例如，计算利息、扣除年费）。在此期间，不能因为其他事务的存取款操作而影响本次结算中账户余额的一致性。
 
 **解决不可重复读：**  
-对读操作不加锁，使用了 MVCC 机制 + 事务前一次快照来避免不可重复读，然后对写操作后的数据进行行锁。事务的执行前后读取的数据版本都是一致的。快照的生命周期是事务级别的。
+使用了 MVCC 机制 + 事务前一次快照来避免不可重复读，然后对写操作后的数据进行行锁。事务的执行前后读取的数据版本都是一致的。快照的生命周期是事务级别的。
 
-**举例 (以 MySQL 为例):**
+**举例 (以 PostgreSQL 为例):**
 
 ```sql
 -- 终端 A
-SET SESSION TRANSACTION ISOLATION LEVEL REPEATABLE READ; -- MySQL InnoDB默认级别
-START TRANSACTION;
-SELECT * FROM employees WHERE department_id = 5; -- 假设返回20条记录
+BEGIN ISOLATION LEVEL REPEATABLE READ;
+SELECT * FROM employees WHERE department_id = 5; -- 返回20条（快照）
 
 -- 终端 B
-START TRANSACTION;
+BEGIN;
 INSERT INTO employees (name, department_id) VALUES ('小王', 5);
-COMMIT; -- 提交事务
+COMMIT;
 
 -- 终端 A
--- 在同一个事务中再次查询
-SELECT * FROM employees WHERE department_id = 5; -- 查询结果仍然是20条记录 (解决了不可重复读)
+-- 同一事务内再次查询（基于初始快照）
+SELECT * FROM employees WHERE department_id = 5; -- 仍然是20条
 
--- 但是，如果执行更新
-UPDATE employees SET status = 'calculated' WHERE department_id = 5; -- 会发现 "21 rows affected"
--- 再次查询
-SELECT * FROM employees WHERE department_id = 5; -- 此时会看到21条记录，包括新插入的小王
+-- 执行更新（对当前可见行加锁并尝试更新）
+UPDATE employees
+SET status = 'calculated'
+WHERE department_id = 5;
+-- 在 PostgreSQL 中，这里只会更新最初快照中可见的20条
+-- 返回：UPDATE 20
+
+-- 再次查询（仍基于同一快照）
+SELECT * FROM employees WHERE department_id = 5; -- 仍然是20条
+
 COMMIT;
 ```
 
-> **PostgreSQL:** 它的可重复读实现与 MySQL 类似，也是基于 MVCC。快照是在**事务开始**时创建的，并且整个事务期间都使用这一个快照。
->
-> **MySQL (InnoDB):** 实现上更进一步。除了在事务开始时创建 MVCC 快照外，它还引入了**Next-Key Lock**（间隙锁+行锁的组合）。当进行范围查询或更新时，它不仅会锁住满足条件的行，还会锁住这些行之间的"间隙"，防止新的数据插入到这个范围内。这就在很大程度上**避免了幻读**。所以说，MySQL 的 REPEATABLE READ 比标准定义的要更强一些。
+> **PostgreSQL:** 它的可重复读实现与 MySQL 类似，也是基于 MVCC。快照是在**事务开始**时创建的，并且整个事务期间都使用这一个快照。通过 `xmin/xmax`的快照可见性判断实现隔离。
 
 ### 4. 可串行化 (Serializable)
 
@@ -175,7 +186,7 @@ INSERT INTO products (name, stock) VALUES ('新商品', 10);
 
 - **MySQL (InnoDB):** 在 REPEATABLE READ 的基础上，会将所有的普通 SELECT 语句自动转换为 SELECT ... LOCK IN SHARE MODE，即给读取的行加上读锁（共享锁）。当其他事务尝试修改这些行时，必须等待。
 
-- **PostgreSQL:** 它使用一种更先进的技术叫做**SSI (Serializable Snapshot Isolation)**。它比传统的加锁方式更乐观，允许多个事务并发读写。但在事务提交时，它会检查是否存在可能破坏串行化执行的"读写依赖"，如果存在，则会主动让其中一个事务回滚失败，并提示用户重试。这种方式在无冲突时性能更好。
+- **PostgreSQL:** 它使用一种更先进的技术叫做 **SSI (Serializable Snapshot Isolation)**。它比传统的加锁方式更乐观，允许多个事务并发读写。但在事务提交时，它会检查是否存在可能破坏串行化执行的"读写依赖"，如果存在，则会主动让其中一个事务回滚失败，并提示用户重试。这种方式在无冲突时性能更好。
 
 > **可串行化快照隔离 (Serializable Snapshot Isolation - SSI) (PostgreSQL)：**
 >
@@ -186,7 +197,7 @@ INSERT INTO products (name, stock) VALUES ('新商品', 10);
 > 如果检测到这种危险的依赖关系，数据库会**主动让后提交的那个事务失败**，并抛出一个"串行化失败 (serialization failure)"的错误，要求应用程序捕获这个错误并重试整个事务。
 
 
-## 三、并发下的写冲突
+## 三、并发事务下的写冲突
 
 > 需要注意的是四种隔离级别所解决的问题都是并发事务下对 **读一致性** 的问题。 读一致性的成功并不一定意味着写一定可以成功。
 
@@ -196,20 +207,14 @@ INSERT INTO products (name, stock) VALUES ('新商品', 10);
 
 - **SELECT** 读是共享的，无论是哪个隔离级别，对读的操作都是共享的（可串行化会添加 s 锁，但依旧是读共享的）。
 
-- **UPDATE** 都是"当前读"（Current Read）： 不走 MVCC 那一套，而是要去读取数据库里**最新、最新、最新**的版本，区别就是是否对写的数据行进行行锁，并且有没有对应的处理。
+- **UPDATE** 都是"当前读"（Current Read）： 写入的是去读取数据库里**最新、最新、最新**的版本，对写的数据行进行行级 x 排他锁，如果其他事务同样需要写入该行，则会报错。
 
 ### 1. 锁等待死锁 (Lock-wait Deadlock)
 
 如果两个事务互相等待对方持有的资源，就会形成死锁。除了读未提交，其他三种隔离级别都有可能出现。**可串行化：** 死锁的风险**更高**。因为它不仅写操作加锁，连读操作也加了共享锁。这就大大增加了锁的种类和持有时间，更多的锁交互自然带来了更高的死锁概率。
 
-> **InnoDB 的死锁检测与处理：**
-> - InnoDB 具有内置的死锁检测机制。当它检测到死锁时，它不会让这两个事务无限期地等待下去。
-> - 为了打破死锁，InnoDB 会选择其中一个事务作为**死锁牺牲者 (deadlock victim)** 并将其**回滚 (rollback)**。通常，InnoDB 会选择修改数据量较少、回滚成本较低的事务来回滚。
-> - 被回滚的事务会收到一个错误，例如 `ERROR 1213 (40001): Deadlock found when trying to get lock; try restarting transaction`。
-
 > **Postgres 的死锁检测与处理：**
 > - 它并非全程阻塞，而是乐观地允许事务执行，同时跟踪它们之间的读写依赖关系。如果在事务准备提交时，发现其读写依赖关系构成了无法串行化的“环”，就会使其中一个事务失败，并报告“序列化失败”错误。
-> - 虽然底层机制不同，但对用户来说，最终结果（一个事务失败）与死锁非常相似。
 
 **场景：互相转账**
 
@@ -223,57 +228,74 @@ INSERT INTO products (name, stock) VALUES ('新商品', 10);
 
 - **事务 B：** 接着想给 A 加钱：UPDATE accounts SET balance = balance + 10 WHERE id = 'A'; (尝试锁 A，但 A 被事务 A 锁住，等待...)
 
-此时，A 在等 B 释放锁，B 在等 A 释放锁，形成死锁。InnoDB 的死锁检测机制会发现这种情况，为了打破僵局，它会选择一个"代价"最小的事务（通常是回滚 undo 量较少的那个），**强制其回滚失败**，并抛出死锁错误。
+此时，A 在等 B 释放锁，B 在等 A 释放锁，形成死锁。
 
-以 MySQL 为例：
+以 PostgreSQL 为例：
 
 ```sql
+DROP TABLE IF EXISTS accounts;
+
 CREATE TABLE accounts (
     id INT PRIMARY KEY,
     name VARCHAR(50),
-    balance DECIMAL(10, 2)
+    balance NUMERIC(10, 2)
 );
 
 INSERT INTO accounts (id, name, balance) VALUES
 (1, 'Alice', 1000.00),
 (2, 'Bob', 2000.00);
 
+-- =========================
+-- 会话 A
+-- =========================
+BEGIN;
 
--- 步驟 1: 在會話 A 中開啟一個新事務
-START TRANSACTION;
+-- 步骤 1：锁住 id=1
+UPDATE accounts
+SET balance = balance - 100
+WHERE id = 1;
 
--- 步驟 2: 在會話 B 中也開啟一個新事務 
-START TRANSACTION;
+-- （切换到会话 B 执行其前两步）
 
--- 步驟 3: 更新 Alice (id=1) 的餘額，這會鎖定 id=1 這一行。
---         請在會話 B 執行完【步驟 2】之後再執行此步驟。
-UPDATE accounts SET balance = balance - 100 WHERE id = 1;
+-- 步骤 3：尝试更新 id=2（如果 B 已锁住，将阻塞）
+UPDATE accounts
+SET balance = balance + 100
+WHERE id = 2;
 
--- 步驟 4: 更新 Bob (id=2) 的餘額，這會鎖定 id=2 這一行。 -- 請在會話 A 執行完【步驟 3】之後再執行此步驟。 
-UPDATE accounts SET balance = balance - 200 WHERE id = 2;
+COMMIT;
 
--- 步驟 5: 接著，嘗試更新 Bob (id=2) 的餘額。
---         此時，因為 id=2 的行已經被會話 B 鎖定，這個指令會被阻塞，進入等待狀態。
-UPDATE accounts SET balance = balance + 100 WHERE id = 2;
+-- =========================
+-- 会话 B
+-- =========================
+BEGIN;
 
--- 步驟 6: 現在，嘗試更新 Alice (id=1) 的餘額。 -- 由於會話 A 正在等待會話 B 的鎖，而會話 B 又要請求會話 A 的鎖， -- 執行此命令將立即觸發死鎖檢測機制。 
-UPDATE accounts SET balance = balance + 200 WHERE id = 1;
+-- 步骤 2：锁住 id=2
+UPDATE accounts
+SET balance = balance - 200
+WHERE id = 2;
 
--- 如果死鎖發生後，你的會話是倖存者，你可以用 COMMIT 提交事務。
--- 如果你的會話是犧牲品，你會收到錯誤，事務會自動回滾。
--- COMMIT;
+-- （切换回会话 A 执行其第二个 UPDATE，使其进入等待）
+
+-- 步骤 4：尝试更新 id=1（触发死锁检测）
+UPDATE accounts
+SET balance = balance + 200
+WHERE id = 1;
+
+COMMIT;
+
+-- =========================
+-- 结果说明
+-- =========================
+-- PostgreSQL 会检测死锁并终止其中一个事务：
+-- ERROR: deadlock detected
+-- 被终止的事务需要执行：
 -- ROLLBACK;
+-- 另一个事务可以正常 COMMIT;
 ```
 
-### 2. 锁等待超时
+### 2. 更新丢失（应用层覆写）
 
-除了读未提交，其他三种隔离级别都有可能出现。**可串行化：** 死锁的风险**更高**。因为它不仅写操作加锁，连读操作也加了共享锁。这就大大增加了锁的种类和持有时间，更多的锁交互自然带来了更高的死锁概率。前面分析的"S 锁升级 X 锁"就是可串行化独有的死锁场景。如果事务 B 等待事务 A 释放锁的时间太长，超过了 innodb_lock_wait_timeout 参数设定的阈值（默认 50 秒），事务 B 会自动放弃等待，并回滚失败，抛出锁等待超时错误。
-
-这通常发生在事务 A 是一个包含了大量操作的"长事务"时。
-
-### 3. 业务逻辑失效
-
-即使都成功了，在非可串行化的三个级别中，数据库保证了物理上的更新会依次进行，但业务逻辑可能已经不再成立。
+在业务代码中开启事务 A 执行 `SELECT *` 加载入内存中进行业务逻辑的计算。事务 B 在 A 读取之后更新相同的列，可能被你带着旧值一起覆盖回去，从而看起来像事务 B 的更新丢失了。
 
 **场景：秒杀抢购最后一件商品**
 
@@ -281,11 +303,49 @@ UPDATE accounts SET balance = balance + 200 WHERE id = 1;
 
 - **事务 A：** 读取到 stock=1，判断可以购买。执行 UPDATE stock = 0 ...，抢到锁，成功。
 
-- **事务 B：** 也读取到 stock=1，判断可以购买。执行 UPDATE stock = 0 ...，被 A 阻塞。
+- **事务 B：** 也读取到 stock=1，判断可以购买。执行 UPDATE stock = 0 。
 
-- **A 提交后，B 被唤醒：**
-  如果你的 UPDATE 语句只是 UPDATE products SET stock = stock - 1 WHERE id = 101;，那么 B 会成功执行，导致 stock 最终变为 **-1**！这在物理上成功了，但在业务上是灾难。
+最终业务效果则是卖出了两件商品，而库存只扣除了 1 个。
 
-问题根源在于**普通读操作的共享性（非阻塞性）**。无论是读已提交还是可重复读，它们的普通 SELECT 走的都是不加锁的 MVCC 机制。两个事务（或更多）在并发执行的初期，都可以基于某个数据快照做出"我能执行"的判断。
+可以使用 **写行级锁** 进行避免。如隔离级别为：可重复读，序列化。
 
-这个"并发的乐观判断"是导致后续业务逻辑失效的根源。当它们真正去执行 UPDATE 时，锁机制虽然保证了物理操作的串行，但已经无法挽回那个基于过时数据做出的、可能错误的业务决策。
+## 四、处理并发更新问题
+
+### 乐观锁（Optimistic Locking）
+
+适合读多写少的场景。不依赖数据库底层的锁，而是在数据表里加一个 `version`（版本号）字段或 `updated_at` 时间戳。在每次更新的适合，加上版本号进行精确列更新。
+
+可以提升数据库并发性能（设置隔离级别为读已提交）的同时，保证并发更新冲突的时候进行处理或者 Retry。
+
+### 悲观锁（Pessimistic Locking）
+
+适合写操作多，并发冲突概率极高，或者对数据一致性要求极其严格的场景。依靠数据库底层的锁机制，在读取数据的那一刻就把它锁住。
+
+```sql
+
+BEGIN; 
+SELECT balance FROM account WHERE id = 1 FOR UPDATE; -- 此时其他试图修改该行或也执行 FOR UPDATE 的事务会被阻塞 
+UPDATE account SET balance = balance - 10 WHERE id = 1; 
+COMMIT;
+
+```
+
+对系统并发吞吐量影响大，很容易触发死锁。
+
+### 原子操作
+
+只进行简单的相对数值修改（如增加或减少），不需要在应用层做复杂的逻辑判断。使用 SQL 直接进行操作符运算，避免覆盖写入。利用 UPDATE 自带的行锁。
+
+应用场景较为局限，只适合简单运算。
+
+### 削峰填谷
+
+适用于极端高并发的“热点行”更新（例如秒杀活动中几万人同时抢购同一件商品）。可能短时间内有数万个请求会直接打入数据库中，数据库的行锁会导致严重的性能瓶颈。
+
+引入 Redis 等缓存在缓存层对库存进行预扣除（DECR），依旧要记得避免覆盖写入。或者使用扣减记录异步化，数据库端变成单线程或低并发的顺序排队消费，彻底消除数据库层的“写写冲突”。
+
+## 结
+
+总之对于并发事务情况下，需要根据并发性能与一致性取最优解，根据业务场景量采取适当的隔离级别。没有绝对的最优解。
+
+在特定情况下，可以对事务进行拆分（如涉及库存，第三方调用）等特殊情况，控制事务大小，引入缓存，任务队列等，实现性能与一致性的权衡。

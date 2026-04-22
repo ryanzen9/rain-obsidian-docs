@@ -1,8 +1,11 @@
 ---
-title: "MacOS Shell 个人配置"
+title: MacOS Shell 个人配置
 date: 2026-04-20
-author: ""
-tags: []
+author: Ryan Zeng
+tags:
+  - macos
+  - shell
+  - tools
 categories: []
 draft: true
 ---
