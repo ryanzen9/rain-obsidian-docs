@@ -250,3 +250,7 @@ WHERE mg."Price" > 100 AND mg."WaresName" LIKE '%茶%';
 - **渐进式调优**：建立性能基线，逐步调整参数，每次只调整一个参数，观察性能变化。
 - **防止过度配置**：work_mem 和 max_connections 等参数过高可能导致内存不足，导致系统崩溃。合理评估系统资源和负载需求，避免过度配置。
 - **监控和日志**：使用 pg_stat_io 和 pg_stat_database、pg_stat_bgwriter，针对性地进行优化。
+
+## 相关资料
+
+- [**Postgresql Conf:**]('https://postgresqlco.nf/') `postgresql.conf` 参数文档查阅，参数测试网站。

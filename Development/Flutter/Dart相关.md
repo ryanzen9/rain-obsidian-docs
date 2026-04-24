@@ -8,10 +8,6 @@ tags:
 Author: Ruby Ceng
 ---
 
-## 相关文档
-
-> Dart 语言 JavaScript 工程师迁移学习文档：`https://dart.dev/resources/coming-from/js-to-dart#conventions-and-linting`
-
 ## Dart 数据类型
 
 | Dart 类型   | 说明              | 等价的 TypeScript 类型  | 关键区别与备注                                               |
@@ -151,3 +147,13 @@ Author: Ruby Ceng
        String _fetchApiKey() => "some_secret_key";
      }
      ```
+
+
+
+## Dart Feture
+
+
+
+## 相关资料
+
+- [Dart 语言 JavaScript 工程师迁移学习文档]('https://dart.dev/resources/coming-from/js-to-dart#conventions-and-linting')
