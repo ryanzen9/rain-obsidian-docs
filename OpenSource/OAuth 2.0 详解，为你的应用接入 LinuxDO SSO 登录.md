@@ -9,7 +9,7 @@ categories:
   - OpenSource
 draft: false
 ---
-
+>本文相关内容与源码已开源：https://github.com/ryanzen9/passport-linuxdo
 ## 什么是 OAuth 2.0？
 
 OAuth 是一个关于授权（authorization）的开放网络标准，在全世界得到广泛应用，目前的版本是 2.0 版。
