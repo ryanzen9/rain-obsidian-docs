@@ -4,17 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a46228e9fa2ef940",
+        "id": "7762d0ec0b8ea785",
         "type": "tabs",
         "children": [
           {
-            "id": "f53a87cd8beb44e7",
+            "id": "c92a7c1d1666b3b5",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
+                "mode": "preview",
+                "source": true
+              },
               "icon": "lucide-file",
-              "title": "新标签页"
+              "title": "OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录"
             }
           }
         ]
@@ -152,12 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
+                "file": "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "大纲"
+              "title": "OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录 的大纲"
             }
           },
           {
@@ -189,11 +194,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "f53a87cd8beb44e7",
+  "active": "c92a7c1d1666b3b5",
   "lastOpenFiles": [
+    "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
     "OpenSource/image.png",
     "OpenSource/image-1.png",
-    "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
     "Pasted image 20260425200008.png",
     "Clippings/Agent 开发学习路径.md",
     "OpenSource/image-2.png",
