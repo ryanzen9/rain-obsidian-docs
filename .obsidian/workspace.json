@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
+                "file": "Clippings/Post by @WY_mask on X.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园"
+              "title": "Post by @WY_mask on X"
             }
           }
         ]
@@ -207,6 +207,8 @@
   },
   "active": "3762eb314658fd5f",
   "lastOpenFiles": [
+    "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
+    "Clippings/Post by @WY_mask on X.md",
     "Archive/干净架构最佳实践 天火技术博客.md",
     "Development/API 技术核心原理：REST GraphQL gRPC tRPC.md",
     "Development/如何使用完善的加密算法对数据安全进行保障.md",
@@ -236,10 +238,8 @@
     "ArchitectureDesign/🚀 Pnpm + Lerna + Turbo 进行 Monorepo 进行后端项目架构搭建.md",
     "ArchitectureDesign/ORM设计模式：Active Record 和 Data Mapper.md",
     "ArchitectureDesign/🐳 构建一个健壮的DDD领域驱动设计架构.md",
-    "Coding/Java/Java 的动态代理.md",
     "Coding/Java",
     "Coding",
-    "AI/01.md",
     "AI"
   ]
 }
