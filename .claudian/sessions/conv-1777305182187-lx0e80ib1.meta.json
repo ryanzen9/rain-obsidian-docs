@@ -1,0 +1,24 @@
+{
+  "id": "conv-1777305182187-lx0e80ib1",
+  "providerId": "claude",
+  "title": "Greet the assistant",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777305182192,
+  "updatedAt": 1777305218561,
+  "lastResponseAt": 1777305201249,
+  "sessionId": "9ada6a65-5ff7-48b4-bf73-01ab923fd065",
+  "providerState": {
+    "providerSessionId": "9ada6a65-5ff7-48b4-bf73-01ab923fd065"
+  },
+  "currentNote": "Development/API 技术核心原理：REST GraphQL gRPC tRPC.md",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 21738,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextTokens": 21738,
+    "percentage": 11,
+    "contextWindowIsAuthoritative": true
+  }
+}
