@@ -4,6 +4,7 @@
     "type": "split",
     "children": [
       {
+<<<<<<< HEAD
         "id": "d93c8a46be4be37b",
         "type": "tabs",
         "children": [
@@ -19,6 +20,19 @@
               },
               "icon": "lucide-file",
               "title": "Claude Code 辅助开发"
+=======
+        "id": "a72ad4265a203239",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "3762eb314658fd5f",
+            "type": "leaf",
+            "state": {
+              "type": "empty",
+              "state": {},
+              "icon": "lucide-file",
+              "title": "新标签页"
+>>>>>>> eb69f3c (vault backup: 2026-04-27 23:33:10)
             }
           }
         ]
@@ -156,13 +170,20 @@
             "state": {
               "type": "outline",
               "state": {
+<<<<<<< HEAD
                 "file": "Insight/Claude Code 辅助开发.md",
+=======
+>>>>>>> eb69f3c (vault backup: 2026-04-27 23:33:10)
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
+<<<<<<< HEAD
               "title": "Claude Code 辅助开发 的大纲"
+=======
+              "title": "大纲"
+>>>>>>> eb69f3c (vault backup: 2026-04-27 23:33:10)
             }
           },
           {
@@ -194,7 +215,11 @@
       "obsidian-git:Open Git source control": false
     }
   },
+<<<<<<< HEAD
   "active": "adc58d9aca9d8154",
+=======
+  "active": "3762eb314658fd5f",
+>>>>>>> eb69f3c (vault backup: 2026-04-27 23:33:10)
   "lastOpenFiles": [
     "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
     "Insight/Claude Code 辅助开发.md",
