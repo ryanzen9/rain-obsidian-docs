@@ -2,5 +2,8 @@
   "cssTheme": "Baseline",
   "interfaceFontFamily": "TsangerJinKai02,Maple Mono NF CN",
   "textFontFamily": "TsangerJinKai02,Maple Mono NF CN",
-  "monospaceFontFamily": "Maple Mono NF CN"
+  "monospaceFontFamily": "Maple Mono NF CN",
+  "baseFontSizeAction": true,
+  "translucency": true,
+  "baseFontSize": 18
 }

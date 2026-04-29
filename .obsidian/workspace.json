@@ -4,21 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a72ad4265a203239",
+        "id": "1dc89ccde4b22423",
         "type": "tabs",
         "children": [
           {
-            "id": "3762eb314658fd5f",
+            "id": "e5cd0a57b962b864",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Clippings/Post by @WY_mask on X.md",
+                "file": "Clippings/Nest通关秘籍 1.md",
                 "mode": "source",
-                "source": false
+                "source": true
               },
               "icon": "lucide-file",
-              "title": "Post by @WY_mask on X"
+              "title": "Nest通关秘籍 1"
             }
           }
         ]
@@ -156,13 +156,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Insight/Claude Code 辅助开发.md",
+                "file": "Clippings/想在国内折腾全屋 Matter？这可能是一场属于极客的「苦修」 - 少数派.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Claude Code 辅助开发 的大纲"
+              "title": "想在国内折腾全屋 Matter？这可能是一场属于极客的「苦修」 - 少数派 的大纲"
             }
           },
           {
@@ -174,16 +174,6 @@
               "icon": "git-pull-request",
               "title": "Source Control"
             }
-          },
-          {
-            "id": "913d80b59739e477",
-            "type": "leaf",
-            "state": {
-              "type": "claudian-view",
-              "state": {},
-              "icon": "bot",
-              "title": "Claudian"
-            }
           }
         ],
         "currentTab": 5
@@ -194,6 +184,7 @@
   },
   "left-ribbon": {
     "hiddenItems": {
+      "claudian:Open Claudian": false,
       "switcher:打开快速切换": false,
       "graph:查看关系图谱": false,
       "canvas:新建白板": false,
@@ -201,45 +192,49 @@
       "templates:插入模板": false,
       "command-palette:打开命令面板": false,
       "bases:新建数据库": false,
-      "obsidian-git:Open Git source control": false,
-      "claudian:Open Claudian": false
+      "obsidian-git:Open Git source control": false
     }
   },
-  "active": "3762eb314658fd5f",
+  "active": "e5cd0a57b962b864",
   "lastOpenFiles": [
-    "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
-    "Clippings/Post by @WY_mask on X.md",
-    "Archive/干净架构最佳实践 天火技术博客.md",
-    "Development/API 技术核心原理：REST GraphQL gRPC tRPC.md",
-    "Development/如何使用完善的加密算法对数据安全进行保障.md",
+    "Clippings/Nest通关秘籍.md",
+    "Clippings/Nest通关秘籍 1.md",
+    "OpenSource/开源项目学习清单.md",
     "Insight/Claude Code 辅助开发.md",
-    "Insight",
-    "conflict-files-obsidian-git.md",
+    "Clippings/想在国内折腾全屋 Matter？这可能是一场属于极客的「苦修」 - 少数派.md",
+    "Clippings/Post by @WY_mask on X.md",
     "OpenSource/OAuth 2.0 详解，为你的应用接入 LinuxDO SSO 登录.md",
-    "OpenSource/image.png",
-    "OpenSource/image-1.png",
-    "Pasted image 20260425200008.png",
+    "Insight",
     "Clippings/Agent 开发学习路径.md",
+    "OpenSource/image.png",
     "OpenSource/image-2.png",
-    "AI/00.md",
-    "Archive/从“能用”到“会用”｜如何写好一个 Skill.md",
-    "Archive/跨源资源共享（CORS）.md",
-    "Archive/浏览器的同源策略（SOP）.md",
-    "Archive/如何正确保存和传输敏感数据？.md",
+    "OpenSource/image-1.png",
+    "Development/API 技术核心原理：REST GraphQL gRPC tRPC.md",
+    "conflict-files-obsidian-git.md",
+    "ArchitectureDesign/ORM设计模式：Active Record 和 Data Mapper.md",
+    "OpenSource/Oh-My-Codex 使用.md",
     "Development/Flutter/Dart相关.md",
-    "Database/PostgreSQL 调优实践.md",
     "Database/PostgreSQL 并发事务下的读写问题.md",
-    "ComputerBasics/深入浅出：从 TCP 到 HTTP，再到 HTTPS 的演进之路.md",
+    "Database/PostgreSQL 调优实践.md",
     "CodeBeyond/MacOS个人配置.md",
     "CodeBeyond/MacOS Shell 个人配置.md",
     "Database/高并发下的竞态插入问题.md",
-    "Database/并发事务下的读写问题.md",
-    "Development/Java/Java 的动态代理.md",
-    "ArchitectureDesign/🚀 Pnpm + Lerna + Turbo 进行 Monorepo 进行后端项目架构搭建.md",
-    "ArchitectureDesign/ORM设计模式：Active Record 和 Data Mapper.md",
     "ArchitectureDesign/🐳 构建一个健壮的DDD领域驱动设计架构.md",
-    "Coding/Java",
-    "Coding",
-    "AI"
+    "Development/Java/Java 的动态代理.md",
+    "Archive/跨源资源共享（CORS）.md",
+    "Archive/如何正确保存和传输敏感数据？.md",
+    "Archive/DDD（Domain-Driven Design，领域驱动设计） - sTruth - 博客园.md",
+    "Archive/从“能用”到“会用”｜如何写好一个 Skill.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(4)：使用Casbin实现用户角色授权策略.md",
+    "OpenSource/soybean-admin-nestjs/Soybean Admin NestJS 学习(3)：使用CQRS模块实现事件驱动.md",
+    "OpenSource/soybean-admin-nestjs",
+    "OpenSource",
+    "Development/TypeScript",
+    "Development/Java",
+    "Development/Flutter",
+    "Development",
+    "Database",
+    "ComputerBasics",
+    "CodeBeyond"
   ]
 }
