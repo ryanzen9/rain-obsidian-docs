@@ -1,0 +1,24 @@
+body {
+  --file-line-width: 900px;
+}
+
+/* 源码模式：正文容器 */
+.markdown-source-view.mod-cm6 .cm-content {
+  max-width: var(--file-line-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 源码模式：文件名 / inline title */
+.markdown-source-view.mod-cm6 .inline-title {
+  max-width: var(--file-line-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+/* 阅读模式：正文 */
+.markdown-reading-view .markdown-preview-sizer {
+  max-width: var(--file-line-width) !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}

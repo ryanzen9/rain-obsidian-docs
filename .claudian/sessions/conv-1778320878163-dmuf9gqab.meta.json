@@ -1,0 +1,24 @@
+{
+  "id": "conv-1778320878163-dmuf9gqab",
+  "providerId": "claude",
+  "title": "Complete NestJS RabbitMQ message queue guide",
+  "titleGenerationStatus": "success",
+  "createdAt": 1778320878164,
+  "updatedAt": 1778321200868,
+  "lastResponseAt": 1778321200868,
+  "sessionId": "45010333-e445-43c7-b112-98e7ee63d482",
+  "providerState": {
+    "providerSessionId": "45010333-e445-43c7-b112-98e7ee63d482"
+  },
+  "currentNote": "Development/TypeScript/NestJS 整合 RabbitMQ 实现消息队列.md",
+  "usage": {
+    "model": "opus",
+    "inputTokens": 24567,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 1000000,
+    "contextTokens": 24567,
+    "percentage": 2,
+    "contextWindowIsAuthoritative": true
+  }
+}
