@@ -1,0 +1,23 @@
+{
+  "id": "conv-1777627459178-ly3c1a3w7",
+  "providerId": "claude",
+  "title": "Explain distributed transactions",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777627459179,
+  "updatedAt": 1777978887283,
+  "lastResponseAt": 1777978869794,
+  "sessionId": "2811bbf6-95ac-4f72-8326-59e616b55cc7",
+  "providerState": {
+    "providerSessionId": "2811bbf6-95ac-4f72-8326-59e616b55cc7"
+  },
+  "currentNote": "ArchitectureDesign/分布式事务.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 0,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextTokens": 0,
+    "percentage": 0
+  }
+}

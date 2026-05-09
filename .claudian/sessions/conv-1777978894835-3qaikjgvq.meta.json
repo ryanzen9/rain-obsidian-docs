@@ -1,0 +1,23 @@
+{
+  "id": "conv-1777978894835-3qaikjgvq",
+  "providerId": "claude",
+  "title": "Research distributed transaction solutions",
+  "titleGenerationStatus": "success",
+  "createdAt": 1777978894835,
+  "updatedAt": 1777979219165,
+  "lastResponseAt": 1777979219165,
+  "sessionId": "776067e9-cad5-433b-ba26-ec904addc839",
+  "providerState": {
+    "providerSessionId": "776067e9-cad5-433b-ba26-ec904addc839"
+  },
+  "currentNote": "ArchitectureDesign/分布式事务.md",
+  "usage": {
+    "model": "sonnet",
+    "inputTokens": 5073,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 39168,
+    "contextWindow": 200000,
+    "contextTokens": 44241,
+    "percentage": 22
+  }
+}
