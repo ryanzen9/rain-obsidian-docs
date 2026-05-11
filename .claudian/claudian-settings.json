@@ -1,9 +1,9 @@
 {
   "userName": "",
   "permissionMode": "yolo",
-  "model": "opus",
-  "thinkingBudget": "medium",
-  "effortLevel": "max",
+  "model": "haiku",
+  "thinkingBudget": "off",
+  "effortLevel": "high",
   "serviceTier": "default",
   "enableAutoTitleGeneration": true,
   "titleGenerationModel": "",
@@ -31,7 +31,7 @@
       "enableOpus1M": false,
       "enableSonnet1M": false,
       "customModels": "",
-      "lastModel": "opus",
+      "lastModel": "haiku",
       "environmentVariables": "",
       "environmentHash": ""
     },
@@ -45,21 +45,21 @@
       "environmentVariables": "",
       "environmentHash": "",
       "installationMethodsByHost": {
-        "Ryan-Mac-Studio.local": "native-windows"
+        "Ryan-MacBook-Air.local": "native-windows"
       },
       "wslDistroOverridesByHost": {}
     }
   },
   "settingsProvider": "claude",
   "savedProviderModel": {
-    "claude": "opus"
+    "claude": "haiku"
   },
   "savedProviderEffort": {
-    "claude": "max"
+    "claude": "high"
   },
   "savedProviderServiceTier": {},
   "savedProviderThinkingBudget": {
-    "claude": "medium"
+    "claude": "off"
   },
   "lastCustomModel": "",
   "maxTabs": 3,

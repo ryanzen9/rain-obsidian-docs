@@ -1,0 +1,24 @@
+{
+  "id": "conv-1778348794359-w6hc3v8ur",
+  "providerId": "claude",
+  "title": "Optimize SQL code blocks for Postgres syntax",
+  "titleGenerationStatus": "success",
+  "createdAt": 1778348794360,
+  "updatedAt": 1778348876254,
+  "lastResponseAt": 1778348876254,
+  "sessionId": "b188573c-16bf-4b84-9296-9d1b0d3160cd",
+  "providerState": {
+    "providerSessionId": "b188573c-16bf-4b84-9296-9d1b0d3160cd"
+  },
+  "currentNote": "ArchitectureDesign/商城项目实现高并发秒杀场景.md",
+  "usage": {
+    "model": "haiku",
+    "inputTokens": 26413,
+    "cacheCreationInputTokens": 0,
+    "cacheReadInputTokens": 0,
+    "contextWindow": 200000,
+    "contextTokens": 26413,
+    "percentage": 13,
+    "contextWindowIsAuthoritative": true
+  }
+}
