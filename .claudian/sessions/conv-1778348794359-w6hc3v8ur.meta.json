@@ -4,13 +4,13 @@
   "title": "Optimize SQL code blocks for Postgres syntax",
   "titleGenerationStatus": "success",
   "createdAt": 1778348794360,
-  "updatedAt": 1778348876254,
+  "updatedAt": 1778513093028,
   "lastResponseAt": 1778348876254,
   "sessionId": "b188573c-16bf-4b84-9296-9d1b0d3160cd",
   "providerState": {
     "providerSessionId": "b188573c-16bf-4b84-9296-9d1b0d3160cd"
   },
-  "currentNote": "ArchitectureDesign/商城项目实现高并发秒杀场景.md",
+  "currentNote": "ArchitectureDesign/商城项目实现高并发下库存的控制.md",
   "usage": {
     "model": "haiku",
     "inputTokens": 26413,
