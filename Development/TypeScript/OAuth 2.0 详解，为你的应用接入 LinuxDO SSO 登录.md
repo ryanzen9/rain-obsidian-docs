@@ -5,8 +5,10 @@ author: Ryan Zeng
 tags:
   - 开源
   - OAuth
+  - Typescript
+  - Passport.js
 categories:
-  - OpenSource
+  - Typescript
 draft: false
 ---
 >本文相关内容与源码已开源：https://github.com/ryanzen9/passport-linuxdo
