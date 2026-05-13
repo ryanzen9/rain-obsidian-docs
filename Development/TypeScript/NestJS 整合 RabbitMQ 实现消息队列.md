@@ -1,3 +1,17 @@
+---
+title: "NestJS 整合 RabbitMQ 实现消息队列"
+date: 2026-05-13
+author: Ryan Zeng
+tags:
+  - RabbitMQ
+  - NestJS
+  - 消息队列
+  - TypeScript
+categories:
+  - Development
+draft: false
+---
+
 ## 什么是 RabbitMQ
 
 在分布式系统中，服务之间如何可靠地传递数据是一个核心问题。当系统从单体架构演进到微服务架构时，直接的服务间调用（HTTP/RPC）会遇到一系列挑战：耦合度过高、无法应对流量突增、调用失败导致连锁崩溃。消息队列（Message Queue）正是为了解决这些问题而诞生的中间件。
