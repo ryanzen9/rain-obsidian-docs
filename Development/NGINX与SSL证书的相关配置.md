@@ -3,7 +3,12 @@ Title: NGINX与SSL证书的相关配置
 Draft: false
 tags:
   - 运维
-Author: Ruby Ceng
+  - 计算机网络
+  - NGINX
+  - SSL
+Author: Ryan Zeng
+categories:
+  - Development
 ---
 
 ## 引言：
