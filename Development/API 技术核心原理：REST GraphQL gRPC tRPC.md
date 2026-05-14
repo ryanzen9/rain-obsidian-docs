@@ -1,3 +1,12 @@
+---
+title: "API 技术核心原理：REST GraphQL gRPC tRPC"
+date: 2026-05-14
+author: ""
+tags: []
+categories: []
+draft: true
+---
+
 ## 一、什么是 API
 
 **API（Application Programming Interface）** 就是一个接口，通过这个接口可以帮你实现某种功能，让你不用亲自做辛苦又重复的工作。
