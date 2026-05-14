@@ -6,6 +6,16 @@
 
 计算机中的 API 本质上就是一些代码，REST API 也是按照特定架构风格编写的代码。
 
+```mermaid
+flowchart LR
+    A[客户端] -->|"发起请求"| B[API 接口]
+    B -->|"转发请求"| C[服务端逻辑]
+    C -->|"查询/操作"| D[数据库]
+    D -->|"返回数据"| C
+    C -->|"响应结果"| B
+    B -->|"返回响应"| A
+```
+
 ---
 
 ## 二、REST API 详解
@@ -19,6 +29,21 @@ REST 是一种**架构风格**，不是协议，也不是语言。
 REST 架构风格也一样，有规律可循。
 
 ### 2.2 REST 的工作流程
+
+```mermaid
+sequenceDiagram
+    participant U as 用户
+    participant C as 客户端（网页）
+    participant A as REST API
+    participant D as 数据库
+
+    U->>C: 查看某月某日天气
+    C->>A: GET /weather?date=2025-01-15
+    A->>D: 查询天气数据
+    D-->>A: 返回天气记录
+    A-->>C: JSON 响应
+    C-->>U: 渲染天气页面
+```
 
 假设用户访问了一个天气预报的网页应用：
 
@@ -50,6 +75,25 @@ REST 架构风格也一样，有规律可循。
 | **分层系统** | 可以经过负载均衡、多个服务器形成分层结构，增强安全性和可扩展性 |
 | **按需代码**（可选） | 服务端可以响应可执行代码（如 JavaScript）给客户端，扩展客户端功能 |
 
+```mermaid
+flowchart TB
+    subgraph REST 六大约束
+        A[客户端-服务端分离]
+        B[统一接口]
+        C[无状态]
+        D[可缓存]
+        E[分层系统]
+        F[按需代码<br/>可选]
+    end
+
+    A --> G[提升可维护性]
+    B --> G
+    C --> H[提升性能与可扩展性]
+    D --> H
+    E --> H
+    F --> I[扩展客户端功能]
+```
+
 ### 2.5 REST 的缺点
 
 1. **过度依赖 API 文档**：调用 REST API 就像盲人摸象，不知道接口细节很难使用
@@ -68,6 +112,22 @@ GraphQL 的出现解决了 REST 的很多问题：
 2. **Schema 查询**：有 schema 可供查询，数据类型一目了然
 3. **精确获取数据**：可以精确指定需要的数据字段，避免过度获取或获取不足
 
+```mermaid
+flowchart LR
+    subgraph REST
+        R1["GET /users/1"]
+        R2["GET /users/1/posts"]
+        R3["GET /users/1/friends"]
+    end
+
+    subgraph GraphQL
+        G1["POST /graphql<br/>query { user(id:1) {<br/>  name<br/>  posts { title }<br/>  friends { name }<br/>}}"]
+    end
+
+    REST -->|"多次请求"| R[客户端]
+    GraphQL -->|"单次请求"| R
+```
+
 ### 3.2 GraphQL 的核心特点
 
 - **单一端点**：客户端只需要面对一个端点，而不是多个资源端点
@@ -81,6 +141,19 @@ GraphQL 的出现解决了 REST 的很多问题：
 | **Query** | 查询 | 对应 REST 的 GET，用于读取数据 |
 | **Mutation** | 变更 | 对应 REST 的 POST/PUT/DELETE，用于写入数据 |
 | **Subscription** | 订阅 | 客户端和服务端建立持久连接，事件触发时推送数据，利于实时应用 |
+
+```mermaid
+flowchart TB
+    subgraph GraphQL 三种操作
+        Q[Query<br/>查询数据]
+        M[Mutation<br/>写入数据]
+        S[Subscription<br/>实时订阅]
+    end
+
+    Q -->|"对应 REST GET"| R1[读取]
+    M -->|"对应 REST POST/PUT/DELETE"| R2[写入]
+    S -->|"WebSocket 持久连接"| R3[实时推送]
+```
 
 > 注意：这三种操作只是语义上的，实际上可以创建删除数据的 query，就像 HTTP 的方法和状态码一样，实际看到的和语义上可能会有出入。
 
@@ -100,6 +173,7 @@ query GetUser($id: ID!) {
 ```
 
 结构说明：
+
 1. **操作类型**：query 或 mutation
 2. **操作名**（可选）：便于调试和日志记录
 3. **参数**：传入可复用的变量
@@ -133,6 +207,28 @@ query GetUser($id: ID!) {
 - 调用某个服务时，**就像调用本地代码一样**
 - 网络通信的复杂事情都不用管
 
+```mermaid
+sequenceDiagram
+    participant C as 客户端
+    participant S as Stub（客户端代理）
+    participant N as 网络
+    participant S2 as Stub（服务端代理）
+    participant SV as 服务端
+
+    C->>S: 调用函数 foo(params)
+    S->>S: Marshal（序列化参数）
+    S->>N: 发送请求
+    N->>S2: 传输数据
+    S2->>S2: Unmarshal（反序列化）
+    S2->>SV: 调用本地函数 foo(params)
+    SV-->>S2: 返回结果
+    S2->>S2: Marshal（序列化结果）
+    S2->>N: 发送响应
+    N->>S: 传输数据
+    S->>S: Unmarshal（反序列化）
+    S-->>C: 返回结果
+```
+
 ### 4.2 RPC 的三个核心要素
 
 1. **Functions**：服务端有相应的函数，提供某些功能
@@ -147,6 +243,21 @@ query GetUser($id: ID!) {
 - 定义 **service** 时，就是定义服务名称和 RPC 端点
 - 定义 **message** 时，就是定义数据请求和响应
 
+```protobuf
+service UserService {
+  rpc GetUser(UserRequest) returns (UserResponse);
+}
+
+message UserRequest {
+  int32 id = 1;
+}
+
+message UserResponse {
+  string name = 1;
+  string email = 2;
+}
+```
+
 ### 4.4 gRPC 的优势
 
 | 优势 | 说明 |
@@ -154,6 +265,19 @@ query GetUser($id: ID!) {
 | **高效传输** | Protocol Buffers 序列化成二进制传输，比 JSON 负载更小，解析消耗更少资源 |
 | **流式传输** | 支持单向和双向流式传输，基于 HTTP/2 构建 |
 | **HPACK 压缩** | HTTP/2 的 HPACK 压缩进一步降低负载体积 |
+
+```mermaid
+flowchart LR
+    subgraph JSON 传输
+        J["{<br/>  \"name\": \"Alice\",<br/>  \"email\": \"alice@example.com\"<br/>}"]
+        J -->|"文本格式<br/>~68 bytes"| JS[解析慢 / 体积大]
+    end
+
+    subgraph Protobuf 传输
+        P["二进制编码"]
+        P -->|"二进制格式<br/>~18 bytes"| PS[解析快 / 体积小]
+    end
+```
 
 ### 4.5 gRPC 的局限性
 
@@ -179,6 +303,25 @@ query GetUser($id: ID!) {
 | **开发体验** | 前后端合在一起的全栈开发者，tRPC 可以降低很多开发难度 |
 | **库的统一** | 前后端只需要专注于 tRPC 这组库来进行开发 |
 
+```mermaid
+flowchart TB
+    subgraph tRPC 端到端类型安全
+        SS[服务端 TypeScript<br/>定义 Router & Procedure]
+        SS -->|"自动推导类型"| CC[客户端 TypeScript<br/>直接调用，类型完整]
+    end
+
+    subgraph 传统方式
+        SS2[服务端] -->|"手动编写类型定义"| TT[类型定义文件<br/>如 OpenAPI / GraphQL Schema]
+        TT -->|"手动对齐类型"| CC2[客户端]
+    end
+
+    style SS fill:#3178c6,color:#fff
+    style CC fill:#3178c6,color:#fff
+    style SS2 fill:#999,color:#fff
+    style TT fill:#999,color:#fff
+    style CC2 fill:#999,color:#fff
+```
+
 ### 5.3 与 GraphQL 的对比
 
 GraphQL 会有很多库（如 Apollo Client、Relay 等），每个库的优缺点不一样，选择太多有时候也未必是好事。
@@ -188,6 +331,24 @@ tRPC 提供了一组统一的库，对于全栈开发者更加友好。
 ---
 
 ## 六、技术选型总结
+
+```mermaid
+flowchart TB
+    subgraph 选型决策
+        Q1{"项目复杂度如何？"}
+        Q1 -->|"简单"| REST[REST]
+        Q1 -->|"复杂"| Q2{"主要场景？"}
+        Q2 -->|"微服务间通信"| gRPC[gRPC]
+        Q2 -->|"前后端通信"| Q3{"技术栈？"}
+        Q3 -->|"TypeScript 全栈"| tRPC[tRPC]
+        Q3 -->|"多语言/多端"| GraphQL[GraphQL]
+    end
+
+    style REST fill:#4caf50,color:#fff
+    style gRPC fill:#2196f3,color:#fff
+    style tRPC fill:#3178c6,color:#fff
+    style GraphQL fill:#e535ab,color:#fff
+```
 
 | 技术 | 适用场景 | 特点 |
 |------|----------|------|
