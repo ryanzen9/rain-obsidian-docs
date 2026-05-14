@@ -10,11 +10,6 @@ Author: Ryan Zeng
 categories:
   - Development
 ---
-
-## 引言：
-
-配置网关、前端部署、域名和 DNS 设置以及 SSL 证书配置。
-
 ## 配置 NGINX
 
 ### 安装
