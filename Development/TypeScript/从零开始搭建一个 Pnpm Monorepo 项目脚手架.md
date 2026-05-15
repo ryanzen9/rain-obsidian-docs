@@ -163,3 +163,11 @@ pnpm exec commitlint --edit $1
 ```
 
 使用 `git add . && pnpm commit` 尝试进行第一次提交。
+
+### 发布相关 Tool
+
+配置 Lerna 进行 npm 包的发布与管理。
+
+**对 ChangeLog 进行自动化管理**
+
+安装
