@@ -129,7 +129,8 @@ packages/my-module/src/
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "format": "oxfmt .",
-    "format:check": "oxfmt --check ."
+    "format:check": "oxfmt --check .",
++   "prepare": "husky"  
   },
   "devDependencies": {
 +   "@commitlint/cli": "^21.0.1",
@@ -153,3 +154,4 @@ packages/my-module/src/
 }
 ```
 
+执行 ``
