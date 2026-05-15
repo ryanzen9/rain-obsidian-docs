@@ -207,7 +207,25 @@ pnpm add -w -D @changesets/cli
 
 `package.json`
 
-```json
+```diff
+{
+  "scripts": {
+    "commit": "cz",
+    "prep-release": "changeset",
+    "version": "changeset version",
+    "release": "changeset publish",
+    "test": "vitest",
+    "test:ci": "vitest --run",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
++   "@changesets/cli": "^2.31.0",
+  }
+}
 
 ```
 
