@@ -113,6 +113,43 @@ packages/my-module/src/
 安装相关包工具, 在 `package.json` 中添加以下内容：
 
 ```diff
-
+{
+  "name": "nestjs",
+  "version": "1.0.0",
+  "private": "true",
+  "description": "",
+  "keywords": [],
+  "license": "ISC",
+  "author": "Ryan Zeng",
+  "main": "index.js",
+  "scripts": {
+    "commit": "cz",
+    "test": "vitest",
+    "test:ci": "vitest --run",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check ."
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^21.0.1",
+    "@commitlint/config-conventional": "^21.0.1",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "husky": "^9.1.7",
+    "lerna": "^9.0.7",
+    "lint-staged": "^17.0.4",
+    "oxfmt": "^0.49.0",
+    "oxlint": "^1.64.0",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.6"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  },
+  "packageManager": "pnpm@10.13.1"
+}
 ```
 
