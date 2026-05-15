@@ -183,7 +183,7 @@ pnpm add -w -D @changesets/cli
 
 工作流程概览
 
-1. **添加 changeset**  npx changeset
+1. **添加 changeset**: feat/fix 后执行 `npx changeset`, 交互式进行
 2. **累积 changeset**  
     随着其他贡献者不断添加 changeset，`.changeset` 里会积累很多小的 markdown 文件。这些文件只描述改动，**此时并不修改任何 package.json 或 CHANGELOG**。
     
