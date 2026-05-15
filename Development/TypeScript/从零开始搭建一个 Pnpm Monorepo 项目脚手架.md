@@ -186,4 +186,4 @@ pnpm add -w -D @changesets/cli
 1. **添加 changeset**: feat/fix 后执行 `npx changeset`, 交互式描述自己做了什么改动。
 2. **累积 changeset**：  随着其他贡献者不断添加 changeset，`.changeset` 里会积累很多小的 markdown 文件。这些文件只描述改动，**此时并不修改任何 package.json 或 CHANGELOG**。
 3. **消费 changeset，升级版本** ： 发布时运行 `npx changeset version`，它会自动计算版本号以及更新日志
-4. **发布**： 执行 `npx changeset publish`
+4. **发布**： 执行 `npx changeset publish`, 他会自动执行 `pnpm publish`,发布发生变更的包。
