@@ -49,3 +49,61 @@ pnpm add -w reflect-metadata rxjs
   }
 }
 ```
+
+#### 创建第一个包
+
+```bash
+mkdir -p packages/my-module/src
+```
+
+`packages/my-module/package.json`:
+
+```json
+{
+  "name": "@my-scope/nestjs-my-module",
+  "version": "0.0.0",
+  "main": "lib/index.js",
+  "files": ["lib"],
+  "scripts": {
+    "build": "tsc --build tsconfig.build.json",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0"
+  },
+  "publishConfig": { "access": "public" }
+}
+```
+
+`packages/my-module/tsconfig.json`:
+
+```json
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": { "outDir": "./lib", "rootDir": "./src" },
+  "include": ["./src"]
+}
+```
+
+`packages/my-module/tsconfig.build.json`:
+
+```json
+{
+  "extends": "./tsconfig.json",
+  "exclude": ["./src/**/*.spec.ts"]
+}
+```
+
+#### 第 7 步：创建你的 NestJS 模块
+
+```
+packages/my-module/src/
+├── index.ts
+├── my-module.module.ts
+├── my-module.decorators.ts
+├── my-module.interfaces.ts
+├── my-module.constants.ts
+└── my-module-module-definition.ts
+```
