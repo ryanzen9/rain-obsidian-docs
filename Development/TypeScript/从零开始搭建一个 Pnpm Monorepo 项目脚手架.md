@@ -166,7 +166,9 @@ pnpm exec commitlint --edit $1
 
 ### 发布相关 Tool
 
-配置 Lerna 进行 npm 包的发布与管理。
+### npm 包的发布与管理。
+
+> 
 
 #### 对 ChangeLog 进行自动化管理
 
