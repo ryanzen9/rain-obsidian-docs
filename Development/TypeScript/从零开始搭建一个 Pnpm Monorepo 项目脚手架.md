@@ -172,16 +172,9 @@ Logged in on https://registry.npmjs.org/.
 ryanzeng
 ```
 
-#### 对 ChangeLog 进行自动化管理
+#### 对 ChangeLog 进行自动化生成与维护
 
 自动生成 CHANGELOG + 版本号 + git tag
-
-执行 `pnpm add -D standard-version`
-
-- 读取 commit history
-- 生成 `CHANGELOG.md`
-- bump version（package.json）
-- 创建 git tag
 
 在 `package.json` 中添加
 ```diff
