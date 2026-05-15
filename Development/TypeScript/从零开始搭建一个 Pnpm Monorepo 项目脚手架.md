@@ -181,3 +181,33 @@ ryanzeng
 pnpm add -w -D @changesets/cli
 ```
 
+工作流程概览
+
+1. **添加 changeset**  npx changeset
+2. **累积 changeset**  
+    随着其他贡献者不断添加 changeset，`.changeset` 里会积累很多小的 markdown 文件。这些文件只描述改动，**此时并不修改任何 package.json 或 CHANGELOG**。
+    
+3. **消费 changeset，升级版本**  
+    准备发布时，运行：
+    
+    bash
+    
+    npx changeset version
+    
+    这一步会：
+    
+    - 读取并删除所有待处理的 changeset 文件；
+        
+    - 根据它们的影响（major/minor/patch）自动更新各个包的 `package.json` 版本号；
+        
+    - 生成或更新每个包的 `CHANGELOG.md`，把 changeset 里的描述整理进去；
+        
+    - 更新 monorepo 内部包之间的依赖版本。
+        
+4. **发布**
+    
+    bash
+    
+    npx changeset publish
+    
+    它会帮你执行 `npm publish` 或 `yarn/pnpm publish`，并且只发布那些版本号发生过变化的包。
