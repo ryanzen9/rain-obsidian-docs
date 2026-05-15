@@ -205,3 +205,10 @@ pnpm add -w -D @changesets/cli
 }
 ```
 
+`package.json`
+
+```json
+
+```
+
+通过将“发版意图”与“代码提交”解耦，让版本管理和更新日志（Changelog）的生成变得非常清晰。
