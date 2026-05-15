@@ -133,10 +133,7 @@ pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional c
 +   "cz-conventional-changelog": "^3.3.0",
 +   "husky": "^9.1.7",
 +   "lint-staged": "^17.0.4",
-    "oxfmt": "^0.49.0",
-    "oxlint": "^1.64.0",
-    "typescript": "^6.0.3",
-    "vitest": "^4.1.6"
+    "typescript": "^6.0.3"
   },
 + "config": {
 +   "commitizen": {
