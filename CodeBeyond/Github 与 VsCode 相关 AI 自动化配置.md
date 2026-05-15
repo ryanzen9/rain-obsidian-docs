@@ -47,7 +47,6 @@ Avoid:
 
 配置 Review Pormpt
 
-
 创建 `code-review-instructions.md` 文件
 
 ```markdown
