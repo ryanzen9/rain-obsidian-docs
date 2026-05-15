@@ -5,7 +5,6 @@
 - GitHub Copilot Chat
 
 Copilot 会读取 `.github/copilot-instructions.md`
-
 ### 提交消息自动生成
 
 项目内创建：
