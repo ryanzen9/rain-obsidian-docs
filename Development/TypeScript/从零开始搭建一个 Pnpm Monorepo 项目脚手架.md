@@ -18,7 +18,7 @@ packages:
 安装相关通用依赖
 
 ```bash
-pnpm add -D -w typescript lerna @commitlint/cli husky lint-staged oxlint oxfmt vitest @commitlint/config-conventional commitizen cz-conventional-changelog
+pnpm add -D -w typescript @commitlint/cli husky lint-staged oxlint oxfmt vitest @commitlint/config-conventional commitizen cz-conventional-changelog
 pnpm add -w reflect-metadata rxjs
 ```
 
@@ -34,18 +34,6 @@ pnpm add -w reflect-metadata rxjs
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true
-  }
-}
-```
-
-配置 `lerna.json`
-
-```json
-{
-  "version": "independent",
-  "npmClient": "pnpm",
-  "command": {
-    "publish": { "conventionalCommits": true }
   }
 }
 ```
