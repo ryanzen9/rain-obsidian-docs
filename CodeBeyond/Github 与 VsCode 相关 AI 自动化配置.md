@@ -45,4 +45,37 @@ Avoid:
 - minor changes
 ```
 
-配置 
+配置 Review Pormpt
+
+继续在 `.github/copilot-instructions.md` 追加
+
+```markdown
+# Code Review Rules
+
+When reviewing code:
+
+Focus on:
+- correctness
+- edge cases
+- performance
+- security
+- readability
+- architecture consistency
+
+Avoid:
+- praising
+- generic comments
+- obvious explanations
+
+Prefer:
+- actionable review comments
+- concrete fixes
+- detecting hidden bugs
+- identifying race conditions
+- checking async correctness
+
+Review style:
+- concise
+- technical
+- direct
+```
