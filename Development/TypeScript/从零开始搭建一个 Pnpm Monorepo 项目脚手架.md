@@ -155,7 +155,9 @@ packages/my-module/src/
 ```
 
 执行 `pnpm husky init` ， 编辑 `.husky/commit-msg`
+
 ```bash
-
-
+pnpm exec commitlint --edit $1
 ```
+
+使用 `git add . && pnpm commit` 尝试进行第一次提交。
