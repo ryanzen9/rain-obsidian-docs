@@ -6,10 +6,12 @@
 
 Copilot 会读取 `.github/copilot-instructions.md`
 
+### 提交消息自动生成
+
 项目内创建：
 
 ```
-.github/copilot-instructions.md
+.github/commit-message-instructions.md
 ```
 
 内容：
@@ -45,7 +47,17 @@ Avoid:
 - minor changes
 ```
 
-配置 Review Pormpt
+### 提交前自动 Review
+
+项目内创建：
+
+```
+.github/commit-message-instructions.md
+```
+
+内容：
+
+```
 
 创建 `code-review-instructions.md` 文件
 
