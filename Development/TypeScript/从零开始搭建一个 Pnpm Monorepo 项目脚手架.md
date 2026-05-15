@@ -117,12 +117,6 @@ pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional c
   "main": "index.js",
   "scripts": {
 +   "commit": "cz",
-    "test": "vitest",
-    "test:ci": "vitest --run",
-    "lint": "oxlint .",
-    "lint:fix": "oxlint --fix .",
-    "format": "oxfmt .",
-    "format:check": "oxfmt --check .",
 +   "prepare": "husky"  
   },
   "devDependencies": {
