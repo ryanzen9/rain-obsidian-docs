@@ -18,7 +18,7 @@ packages:
 安装相关通用依赖
 
 ```bash
-pnpm add -D -w typescript @commitlint/cli husky lint-staged oxlint oxfmt vitest @commitlint/config-conventional commitizen cz-conventional-changelog
+pnpm add -D -w typescript
 pnpm add -w reflect-metadata rxjs
 ```
 
@@ -97,6 +97,12 @@ packages/my-module/src/
 ```
 
 ### 配置 GIT 提交相关 Tool
+
+安装相关依赖
+
+```bash
+pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional commitizen cz-conventional-changelog
+```
 
 安装相关包工具, 在 `package.json` 中添加以下内容：
 
