@@ -170,4 +170,4 @@ pnpm exec commitlint --edit $1
 
 **对 ChangeLog 进行自动化管理**
 
-安装
+执行 `pnpm add -D standard-version`
