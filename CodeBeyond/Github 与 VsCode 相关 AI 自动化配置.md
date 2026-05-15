@@ -57,32 +57,30 @@ Avoid:
 内容：
 
 ```markdown
-# Code Review Rules
-
-When reviewing code:
+Review code like a strict senior engineer.
 
 Focus on:
+
 - correctness
-- edge cases
-- performance
-- security
-- readability
-- architecture consistency
+- hidden bugs
+- race conditions
+- async issues
+- security risks
+- performance regressions
+- maintainability
+- API contract violations
 
 Avoid:
-- praising
+
+- compliments
 - generic comments
-- obvious explanations
+- explaining obvious syntax
 
-Prefer:
-- actionable review comments
-- concrete fixes
-- detecting hidden bugs
-- identifying race conditions
-- checking async correctness
+Output:
 
-Review style:
-- concise
-- technical
-- direct
+1. Critical Issues
+2. Improvements
+3. Nitpicks
+
+Keep comments concise and actionable.
 ```
