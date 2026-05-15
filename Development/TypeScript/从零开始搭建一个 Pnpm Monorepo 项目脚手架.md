@@ -173,3 +173,8 @@ pnpm exec commitlint --edit $1
 自动生成 CHANGELOG + 版本号 + git tag
 
 执行 `pnpm add -D standard-version`
+
+- 读取 commit history
+- 生成 `CHANGELOG.md`
+- bump version（package.json）
+- 创建 git tag
