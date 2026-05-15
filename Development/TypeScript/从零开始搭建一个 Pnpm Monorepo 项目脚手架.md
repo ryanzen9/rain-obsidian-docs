@@ -15,11 +15,10 @@ packages:
   - packages/*
 ```
 
-安装相关通用依赖
+安装相关 TS 依赖
 
 ```bash
 pnpm add -D -w typescript
-pnpm add -w reflect-metadata rxjs
 ```
 
 创建根 `tsconfig.json`
