@@ -154,8 +154,7 @@ pnpm exec commitlint --edit $1
 
 ### 发布相关 Tool
 
-使用 pnpm + changeset 
-
+采用 `Changesets` 结合 `PNPM` 取代 `lerna` + `standard-verison` , 作为发布管理方案.
 #### npm 包的发布与管理。
 
 > pnpm 从 v8+ 就已经原生支持 monorepo publish: `pnpm publish -r`
