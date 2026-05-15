@@ -23,6 +23,7 @@ pnpm add -w reflect-metadata rxjs
 ```
 
 创建根 `tsconfig.json`
+
 ```json
 {
   "compilerOptions": {
@@ -33,6 +34,18 @@ pnpm add -w reflect-metadata rxjs
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "skipLibCheck": true
+  }
+}
+```
+
+配置 `lerna.json`
+
+```json
+{
+  "version": "independent",
+  "npmClient": "pnpm",
+  "command": {
+    "publish": { "conventionalCommits": true }
   }
 }
 ```
