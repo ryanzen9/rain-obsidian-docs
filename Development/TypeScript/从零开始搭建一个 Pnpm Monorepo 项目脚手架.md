@@ -175,7 +175,7 @@ ryanzeng
 
 #### 对 ChangeLog 进行自动化生成与维护
 
-[**Changesets**](https://github.com/changesets/changesets) 就是为此设计的工具，它的核心思想是：**开发者只需要描述自己做了什么改动，工具自动计算下一个版本号、生成变更日志**。
+[**Changesets**](https://github.com/changesets/changesets) : 管理版本号和 CHANGELOG 的自动化工具，它的核心思想是：**开发者只需要描述自己做了什么改动，工具自动计算下一个版本号、生成变更日志**。
 
 在 `package.json` 中添加
 ```diff
