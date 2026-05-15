@@ -19,5 +19,5 @@ packages:
 
 ```bash
 pnpm add -D -w typescript lerna @commitlint/cli husky lint-staged oxlint oxfmt vitest
-pnpm add -w @nestjs/common @nestjs/core reflect-metadata rxjs
+pnpm add -w reflect-metadata rxjs
 ```
