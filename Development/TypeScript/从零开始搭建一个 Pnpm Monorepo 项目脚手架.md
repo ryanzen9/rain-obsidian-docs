@@ -110,7 +110,12 @@ packages/my-module/src/
 
 ### 配置 GIT 提交相关 Tool
 
-安装相关包工具
+安装相关包工具, 在 `package.json` 中添加以下内容：
+
+```diff
++ "@commitlint/cli": "^21.0.1",
++ "@commitlint/config-conventional": "^21.0.1",
++ "commitizen": "^4.3.1",
++ "cz-conventional-changelog": "^3.3.0",
 ```
-pnpm add -D
-```
+
