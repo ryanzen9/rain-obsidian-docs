@@ -171,7 +171,18 @@ pnpm exec commitlint --edit $1
 > pnpm 从 v8+ 就已经原生支持 monorepo publish: `pnpm publish -r`
 
 执行 `npm whoami` 查看登录情况，如果未登录执行 `npm login`
+```bash
+❯ npm login             
+npm notice Log in on https://registry.npmjs.org/
+Login at:
+https://www.npmjs.com/login?next=/login/cli/********
+Press ENTER to open in the browser...
 
+Logged in on https://registry.npmjs.org/.
+
+❯ npm whoami
+ryanzeng
+```
 
 #### 对 ChangeLog 进行自动化管理
 
