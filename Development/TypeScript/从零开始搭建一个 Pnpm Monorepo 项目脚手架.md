@@ -188,4 +188,9 @@ pnpm add -w -D @changesets/cli
 3. **消费 changeset，升级版本** ： 发布时运行 `npx changeset version`，它会自动计算版本号以及更新日志
 4. **发布**： 执行 `npx changeset publish`, 他会自动执行 `pnpm publish`,发布发生变更的包。
 
-执行 `npx changeset init` 进行初始化
+执行 `npx changeset init` 进行初始化:
+
+``
+```
+
+```
