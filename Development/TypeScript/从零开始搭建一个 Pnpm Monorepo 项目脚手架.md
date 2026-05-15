@@ -123,7 +123,7 @@ packages/my-module/src/
   "author": "Ryan Zeng",
   "main": "index.js",
   "scripts": {
-    "commit": "cz",
++   "commit": "cz",
     "test": "vitest",
     "test:ci": "vitest --run",
     "lint": "oxlint .",
