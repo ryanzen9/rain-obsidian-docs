@@ -4,7 +4,7 @@
 - GitHub Copilot
 - GitHub Copilot Chat
 
-Copilot 会读取 `.github/copilot-instructions.md`
+Copilot 会读取 `.github/instructions/copilot-instructions.md`
 ### 提交消息自动生成
 
 项目内创建：
