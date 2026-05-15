@@ -183,7 +183,7 @@ pnpm exec commitlint --edit $1
 ```diff
   "scripts": {
     "commit": "cz",
-+   "publish": "standard-version",
++   "release": "standard-version",
     "test": "vitest",
     "test:ci": "vitest --run",
     "lint": "oxlint .",
