@@ -47,7 +47,8 @@ Avoid:
 
 配置 Review Pormpt
 
-继续在 `.github/copilot-instructions.md` 追加
+
+创建 `code-review-instructions.md` 文件
 
 ```markdown
 # Code Review Rules
