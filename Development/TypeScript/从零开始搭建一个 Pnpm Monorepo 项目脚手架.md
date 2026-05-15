@@ -154,6 +154,8 @@ pnpm exec commitlint --edit $1
 
 ### 发布相关 Tool
 
+使用 pnpm + changeset 
+
 #### npm 包的发布与管理。
 
 > pnpm 从 v8+ 就已经原生支持 monorepo publish: `pnpm publish -r`
