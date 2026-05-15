@@ -144,11 +144,11 @@ packages/my-module/src/
     "typescript": "^6.0.3",
     "vitest": "^4.1.6"
   },
-  "config": {
-    "commitizen": {
-      "path": "cz-conventional-changelog"
-    }
-  },
++ "config": {
++   "commitizen": {
++     "path": "cz-conventional-changelog"
++   }
++ },
   "packageManager": "pnpm@10.13.1"
 }
 ```
