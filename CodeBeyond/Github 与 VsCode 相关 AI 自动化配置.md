@@ -4,13 +4,13 @@
 - GitHub Copilot
 - GitHub Copilot Chat
 
-Copilot 会读取 `.github/instructions/copilot-instructions.md`
+Copilot 会读取 `.github/instructions/*.md`
 ### 提交消息自动生成
 
 项目内创建：
 
 ```
-.github/commit-message-instructions.md
+.github/instructions/commit-message-instructions.md
 ```
 
 内容：
@@ -51,7 +51,7 @@ Avoid:
 项目内创建：
 
 ```
-.github/code-review-instructions.md
+.github/instructions/code-review-instructions.md
 ```
 
 内容：
