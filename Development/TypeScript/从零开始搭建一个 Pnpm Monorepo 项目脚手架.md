@@ -178,3 +178,4 @@ pnpm exec commitlint --edit $1
 - 生成 `CHANGELOG.md`
 - bump version（package.json）
 - 创建 git tag
+
