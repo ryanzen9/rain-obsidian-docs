@@ -21,3 +21,8 @@ packages:
 pnpm add -D -w typescript lerna @commitlint/cli husky lint-staged oxlint oxfmt vitest @commitlint/config-conventional commitizen cz-conventional-changelog
 pnpm add -w reflect-metadata rxjs
 ```
+
+创建根 `tsconfig.json`
+```json
+
+```
