@@ -1,10 +1,14 @@
 ---
-title: "API 技术核心原理：REST GraphQL gRPC tRPC"
+title: API 技术核心原理：REST GraphQL gRPC tRPC
 date: 2026-05-14
-author: ""
-tags: []
-categories: []
-draft: true
+author: Ryan Zeng
+tags:
+  - API
+  - 开发
+  - 计算机网络
+categories:
+  - Development
+draft: false
 ---
 
 ## 一、什么是 API
