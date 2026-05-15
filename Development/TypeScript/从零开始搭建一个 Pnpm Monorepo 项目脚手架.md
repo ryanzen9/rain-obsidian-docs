@@ -96,7 +96,7 @@ mkdir -p packages/my-module/src
 }
 ```
 
-#### 第 7 步：创建你的 NestJS 模块
+创建你的 NestJS 模块
 
 ```
 packages/my-module/src/
@@ -106,4 +106,11 @@ packages/my-module/src/
 ├── my-module.interfaces.ts
 ├── my-module.constants.ts
 └── my-module-module-definition.ts
+```
+
+### 配置 GIT 提交相关 Tool
+
+安装相关包工具
+```
+pnpm add -D
 ```
