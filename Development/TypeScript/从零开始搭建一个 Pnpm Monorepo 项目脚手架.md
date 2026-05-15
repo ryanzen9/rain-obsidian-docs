@@ -181,5 +181,15 @@ pnpm exec commitlint --edit $1
 
 在 `package.json` 中添加
 ```diff
+  "scripts": {
+    "commit": "cz",
 +   "publish": "standard-version",
+    "test": "vitest",
+    "test:ci": "vitest --run",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix .",
+    "format": "oxfmt .",
+    "format:check": "oxfmt --check .",
+    "prepare": "husky"
+  },
 ```
