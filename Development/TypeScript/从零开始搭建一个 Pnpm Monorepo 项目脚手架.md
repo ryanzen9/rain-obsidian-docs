@@ -190,7 +190,18 @@ pnpm add -w -D @changesets/cli
 
 执行 `npx changeset init` 进行初始化:
 
-``
+`.changeset/config.json`
+```json
+{
+  "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
+  "changelog": "@changesets/cli/changelog",
+  "commit": false,
+  "fixed": [],
+  "linked": [],
+  "access": "restricted",
+  "baseBranch": "main",
+  "updateInternalDependencies": "patch",
+  "ignore": []
+}
 ```
 
-```
