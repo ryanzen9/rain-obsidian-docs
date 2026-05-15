@@ -154,4 +154,8 @@ packages/my-module/src/
 }
 ```
 
-执行 `pnpm i` 后 ， 今日
+执行 `pnpm husky init` ， 编辑 `.husky/commit-msg`
+```bash
+
+
+```
