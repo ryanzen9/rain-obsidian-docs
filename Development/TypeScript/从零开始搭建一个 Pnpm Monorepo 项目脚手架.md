@@ -168,8 +168,9 @@ pnpm exec commitlint --edit $1
 
 ### npm 包的发布与管理。
 
-> 
+> pnpm 从 v8+ 就已经原生支持 monorepo publish: `pnpm publish -r`
 
+执行 `npm who`
 #### 对 ChangeLog 进行自动化管理
 
 自动生成 CHANGELOG + 版本号 + git tag
