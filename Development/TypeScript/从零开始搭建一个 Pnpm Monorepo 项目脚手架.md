@@ -132,11 +132,11 @@ packages/my-module/src/
     "format:check": "oxfmt --check ."
   },
   "devDependencies": {
-    "@commitlint/cli": "^21.0.1",
-    "@commitlint/config-conventional": "^21.0.1",
-    "commitizen": "^4.3.1",
-    "cz-conventional-changelog": "^3.3.0",
-    "husky": "^9.1.7",
++   "@commitlint/cli": "^21.0.1",
++   "@commitlint/config-conventional": "^21.0.1",
++   "commitizen": "^4.3.1",
++   "cz-conventional-changelog": "^3.3.0",
++   "husky": "^9.1.7",
     "lerna": "^9.0.7",
     "lint-staged": "^17.0.4",
     "oxfmt": "^0.49.0",
