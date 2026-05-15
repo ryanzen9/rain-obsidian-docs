@@ -191,6 +191,7 @@ pnpm add -w -D @changesets/cli
 执行 `npx changeset init` 进行初始化:
 
 `.changeset/config.json`
+
 ```json
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.4/schema.json",
@@ -210,17 +211,9 @@ pnpm add -w -D @changesets/cli
 ```diff
 {
   "scripts": {
-    "commit": "cz",
-    "prep-release": "changeset",
-    "version": "changeset version",
-    "release": "changeset publish",
-    "test": "vitest",
-    "test:ci": "vitest --run",
-    "lint": "oxlint .",
-    "lint:fix": "oxlint --fix .",
-    "format": "oxfmt .",
-    "format:check": "oxfmt --check .",
-    "prepare": "husky"
++   "prep-release": "changeset",
++   "version": "changeset version",
++   "release": "changeset publish"
   },
   "devDependencies": {
 +   "@changesets/cli": "^2.31.0",
