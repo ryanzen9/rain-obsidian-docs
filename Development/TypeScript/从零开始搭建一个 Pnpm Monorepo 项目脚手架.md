@@ -154,7 +154,7 @@ packages/my-module/src/
 }
 ```
 
-**使用 husky 拦截格式非法的提交**
+**使用 husky +  commitlint 拦截格式非法的提交**
 
 执行 `pnpm husky init` ， 编辑 `.husky/commit-msg`
 
