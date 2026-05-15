@@ -24,5 +24,15 @@ pnpm add -w reflect-metadata rxjs
 
 创建根 `tsconfig.json`
 ```json
-
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "declaration": true,
+    "target": "es2017",
+    "strict": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": true
+  }
+}
 ```
