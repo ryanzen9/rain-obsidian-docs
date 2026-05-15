@@ -52,14 +52,10 @@ Avoid:
 项目内创建：
 
 ```
-.github/commit-message-instructions.md
+.github/code-review-instructions.md
 ```
 
 内容：
-
-```
-
-创建 `code-review-instructions.md` 文件
 
 ```markdown
 # Code Review Rules
