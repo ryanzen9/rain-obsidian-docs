@@ -179,3 +179,7 @@ pnpm exec commitlint --edit $1
 - bump version（package.json）
 - 创建 git tag
 
+在 `package.json` 中添加
+```diff
++   "publish": "standard-version",
+```
