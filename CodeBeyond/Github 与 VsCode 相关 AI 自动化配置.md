@@ -14,7 +14,7 @@ Copilot 会读取 `.github/copilot-instructions.md`
 
 内容：
 
-```mar
+```markdown
 # Commit Message Rules
 
 Generate commit messages using Conventional Commits.
