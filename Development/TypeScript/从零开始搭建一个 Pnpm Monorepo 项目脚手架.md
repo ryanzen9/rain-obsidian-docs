@@ -14,3 +14,10 @@ pnpm init -y # 在 package.json 中设置 "private": true
 packages:
   - packages/*
 ```
+
+安装相关通用依赖
+
+```bash
+pnpm add -D -w typescript lerna @commitlint/cli husky lint-staged oxlint oxfmt vitest
+pnpm add -w @nestjs/common @nestjs/core reflect-metadata rxjs
+```
