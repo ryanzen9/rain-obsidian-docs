@@ -32,8 +32,10 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 
 #### 文件使用
 
-```
-
+```json
+{  
+	"file": "./.github/instructions/commit.md"  
+}
 ```
 ### 提交消息自动生成
 
