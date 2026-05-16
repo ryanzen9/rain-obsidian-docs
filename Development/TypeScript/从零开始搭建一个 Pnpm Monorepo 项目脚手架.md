@@ -219,8 +219,14 @@ pnpm add -w -D @changesets/cli
 
 通过将“发版意图”与“代码提交”解耦，让版本管理和更新日志（Changelog）的生成变得非常清晰。
 
-发布模拟
+#### 发布模拟
+
+使用 `npm whoami` 与 `npm login` 查询登录信息
 
 执行 `pnpm prep-release` 选择需要发布的包并且填写相关信息。
 
-执行
+执行 `git add .` 和 `pnpm commit` 进行消息提交
+
+使用 `pnpm prep-version` 进行版本号自动添加以及标签添加。 使用 pnpm commit 提交 `chore(release): vx.x.x`
+
+使用 `pnpm release` 进行发布
