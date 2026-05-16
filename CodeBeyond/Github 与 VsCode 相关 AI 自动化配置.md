@@ -4,7 +4,14 @@
 - GitHub Copilot
 - GitHub Copilot Chat
 
-Copilot 会读取 `.github/instructions/*.md`
+Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入提示词。
+
+### 使用方式
+
+#### 内联使用
+
+以
+
 ### 提交消息自动生成
 
 项目内创建：
