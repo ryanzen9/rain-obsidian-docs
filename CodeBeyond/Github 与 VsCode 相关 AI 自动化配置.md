@@ -78,6 +78,10 @@ Avoid:
 - minor changes
 ```
 
+更改配置文件
+
+```setting.json
+```
 ### 提交前自动 Review
 
 项目内创建：
