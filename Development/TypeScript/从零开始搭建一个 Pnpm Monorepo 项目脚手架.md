@@ -18,7 +18,7 @@ packages:
 安装相关 TS 依赖
 
 ```bash
-pnpm add -D -w typescript
+pnpm add -D -w typescript @types/node
 ```
 
 创建根 `tsconfig.json`
