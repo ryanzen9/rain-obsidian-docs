@@ -145,8 +145,9 @@ pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional c
 pnpm exec commitlint --edit $1
 ```
 
-使用 `git add . && pnpm commit` 尝试进行第一次提交。
+编辑
 
+使用 `git add . && pnpm commit` 尝试进行第一次提交。
 ### 发布相关 Tool
 
 采用 `Changesets` 结合 `PNPM` 取代 `lerna` + `standard-verison` , 作为发布管理方案.
