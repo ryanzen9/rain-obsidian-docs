@@ -145,7 +145,13 @@ pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional c
 pnpm exec commitlint --edit $1
 ```
 
-编辑
+**使用 husky 进行提交前测试**
+
+编辑 `.husky/pre-commit`
+
+```bash
+pnpm test
+```
 
 使用 `git add . && pnpm commit` 尝试进行第一次提交。
 ### 发布相关 Tool
