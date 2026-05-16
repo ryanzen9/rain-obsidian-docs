@@ -34,7 +34,7 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 
 ```json
 {  
-	"file": "./.github/instructions/commit.md"  
+	"file": ".github/instructions/commit-message-instructions.md"  
 }
 ```
 ### 提交消息自动生成
