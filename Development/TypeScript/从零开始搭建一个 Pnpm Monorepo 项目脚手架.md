@@ -100,7 +100,7 @@ packages/my-module/src/
 安装相关依赖
 
 ```bash
-pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional commitizen cz-conventional-changelog
+pnpm add -wD @commitlint/cli husky @commitlint/config-conventional commitizen cz-conventional-changelog
 ```
 
 安装相关包工具, 在 `package.json` 中添加以下内容：
@@ -125,7 +125,6 @@ pnpm add -wD @commitlint/cli husky lint-staged @commitlint/config-conventional c
 +   "commitizen": "^4.3.1",
 +   "cz-conventional-changelog": "^3.3.0",
 +   "husky": "^9.1.7",
-+   "lint-staged": "^17.0.4",
     "typescript": "^6.0.3"
   },
 + "config": {
