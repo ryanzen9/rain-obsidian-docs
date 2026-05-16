@@ -81,11 +81,11 @@ Avoid:
 更改配置文件 `setting.json`
 
 ```diff
-  "github.copilot.chat.commitMessageGeneration.instructions": [
-    {
-      "file": ".github/instructions/commit-message-instructions.md"
-    }
-  ]
+  + "github.copilot.chat.commitMessageGeneration.instructions": [
+  +   {
+  +     "file": ".github/instructions/commit-message-instructions.md"
+  +   }
+  + ]
 ```
 ### 提交前自动 Review
 
