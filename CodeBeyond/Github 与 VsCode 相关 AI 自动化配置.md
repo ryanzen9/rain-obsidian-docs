@@ -10,7 +10,12 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 
 #### 内联使用
 
-以
+在 `.vscode/setting.json` 中
+```json
+{
+	
+}
+```
 
 ### 提交消息自动生成
 
