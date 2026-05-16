@@ -12,7 +12,7 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 
 在 `.vscode/setting.json` 中
 
->**github.copilot.chat.commitMessageGeneration.instructions**:  
+>**github.copilot.chat.commitMessageGeneration.instructions**:  给 VS Code 的 GitHub Copilot “生成提交信息”功能追加自定义提示词。
 
 ```json
 {
@@ -30,6 +30,11 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 }
 ```
 
+#### 文件使用
+
+```
+
+```
 ### 提交消息自动生成
 
 项目内创建：
