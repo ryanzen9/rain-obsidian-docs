@@ -12,8 +12,15 @@ Copilot 现在有一整套 instruction 系统, 可以通过相关配置，传入
 
 在 `.vscode/setting.json` 中
 ```json
-{
-	
+"github.copilot.chat.commitMessageGeneration.instructions": [  
+{  
+"text": "Use Conventional Commits format"  
+},  
+{  
+"text": "Use Chinese"  
+},  
+{  
+"text": "Subject line max 72 chars"  
 }
 ```
 
