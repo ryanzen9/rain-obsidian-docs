@@ -1,9 +1,12 @@
 ---
-title: "从零开始搭建一个 Pnpm Monorepo 项目脚手架"
+title: 从零开始搭建一个 Pnpm Monorepo 项目脚手架
 date: 2026-05-20
-author: ""
-tags: []
-categories: []
+author: Ryan Zeng
+tags:
+  - 开发
+  - TypeScript
+categories:
+  - Typescript
 draft: true
 ---
 
