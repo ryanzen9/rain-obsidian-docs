@@ -164,7 +164,11 @@ pnpm add -D -w oxlint oxfmt lint-staged
 }
 ```
 
-执行初始化语句 `oxfmt --init`, 获取配置文件 `.ox`
+执行初始化语句 `oxfmt --init`, 获取配置文件 `.oxfmtrc.json`
+```json
+
+
+```
 ### 配置 GIT 提交相关 Tool
 
 安装相关依赖
