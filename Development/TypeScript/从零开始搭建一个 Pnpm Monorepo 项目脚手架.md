@@ -166,9 +166,15 @@ pnpm add -D -w oxlint oxfmt lint-staged
 
 执行初始化语句 `oxfmt --init`, 获取配置文件 `.oxfmtrc.json`
 ```json
-
-
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 80
+}
 ```
+
+相关配置： [oxfmt 配置]('[https://oxc.rs/docs/guide/usage/linter/config.html](https://oxc.rs/docs/guide/usage/formatter/config.html)')
+
+配置 lint-stage
 ### 配置 GIT 提交相关 Tool
 
 安装相关依赖
