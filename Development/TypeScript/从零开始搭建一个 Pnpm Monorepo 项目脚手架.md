@@ -174,7 +174,10 @@ pnpm add -D -w oxlint oxfmt lint-staged
 
 相关配置： [oxfmt 配置]('[https://oxc.rs/docs/guide/usage/linter/config.html](https://oxc.rs/docs/guide/usage/formatter/config.html)')
 
-配置 lint-staged
+### 配置 lint-staged
+
+>
+
 ### 配置 GIT 提交相关 Tool
 
 安装相关依赖
