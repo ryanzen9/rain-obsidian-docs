@@ -120,7 +120,7 @@ packages/my-module/src/
 安装相关依赖
 
 ```bash
-pnpm add -D -w oxlint ox
+pnpm add -D -w oxlint oxfmt 
 ```
 #### 配置 Oxlint
 
