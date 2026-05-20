@@ -117,6 +117,11 @@ packages/my-module/src/
 + "editor.formatOnSaveMode": "file",
 ```
 
+安装相关依赖
+
+```bash
+pnpm add -D -w oxlint ox
+```
 #### 配置 Oxlint
 
 
