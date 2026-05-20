@@ -181,12 +181,12 @@ pnpm add -D -w oxlint oxfmt lint-staged
 在 package.json中新增：
 
 ```diff
-  "lint-staged": {
-    "*.{ts,tsx}": [
-      "oxlint --fix",
-      "oxfmt --check"
-    ]
-  },
++ "lint-staged": {
++   "*.{ts,tsx}": [
++     "oxlint --fix",
++     "oxfmt --check"
++   ]
++ },
 ```
 
 ### 配置 GIT 提交相关 Tool
