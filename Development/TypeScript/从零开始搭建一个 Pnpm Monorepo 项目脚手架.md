@@ -243,10 +243,12 @@ pnpm exec commitlint --edit $1
 编辑 `.husky/pre-commit`
 
 ```bash
+echo "Running ling-staged"
+pnpm exec lint-staged
+
+echo "Running tests"
 pnpm test
 ```
-
-编辑 `.husky/commit`
 
 使用 `git add . && pnpm commit` 尝试进行第一次提交。
 ### 发布相关 Tool
