@@ -7,7 +7,7 @@ tags:
   - TypeScript
 categories:
   - Typescript
-draft: true
+draft: false
 ---
 
 Monorepo 是一种将多个项目或包统一管理在同一个代码仓库中的工程实践。相比于多仓库（Polyrepo）模式，它能显著降低跨包协作的摩擦：共享构建配置、统一代码规范、原子化提交变更。
