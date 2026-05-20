@@ -124,7 +124,16 @@ pnpm add -D -w oxlint oxfmt lint-staged
 ```
 #### 配置 Oxlint
 
+在 package.json 下配置
 
+```diff
+{
+  "scripts": {
++   "lint": "oxlint",
++   "lint:fix": "oxlint --fix"
+  }
+}
+```
 
 
 
