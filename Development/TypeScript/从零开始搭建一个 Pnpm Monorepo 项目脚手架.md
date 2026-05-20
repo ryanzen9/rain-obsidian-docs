@@ -135,6 +135,7 @@ pnpm add -D -w oxlint oxfmt lint-staged
 }
 ```
 
+执行 `oxlint --init`
 
 
 ### 配置 GIT 提交相关 Tool
