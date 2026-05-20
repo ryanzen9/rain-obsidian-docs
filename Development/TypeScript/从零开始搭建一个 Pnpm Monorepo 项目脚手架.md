@@ -100,6 +100,23 @@ packages/my-module/src/
 
 为项目引入 `oxlint` 和 `oxfmt`（Oxc 生态的格式化工具）可以极大地提升代码检查和格式化的性能。它们均由 Rust 编写：**oxlint** 是一个比 ESLint 快 50-100 倍的 Lint 工具，而 **oxfmt** 则是旨在替代 Prettier 的高性能格式化工具。
 
+> **what is oxc**:
+> 
+> The Oxidation Compiler is a collection of high-performance tools for JavaScript and TypeScript written in Rust.
+> Oxc is part of [VoidZero](https://voidzero.dev/)'s vision for a unified, high-performance toolchain for JavaScript. It powers [Rolldown](https://rolldown.rs/) ([Vite](https://vitejs.dev/)'s future bundler) and enables the next generation of ultra-fast development tools that work seamlessly together
+
+
+安装 VSCode Plugin `oxc`, 更改项目内 IDE 设置 `.vscode/setting.json`
+
+```json
+
+```
+
+
+#### 配置 Oxlint
+
+
+
 ### 配置 GIT 提交相关 Tool
 
 安装相关依赖
