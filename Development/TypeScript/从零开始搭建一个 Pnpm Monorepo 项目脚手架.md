@@ -176,7 +176,13 @@ pnpm add -D -w oxlint oxfmt lint-staged
 
 ### 配置 lint-staged
 
->
+>**lint-staged** 是一个在前端开发中非常常用的自动化工具，它的核心作用是：**只对你目前暂存（git add）的文件运行代码检查（Linter）或格式化工具。
+
+在 package.json中新增：
+
+```diff
+
+```
 
 ### 配置 GIT 提交相关 Tool
 
