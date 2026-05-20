@@ -1,7 +1,15 @@
+---
+title: "从零开始搭建一个 Pnpm Monorepo 项目脚手架"
+date: 2026-05-20
+author: ""
+tags: []
+categories: []
+draft: true
+---
 
 ## 项目初始化
 
-```
+```bash
 make example-projects && cd example-projects
 
 pnpm init -y # 在 package.json 中设置 "private": true
@@ -37,7 +45,7 @@ pnpm add -D -w typescript @types/node
 }
 ```
 
-#### 创建第一个包
+### 创建第一个包
 
 ```bash
 mkdir -p packages/my-module/src
@@ -85,7 +93,7 @@ mkdir -p packages/my-module/src
 
 创建你的 NestJS 模块
 
-```
+```text
 packages/my-module/src/
 ├── index.ts
 ├── my-module.module.ts
@@ -95,16 +103,14 @@ packages/my-module/src/
 └── my-module-module-definition.ts
 ```
 
-
-### 配置 Lint 和 Format 工具
+## 配置 Lint 和 Format 工具
 
 为项目引入 `oxlint` 和 `oxfmt`（Oxc 生态的格式化工具）可以极大地提升代码检查和格式化的性能。它们均由 Rust 编写：**oxlint** 是一个比 ESLint 快 50-100 倍的 Lint 工具，而 **oxfmt** 则是旨在替代 Prettier 的高性能格式化工具。
 
 > **what is oxc**:
-> 
+>
 > The Oxidation Compiler is a collection of high-performance tools for JavaScript and TypeScript written in Rust.
-> Oxc is part of [VoidZero](https://voidzero.dev/)'s vision for a unified, high-performance toolchain for JavaScript. It powers [Rolldown](https://rolldown.rs/) ([Vite](https://vitejs.dev/)'s future bundler) and enables the next generation of ultra-fast development tools that work seamlessly together
-
+> Oxc is part of [VoidZero](https://voidzero.dev/)'s vision for a unified, high-performance toolchain for JavaScript. It powers [Rolldown](https://rolldown.rs/) ([Vite](https://vitejs.dev/)'s future bundler) and enables the next generation of ultra-fast development tools that work seamlessly together
 
 安装 VSCode Plugin `oxc`, 更改项目内 IDE 设置 `.vscode/setting.json`
 
@@ -122,7 +128,8 @@ packages/my-module/src/
 ```bash
 pnpm add -D -w oxlint oxfmt lint-staged
 ```
-#### 配置 Oxlint
+
+### 配置 Oxlint
 
 在 package.json 下配置
 
@@ -149,9 +156,9 @@ pnpm add -D -w oxlint oxfmt lint-staged
 }
 ```
 
-相关配置： [oxlint 配置]('https://oxc.rs/docs/guide/usage/linter/config.html')
+相关配置： [oxlint 配置](https://oxc.rs/docs/guide/usage/linter/config.html)
 
-#### 配置  Oxfmt
+### 配置 Oxfmt
 
 添加相关脚本，在 `package.json` 中添加如下内容：
 
@@ -165,6 +172,7 @@ pnpm add -D -w oxlint oxfmt lint-staged
 ```
 
 执行初始化语句 `oxfmt --init`, 获取配置文件 `.oxfmtrc.json`
+
 ```json
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
@@ -172,13 +180,13 @@ pnpm add -D -w oxlint oxfmt lint-staged
 }
 ```
 
-相关配置： [oxfmt 配置]('[https://oxc.rs/docs/guide/usage/linter/config.html](https://oxc.rs/docs/guide/usage/formatter/config.html)')
+相关配置： [oxfmt 配置](https://oxc.rs/docs/guide/usage/formatter/config.html)
 
-### 配置 lint-staged
+## 配置 lint-staged
 
->**lint-staged** 是一个在前端开发中非常常用的自动化工具，它的核心作用是：**只对你目前暂存（git add）的文件运行代码检查（Linter）或格式化工具。
+> **lint-staged** 是一个在前端开发中非常常用的自动化工具，它的核心作用是：**只对你目前暂存（git add）的文件运行代码检查（Linter）或格式化工具。**
 
-在 package.json中新增：
+在 package.json 中新增：
 
 ```diff
 + "lint-staged": {
@@ -189,7 +197,7 @@ pnpm add -D -w oxlint oxfmt lint-staged
 + },
 ```
 
-### 配置 GIT 提交相关 Tool
+## 配置 GIT 提交相关 Tool
 
 安装相关依赖
 
@@ -230,7 +238,7 @@ pnpm add -wD @commitlint/cli husky @commitlint/config-conventional commitizen cz
 }
 ```
 
-**使用 husky +  commitlint 拦截格式非法的提交**
+**使用 husky + commitlint 拦截格式非法的提交**
 
 执行 `pnpm husky init` ， 编辑 `.husky/commit-msg`
 
@@ -251,14 +259,17 @@ pnpm test
 ```
 
 使用 `git add . && pnpm commit` 尝试进行第一次提交。
-### 发布相关 Tool
 
-采用 `Changesets` 结合 `PNPM` 取代 `lerna` + `standard-verison` , 作为发布管理方案.
-#### npm 包的发布与管理
+## 发布相关 Tool
+
+采用 `Changesets` 结合 `PNPM` 取代 `lerna` + `standard-verison`, 作为发布管理方案。
+
+### npm 包的发布与管理
 
 > pnpm 从 v8+ 就已经原生支持 monorepo publish: `pnpm publish -r`
 
 执行 `npm whoami` 查看登录情况，如果未登录执行 `npm login`
+
 ```bash
 ❯ npm login             
 npm notice Log in on https://registry.npmjs.org/
@@ -272,9 +283,9 @@ Logged in on https://registry.npmjs.org/.
 ryanzeng
 ```
 
-#### 对 ChangeLog 进行自动化生成与维护
+### 对 ChangeLog 进行自动化生成与维护
 
-[**Changesets**](https://github.com/changesets/changesets) : 管理版本号和 CHANGELOG 的自动化工具，它的核心思想是：**开发者只需要描述自己做了什么改动，工具自动计算下一个版本号、生成变更日志**。
+[**Changesets**](https://github.com/changesets/changesets) : 管理版本号和 CHANGELOG 的自动化工具，它的核心思想是：**开发者只需要描述自己做了什么改动，工具自动计算下一个版本号、生成变更日志**。
 
 ```bash
 pnpm add -w -D @changesets/cli
@@ -283,9 +294,9 @@ pnpm add -w -D @changesets/cli
 工作流程概览
 
 1. **添加 changeset**: feat/fix 后执行 `npx changeset`, 交互式描述自己做了什么改动。
-2. **累积 changeset**：  随着其他贡献者不断添加 changeset，`.changeset` 里会积累很多小的 markdown 文件。这些文件只描述改动，**此时并不修改任何 package.json 或 CHANGELOG**。
+2. **累积 changeset**：随着其他贡献者不断添加 changeset，`.changeset` 里会积累很多小的 markdown 文件。这些文件只描述改动，**此时并不修改任何 package.json 或 CHANGELOG**。
 3. **消费 changeset，升级版本** ： 发布时运行 `npx changeset version`，它会自动计算版本号以及更新日志
-4. **发布**： 执行 `npx changeset publish`, 他会自动执行 `pnpm publish`,发布发生变更的包。
+4. **发布**： 执行 `npx changeset publish`, 他会自动执行 `pnpm publish`, 发布发生变更的包。
 
 执行 `npx changeset init` 进行初始化:
 
@@ -318,12 +329,11 @@ pnpm add -w -D @changesets/cli
 +   "@changesets/cli": "^2.31.0",
   }
 }
-
 ```
 
-通过将“发版意图”与“代码提交”解耦，让版本管理和更新日志（Changelog）的生成变得非常清晰。
+通过将"发版意图"与"代码提交"解耦，让版本管理和更新日志（Changelog）的生成变得非常清晰。
 
-#### 发布模拟
+### 发布模拟
 
 使用 `npm whoami` 与 `npm login` 查询登录信息
 
@@ -331,6 +341,6 @@ pnpm add -w -D @changesets/cli
 
 执行 `git add .` 和 `pnpm commit` 进行消息提交
 
-使用 `pnpm prep-version` 进行版本号自动添加以及标签添加。 使用 pnpm commit 提交 `chore(release): vx.x.x`
+使用 `pnpm prep-version` 进行版本号自动添加以及标签添加。使用 pnpm commit 提交 `chore(release): vx.x.x`
 
 使用 `pnpm release` 进行发布
