@@ -95,6 +95,11 @@ packages/my-module/src/
 └── my-module-module-definition.ts
 ```
 
+
+### 配置 Lint 和 Format 工具
+
+
+
 ### 配置 GIT 提交相关 Tool
 
 安装相关依赖
