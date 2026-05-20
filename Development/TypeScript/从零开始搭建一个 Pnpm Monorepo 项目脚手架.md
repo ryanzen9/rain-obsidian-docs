@@ -153,6 +153,16 @@ pnpm add -D -w oxlint oxfmt lint-staged
 
 #### 配置  Oxfmt
 
+添加相关脚本，在 `package.json` 中添加如下内容：
+
+```diff
+{
+  "scripts": {
++   "fmt": "oxfmt",
++   "fmt:check": "oxfmt --check"
+  }
+}
+```
 
 ### 配置 GIT 提交相关 Tool
 
