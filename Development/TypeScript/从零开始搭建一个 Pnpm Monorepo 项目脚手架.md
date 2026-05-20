@@ -108,12 +108,17 @@ packages/my-module/src/
 
 安装 VSCode Plugin `oxc`, 更改项目内 IDE 设置 `.vscode/setting.json`
 
-```json
-
+```diff
++ "oxc.enable": true,
++ "oxc.enable.oxlint": true,
++ "oxc.enable.oxfmt": true,
++ "editor.formatOnSave": true,
++ "editor.defaultFormatter": "oxc.oxc-vscode",
++ "editor.formatOnSaveMode": "file",
 ```
 
-
 #### 配置 Oxlint
+
 
 
 
