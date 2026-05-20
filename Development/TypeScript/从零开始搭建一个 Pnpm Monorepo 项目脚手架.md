@@ -135,8 +135,21 @@ pnpm add -D -w oxlint oxfmt lint-staged
 }
 ```
 
-执行 `oxlint --init`
+执行 `pnpm oxlint --init`, 获取最小化配置文件 `.oxlintrc.json`
 
+```json
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "categories": {
+    "correctness": "warn"
+  },
+  "rules": {
+    "eslint/no-unused-vars": "error"
+  }
+}
+```
+
+相关配置： (oxlint 配置)【】
 
 ### 配置 GIT 提交相关 Tool
 
