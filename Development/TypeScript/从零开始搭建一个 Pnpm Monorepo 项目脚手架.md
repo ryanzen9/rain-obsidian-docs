@@ -98,7 +98,7 @@ packages/my-module/src/
 
 ### 配置 Lint 和 Format 工具
 
-
+为项目引入 `oxlint` 和 `oxfmt`（Oxc 生态的格式化工具）可以极大地提升代码检查和格式化的性能。它们均由 Rust 编写：**oxlint** 是一个比 ESLint 快 50-100 倍的 Lint 工具，而 **oxfmt** 则是旨在替代 Prettier 的高性能格式化工具。
 
 ### 配置 GIT 提交相关 Tool
 
