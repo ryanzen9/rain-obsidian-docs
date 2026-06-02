@@ -124,36 +124,36 @@ cp .agents/skills/drawing-docs/SKILL.md .claude/skills/drawing-docs/SKILL.md
 常用命令：
 
 ```bash
-# 从 GitHub 仓库安装
+# 从 GitHub 仓库安装，交互式选择 skill 和目标 agent
 npx skills add <owner>/<repo>
 
 # 只安装某个 skill
 npx skills add <owner>/<repo> --skill format-docs
 
-# 从本地目录安装，适合发布前测试
-npx skills add /Users/ruby/Work/Document/.agents/skills
+# 指定安装到 Codex 和 Claude Code
+npx skills add <owner>/<repo> --skill format-docs -a codex -a claude-code
 
-# 安装为全局 skill
-npx skills add -g <owner>/<repo>
+# 查看仓库中可安装的 skills
+npx skills add <owner>/<repo> --list
 
-# 查看、搜索、更新
-npx skills list
-npx skills find docs
-npx skills update
+# 非交互安装全部 skills
+npx skills add <owner>/<repo> --all
 ```
 
 推荐流程：
 
 1. 在本仓库维护 `.agents/skills/<skill-name>/SKILL.md`。
-2. 本地用 `npx skills add /Users/ruby/Work/Document/.agents/skills --skill <skill-name>` 测试安装。
-3. 推送到 GitHub。
-4. 在其他项目运行 `npx skills add <owner>/<repo> --skill <skill-name>`。
+2. 推送到 GitHub。
+3. 在其他项目运行 `npx skills add <owner>/<repo> --skill <skill-name> -a codex -a claude-code`。
+4. 用明确触发词验证两个 Agent 都能找到该 Skill。
 
 ## 使用 `npm-skills` 包化分发
 
-`npm-skills` 适合把 Skill 跟 npm 包、私有 registry、版本号和 `package.json` 工作流绑定。它会从依赖包中抽取 `skills/` 目录并复制到工作区，默认目标通常是 `.agents/skills`。
+`npm-skills` 适合把 Skill 跟 npm 包、私有 registry、版本号和 `package.json` 工作流绑定。它会从依赖包中抽取 `skills/` 目录并复制到工作区，默认目标通常是 `.agents/skills`；为了避免覆盖本仓库手写 Skill，推荐抽取到 `.agents/skills/extracted`。
 
 如果只是当前仓库自用，不需要 npm 包化；如果你希望团队通过 npm 私有包同步 Skills，可以使用这个流程。
+
+`npm-skills` 官方目标运行时是 Node.js `>=22`。
 
 发布方结构：
 
@@ -170,7 +170,7 @@ my-doc-skills-package/
 发布方命令：
 
 ```bash
-npm install -D npm-skills
+npm install npm-skills
 npx npm-skills new drawing-docs --folder skills
 npm publish
 ```
@@ -178,8 +178,9 @@ npm publish
 使用方命令：
 
 ```bash
-npm install -D <your-skill-package> npm-skills
-npx npm-skills extract <your-skill-package> --output .agents/skills --override
+npm install <your-skill-package> npm-skills
+mkdir -p .agents/skills/extracted
+npx npm-skills extract <your-skill-package> --output .agents/skills/extracted --override
 ```
 
 也可以在使用方项目的 `package.json` 中添加脚本：
@@ -187,7 +188,7 @@ npx npm-skills extract <your-skill-package> --output .agents/skills --override
 ```json
 {
   "scripts": {
-    "skills:extract": "npm-skills extract --output .agents/skills"
+    "skills:extract": "npm-skills extract --output .agents/skills/extracted"
   }
 }
 ```
@@ -218,6 +219,6 @@ npm run skills:extract
 
 - [Agent Skills Specification](https://agentskills.io/specification)
 - [Claude Code Agent Skills](https://docs.claude.com/en/docs/claude-code/skills)
-- [OpenAI Help: Skills in ChatGPT](https://help.openai.com/en/articles/20001066-skills-in-chatgpt)
+- [OpenAI Codex Agent Skills](https://developers.openai.com/codex/skills)
 - [Vercel Skills CLI Documentation](https://skills.sh/docs/cli)
 - [npm-skills README](https://npm-skills.com/)
