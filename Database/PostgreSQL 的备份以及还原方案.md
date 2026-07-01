@@ -2,7 +2,7 @@
 
 ## 使用 PITR 进行完整备份
 
-**PITR = Point-In-Time Recovery，时间点恢复。**
+### PITR = Point-In-Time Recovery，时间点恢复。
 
 流程类似于 
 
