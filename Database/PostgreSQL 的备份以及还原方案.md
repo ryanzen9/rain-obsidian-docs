@@ -8,9 +8,90 @@
 
 pg_backup.sh 内容：
 
-```bash
+````bash
+#!/usr/bin/env bash
 
+set -e
+
+# PostgreSQL 连接信息
+PG_HOST="127.0.0.1"
+PG_PORT="8432"
+PG_USER="backup_user"
+PG_PASSWORD="your_password"
+PG_DATABASE="rcerp_db"
+
+# 备份配置
+BACKUP_DIR="/var/backups/postgresql"
+RETENTION_DAYS=14
+TIMESTAMP=$(date +"%Y%m%d_%H%M%S")
+BACKUP_FILE="${BACKUP_DIR}/${PG_DATABASE}_${TIMESTAMP}.dump"
+
+mkdir -p "$BACKUP_DIR"
+
+echo "开始备份数据库：${PG_DATABASE}"
+
+PGPASSWORD="$PG_PASSWORD" pg_dump \
+  -h "$PG_HOST" \
+  -p "$PG_PORT" \
+  -U "$PG_USER" \
+  -d "$PG_DATABASE" \
+  -F c \
+  -Z 6 \
+  -f "$BACKUP_FILE"
+
+echo "备份完成：${BACKUP_FILE}"
+
+find "$BACKUP_DIR" \
+  -type f \
+  -name "${PG_DATABASE}_*.dump" \
+  -mtime "+${RETENTION_DAYS}" \
+  -delete
+
+echo "已清理超过 ${RETENTION_DAYS} 天的备份"
 ```
+
+保存为：
+
+```bash
+sudo vim /opt/scripts/pg_backup.sh
+```
+
+添加执行权限：
+
+```bash
+sudo chmod +x /opt/scripts/pg_backup.sh
+```
+
+手动测试：
+
+```bash
+sudo /opt/scripts/pg_backup.sh
+```
+
+配置 Cron，每天凌晨 2 点执行：
+
+```bash
+sudo crontab -e
+```
+
+添加：
+
+```cron
+0 2 * * * /opt/scripts/pg_backup.sh >> /var/log/pg_backup.log 2>&1
+```
+
+恢复备份：
+
+```bash
+PGPASSWORD="your_password" pg_restore \
+  -h 127.0.0.1 \
+  -p 8432 \
+  -U postgres \
+  -d rcerp_db_restore \
+  --clean \
+  --if-exists \
+  /var/backups/postgresql/rcerp_db_20260702_020000.dump
+````
 ### pg_dump 优势
 
 - **便携式备份**：创建 SQL 或自定义格式的转储，可以恢复到不同的 PostgreSQL 版本。
