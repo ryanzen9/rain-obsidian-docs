@@ -7,7 +7,31 @@
 传统的 pg_dump 脚本
 
 ```bash
+#!/bin/bash
+# Backup script for pg_dump
+DATE=$(date +%Y%m%d_%H%M%S)
+BACKUP_DIR="/backups"
+DB_NAME="mydb"
 
+# Create backup
+pg_dump -Fc -h localhost -U postgres $DB_NAME > $BACKUP_DIR/$DB_NAME_$DATE.dump
+
+# Compress (if not using custom format)
+# gzip $BACKUP_DIR/$DB_NAME_$DATE.sql
+
+# Encrypt
+gpg --encrypt --recipient backup@company.com $BACKUP_DIR/$DB_NAME_$DATE.dump
+
+# Upload to S3
+aws s3 cp $BACKUP_DIR/$DB_NAME_$DATE.dump.gpg s3://my-bucket/backups/
+
+# Cleanup old backups (keep last 7 days)
+find $BACKUP_DIR -name "*.dump*" -mtime +7 -delete
+
+# Send notification on failure
+if [ $? -ne 0 ]; then
+  curl -X POST https://hooks.slack.com/... -d '{"text":"Backup failed!"}'
+fi
 ```
 
 ### 配置 CronJob 定时执行备份
