@@ -54,36 +54,20 @@ echo "已清理超过 ${RETENTION_DAYS} 天的备份"
 保存为：
 
 ```bash
+# 保存脚本文件
 sudo vim /opt/scripts/pg_backup.sh
-```
 
-添加执行权限：
-
-```bash
+# 添加执行权限
 sudo chmod +x /opt/scripts/pg_backup.sh
-```
 
-手动测试：
-
-```bash
+# 测试
 sudo /opt/scripts/pg_backup.sh
-```
 
-配置 Cron，每天凌晨 2 点执行：
-
-```bash
+# 配置 Cron 每天凌晨两点执行
+# 0 2 * * * /opt/scripts/pg_backup.sh >> /var/log/pg_backup.log 2>&1
 sudo crontab -e
-```
 
-添加：
-
-```cron
-0 2 * * * /opt/scripts/pg_backup.sh >> /var/log/pg_backup.log 2>&1
-```
-
-恢复备份：
-
-```bash
+# 恢复备份
 PGPASSWORD="your_password" pg_restore \
   -h 127.0.0.1 \
   -p 8432 \
@@ -92,7 +76,7 @@ PGPASSWORD="your_password" pg_restore \
   --clean \
   --if-exists \
   /var/backups/postgresql/rcerp_db_20260702_020000.dump
-
+```
 ### pg_dump 优势
 
 - **便携式备份**：创建 SQL 或自定义格式的转储，可以恢复到不同的 PostgreSQL 版本。
