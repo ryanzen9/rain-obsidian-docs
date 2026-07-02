@@ -2,7 +2,7 @@
 
 ### pg_dump是什么？
 
-`pg_dump`是 PostgreSQL 的原生实用程序，用于创建逻辑备份。它从 PostgreSQL 诞生之初就已存在，是数据库导出的标准工具。
+`pg_dump`是 PostgreSQL 的原生自带实用程序，用于创建逻辑备份, 是数据库导出的标准工具。
 
 传统的 pg_dump 脚本
 
