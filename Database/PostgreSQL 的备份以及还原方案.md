@@ -4,6 +4,12 @@
 
 `pg_dump`是 PostgreSQL 的原生实用程序，用于创建逻辑备份。它从 PostgreSQL 诞生之初就已存在，是数据库导出的标准工具。
 
+传统的 pg_dump 脚本
+
+```bash
+
+```
+
 ### 配置 CronJob 定时执行备份
 
 /opt/scripts/pg_backup.sh 内容：
