@@ -6,7 +6,7 @@
 
 ### 定时任务
 
-pg_backup.sh 内容：
+/opt/scripts/pg_backup.sh 内容：
 
 ````bash
 #!/usr/bin/env bash
@@ -48,7 +48,8 @@ find "$BACKUP_DIR" \
   -delete
 
 echo "已清理超过 ${RETENTION_DAYS} 天的备份"
-```
+
+````
 
 保存为：
 
@@ -91,7 +92,7 @@ PGPASSWORD="your_password" pg_restore \
   --clean \
   --if-exists \
   /var/backups/postgresql/rcerp_db_20260702_020000.dump
-````
+
 ### pg_dump 优势
 
 - **便携式备份**：创建 SQL 或自定义格式的转储，可以恢复到不同的 PostgreSQL 版本。
