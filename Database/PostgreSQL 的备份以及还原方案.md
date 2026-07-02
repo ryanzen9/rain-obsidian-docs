@@ -35,3 +35,6 @@ PostgreSQL 修改数据时，不是只改数据文件，而是先把变更记录
 
 ### Databasus
 
+Databasus 是一款免费、开源且可自行托管的 PostgreSQL 备份工具。它支持使用不同的存储介质（S3、Google Drive、FTP 等）进行备份，并通过 Slack、Discord、Telegram 等渠道发送进度通知。Databasus 专注于实现低 RPO/RTO 的时间点恢复。
+
+> 项目地址： https://github.com/databasus/databasus
