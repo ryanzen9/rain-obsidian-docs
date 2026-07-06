@@ -223,3 +223,31 @@ pg_hba.conf 允许 replication 连接
 确保 Databasus 能访问 PostgreSQL  
 在 UI 选择 FULL_INCREMENTAL_AND_WAL_STREAM
 ```
+
+sql：
+```sql
+-- PITR 需要: wal_level：replica , summarize_wal：on  
+  
+-- wal_level 决定 PostgreSQL 在 WAL 中记录多少信息  
+-- 值：minimal, replica（默认）, logical  
+SHOW wal_level;  
+  
+-- summarize_wal 启动 PostgreSQL 的 WAL summarizer 后台进程。扫描 WAL，生成摘要文件，记录某个 WAL 范围内哪些数据块发生过变化。  
+-- 服务于：pg_basebackup --incremental=上一份备份的backup_manifest  
+-- 执行原生增量备份，必须启用 WAL summarization；summarize_wal 默认是 off （原生增量备份： pg 17 的新功能）  
+-- 启用 ALTER SYSTEM SET summarize_wal = 'on'; SELECT pg_reload_conf();SHOW summarize_wal;  
+  
+-- archive_mode archive_mode 控制 PostgreSQL 是否启用 WAL 归档机制。  
+-- 值：off（默认）, on, always(备用库)  
+SHOW archive_mode;  
+  
+  
+-- 配置  
+ALTER SYSTEM SET wal_level = 'replica';  
+ALTER SYSTEM SET summarize_wal = 'on';  
+ALTER SYSTEM SET wal_summary_keep_time = '30d';  
+ALTER SYSTEM SET archive_mode = 'on';  
+ALTER SYSTEM SET archive_timeout = '60s';  
+ALTER SYSTEM SET max_wal_senders = '10';  
+SELECT pg_reload_conf();
+```
