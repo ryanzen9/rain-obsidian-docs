@@ -161,7 +161,11 @@ PostgreSQL 修改数据时，不是只改数据文件，而是先把变更记录
 
 ### 基础备份
 
-基础备份是 使用  **pg_basebackup** 生成的物理副本
+基础备份是 使用  **pg_basebackup** 生成的物理副本。 例：
+
+```bash
+pg_basebackup \  -h 127.0.0.1 \  -U replication_user \  -D /backup/base_20260701 \  -Fp \  -Xs \  -P
+```
 
 ## 使用第三方服务进行备份
 
