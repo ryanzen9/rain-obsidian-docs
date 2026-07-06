@@ -492,31 +492,6 @@ host    replication    databasus_backup    172.20.0.0/16    scram-sha-256
 
 配置完成后重载或重启 PostgreSQL，并在 Databasus UI 中测试连接。涉及 `wal_level`、`archive_mode`、`max_wal_senders` 的变更需要重启。
 
-## 恢复演练和运维建议
-
-备份策略最终要用恢复结果说话。建议至少建立以下规则：
-
-- **定期恢复演练**：每周或每月至少恢复一次到临时库，并执行核心业务查询。
-- **监控备份时长和文件大小**：文件突然变小、变大或耗时异常，都可能说明备份链路或业务数据出现变化。
-- **监控 WAL 归档延迟**：PITR 最怕 WAL 归档中断，归档失败必须告警。
-- **异地保存备份**：数据库服务器、备份服务器和对象存储不要共享同一个故障域。
-- **加密和密钥分离**：备份文件加密，密钥和备份文件分开保存。
-- **记录恢复手册**：包括备份位置、密钥位置、恢复命令、联系人和验证 SQL。
-- **保留策略分层**：例如保留 7 天每日备份、4 周每周备份、12 个月每月备份，避免只保留最近几份。
-
-一个简单的验证 SQL 可以包括：
-
-```sql
-SELECT now();
-SELECT count(*) FROM information_schema.tables WHERE table_schema = 'public';
-SELECT schemaname, relname, n_live_tup
-FROM pg_stat_user_tables
-ORDER BY n_live_tup DESC
-LIMIT 20;
-```
-
-验证时不要只看 PostgreSQL 是否启动，也要确认应用是否能完成登录、查询、写入、订单或报表等关键路径。
-
 ## 总结
 
 如果数据库规模不大、RPO 可以按天计算，`pg_dump` + Cron 是成本最低的方案；如果是生产核心库，并且不能接受长时间数据丢失，就应该使用基础备份 + WAL 归档 + PITR；如果团队希望降低脚本维护成本，可以考虑 Databasus 这类工具，把调度、存储、通知、加密和恢复验证统一管理。
