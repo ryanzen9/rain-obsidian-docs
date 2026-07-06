@@ -252,4 +252,4 @@ ALTER SYSTEM SET max_wal_senders = '10';
 SELECT pg_reload_conf();
 ```
 
-配置 PostgreSQL 实例允许建立
+配置 PostgreSQL 实例允许建立replication 连接。
