@@ -206,3 +206,21 @@ volumes:
   databasus_data:
 
 ```
+
+### pg_dump 逻辑备份
+
+
+
+### PITR 物理全量备份
+
+需要在 pg 上配置：
+
+```
+PostgreSQL 17+  
+summarize_wal = on  
+wal_level = replica  
+创建 LOGIN + REPLICATION 用户  
+pg_hba.conf 允许 replication 连接  
+确保 Databasus 能访问 PostgreSQL  
+在 UI 选择 FULL_INCREMENTAL_AND_WAL_STREAM
+```
