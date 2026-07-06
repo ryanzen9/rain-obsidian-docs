@@ -1,8 +1,17 @@
+---
+title: "PostgreSQL 的备份以及还原方案"
+date: 2026-07-06
+author: ""
+tags: []
+categories: []
+draft: true
+---
+
 ## 使用 pg_dump 配合 cron_job 进行定时备份
 
-### pg_dump是什么？
+### pg_dump 是什么？
 
-`pg_dump`是 PostgreSQL 的原生自带实用程序，用于创建逻辑备份, 是数据库导出的标准工具。
+`pg_dump` 是 PostgreSQL 的原生自带实用程序，用于创建逻辑备份，是数据库导出的标准工具。
 
 传统的 pg_dump 脚本
 
@@ -38,7 +47,7 @@ fi
 
 /opt/scripts/pg_backup.sh 内容：
 
-````bash
+```bash
 #!/usr/bin/env bash
 
 set -e
@@ -79,7 +88,7 @@ find "$BACKUP_DIR" \
 
 echo "已清理超过 ${RETENTION_DAYS} 天的备份"
 
-````
+```
 
 保存为：
 
@@ -107,6 +116,7 @@ PGPASSWORD="your_password" pg_restore \
   --if-exists \
   /var/backups/postgresql/rcerp_db_20260702_020000.dump
 ```
+
 ### pg_dump 优势
 
 - **便携式备份**：创建 SQL 或自定义格式的转储，可以恢复到不同的 PostgreSQL 版本。
@@ -117,7 +127,7 @@ PGPASSWORD="your_password" pg_restore \
 
 ### pg_dump 的限制
 
-虽然`pg_dump`功能强大，但在生产环境中使用通常需要额外的脚本编写：
+虽然 `pg_dump` 功能强大，但在生产环境中使用通常需要额外的脚本编写：
 
 - **没有内置调度功能**：需要 cron 作业或外部调度程序。
 - **仅限本地存储**：输出到本地文件系统；云上传需要额外的脚本。
@@ -130,9 +140,9 @@ PGPASSWORD="your_password" pg_restore \
 
 ### PITR = Point-In-Time Recovery，时间点恢复。
 
-流程类似于 
+流程类似于
 
-```
+```text
 02:00 做了一次基础备份  
 10:31 用户误删表  
 10:35 发现事故  
@@ -142,15 +152,17 @@ PITR：可以恢复到 10:30:59
 ```
 
 依赖于：
+
 - 基础备份 basebackup
 - 从基础备份开始之后连续完整的 WAL 归档
+
 ### WAL = Write-Ahead Log，预写日志
 
 PostgreSQL 修改数据时，不是只改数据文件，而是先把变更记录写进 WAL。
 
 大致流程：
 
-```
+```text
 用户执行 SQL  ↓PostgreSQL 生成 WAL 记录  ↓事务提交  ↓后台进程慢慢把脏页刷入数据文件
 ```
 
@@ -159,9 +171,10 @@ PostgreSQL 修改数据时，不是只改数据文件，而是先把变更记录
 > 注意，它不是从当前数据库往回“撤销”。 从过去的基础备份开始，向前重放 WAL,本质是前置回滚。
 
 > 与 **mysql** 的 binlog 的区别： PostgreSQL 在真正修改数据文件之前，先写入 WAL。WAL 描述的是数据库内部发生的物理或生理层变更，它并不是 SQL 执行历史。保存执行该 SQL 后产生的底层存储变更。 由 pg 的 mvcc 架构以及一致性考虑而设计的。
+
 ### 基础备份
 
-基础备份是 使用  **pg_basebackup** 生成的物理副本。 例：
+基础备份是使用 **pg_basebackup** 生成的物理副本。 例：
 
 ```bash
 pg_basebackup \  -h 127.0.0.1 \  -U replication_user \  -D /backup/base_20260701 \  -Fp \  -Xs \  -P
@@ -210,11 +223,12 @@ volumes:
 ### pg_dump 逻辑备份
 
 `add database -> Logical -> 创建只读用户 -> 配置通知渠道/备份周期`
+
 ### PITR 物理全量备份
 
 需要在 pg 上配置：
 
-```
+```text
 PostgreSQL 17+  
 summarize_wal = on  
 wal_level = replica  
@@ -225,6 +239,7 @@ pg_hba.conf 允许 replication 连接
 ```
 
 sql：
+
 ```sql
 -- PITR 需要: wal_level：replica , summarize_wal：on  
   
@@ -252,7 +267,7 @@ ALTER SYSTEM SET max_wal_senders = '10';
 SELECT pg_reload_conf();
 ```
 
-配置 PostgreSQL 实例允许建立replication 连接。
+配置 PostgreSQL 实例允许建立 replication 连接。
 
 ```sql
 -- 查询是否有权限
@@ -273,7 +288,7 @@ SHOW hba_file;
 
 >**HBA**: Host-Based Authentication PostgreSQL 的客户端连接访问控制文件。 replication 是物理复制连接。
 
-插入相关白名单配置(ip地址可以为 docker 网段，或者 compose 内容器 ip，也可以是公网 ipv4)
+插入相关白名单配置（ip 地址可以为 docker 网段，或者 compose 内容器 ip，也可以是公网 ipv4）
 
 ```conf
 host    replication    databasus_backup    172.20.0.0/16    scram-sha-256
