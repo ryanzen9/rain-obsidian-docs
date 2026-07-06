@@ -276,3 +276,6 @@ SHOW hba_file;
 ```conf
 host    replication    databasus_backup    172.20.0.0/16    scram-sha-256
 ```
+
+在 Web DashBoard 进行配置
+``
