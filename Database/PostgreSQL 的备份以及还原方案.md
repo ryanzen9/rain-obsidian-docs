@@ -173,6 +173,8 @@ pg_basebackup \  -h 127.0.0.1 \  -U replication_user \  -D /backup/base_20260701
 
 ### Databasus
 
+> Databasus 与其他备份工具的比较：https://databasus.com/pgdump-alternative
+
 Databasus 是一款免费、开源且可自行托管的 PostgreSQL 备份工具。它支持使用不同的存储介质（S3、Google Drive、FTP 等）进行备份，并通过 Slack、Discord、Telegram 等渠道发送进度通知。Databasus 专注于实现低 RPO/RTO 的时间点恢复。
 
 基于 pg_dump 实现，拓展功能，在此基础上拓展定时任务，web 面板，通知提醒，云存储集成等。
