@@ -265,4 +265,9 @@ WHERE rolname = 'databasus_backup';
 
 -- 无权限时执行
 ALTER ROLE databasus_backup WITH LOGIN REPLICATION;
+
+-- 查询 hba 配置文件路径
+SHOW hba_file;
+
+
 ```
