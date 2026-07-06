@@ -251,3 +251,5 @@ ALTER SYSTEM SET archive_timeout = '60s';
 ALTER SYSTEM SET max_wal_senders = '10';  
 SELECT pg_reload_conf();
 ```
+
+配置 PostgreSQL 实例允许建立
