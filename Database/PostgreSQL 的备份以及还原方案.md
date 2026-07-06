@@ -253,3 +253,15 @@ SELECT pg_reload_conf();
 ```
 
 配置 PostgreSQL 实例允许建立replication 连接。
+
+```sql
+-- 查询是否有权限
+SELECT  
+rolname,  
+rolcanlogin,  
+rolreplication  
+FROM pg_roles  
+WHERE rolname = 'databasus_backup';
+
+
+```
