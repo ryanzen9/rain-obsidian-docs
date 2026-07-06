@@ -1,8 +1,11 @@
 ---
-title: "PostgreSQL 的备份以及还原方案"
+title: PostgreSQL 的备份以及还原方案
 date: 2026-07-06
-author: ""
-tags: []
+author: Ryan Zeng
+tags:
+  - postgresql
+  - 数据库
+  - db
 categories: []
 draft: true
 ---
