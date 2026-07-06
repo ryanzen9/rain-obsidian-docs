@@ -209,8 +209,7 @@ volumes:
 
 ### pg_dump 逻辑备份
 
-`add database -> Logical > `
-
+`add database -> Logical -> 创建只读用户 -> 配置通知渠道/备份周期`
 ### PITR 物理全量备份
 
 需要在 pg 上配置：
