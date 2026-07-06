@@ -263,5 +263,6 @@ rolreplication
 FROM pg_roles  
 WHERE rolname = 'databasus_backup';
 
-
+-- 无权限时执行
+ALTER ROLE databasus_backup WITH LOGIN REPLICATION;
 ```
