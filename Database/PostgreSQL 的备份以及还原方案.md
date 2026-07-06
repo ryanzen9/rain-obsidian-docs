@@ -209,7 +209,7 @@ volumes:
 
 ### pg_dump 逻辑备份
 
-
+`add database -> Logical > `
 
 ### PITR 物理全量备份
 
