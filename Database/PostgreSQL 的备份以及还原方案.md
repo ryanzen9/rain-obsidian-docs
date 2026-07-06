@@ -167,6 +167,8 @@ PostgreSQL 修改数据时，不是只改数据文件，而是先把变更记录
 pg_basebackup \  -h 127.0.0.1 \  -U replication_user \  -D /backup/base_20260701 \  -Fp \  -Xs \  -P
 ```
 
+> 与 pg_dump 的区别： 
+
 ## 使用第三方服务进行备份
 
 ### Databasus
