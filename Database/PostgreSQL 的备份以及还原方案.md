@@ -142,7 +142,7 @@ PITR：可以恢复到 10:30:59
 ```
 
 依赖于：
-- 基础备份 base backup
+- 基础备份 basebackup
 - 从基础备份开始之后连续完整的 WAL 归档
 ### WAL = Write-Ahead Log，预写日志
 
