@@ -269,5 +269,10 @@ ALTER ROLE databasus_backup WITH LOGIN REPLICATION;
 -- 查询 hba 配置文件路径
 SHOW hba_file;
 
+```
 
+插入相关白名单配置(ip地址可以为 docker 网段，或者 compose 内容器 ip，也可以是公网 ipv4)
+
+```conf
+host    replication    databasus_backup    172.20.0.0/16    scram-sha-256
 ```
