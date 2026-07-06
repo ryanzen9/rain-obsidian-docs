@@ -271,6 +271,8 @@ SHOW hba_file;
 
 ```
 
+>**HBA**: Host-Based Authentication PostgreSQL 的客户端连接访问控制文件。
+
 插入相关白名单配置(ip地址可以为 docker 网段，或者 compose 内容器 ip，也可以是公网 ipv4)
 
 ```conf
