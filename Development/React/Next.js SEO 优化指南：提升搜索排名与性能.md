@@ -13,11 +13,11 @@
 
 ## Next.js SEO 优化
 
-Next.js 为什么比普通 SPA 更容易做好 SEO ？
+Next.js 为什么比普通 SPA 更容易做好 SEO？
 
 默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。
 
-SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。
+SSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。
 
 > 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。
 
@@ -29,17 +29,17 @@ SSG 静态生成：
 
 使用 `generateStaticParams` 构建阶段预先生成动态路由界面。
 
-SSR 服务端渲染： 
+SSR 服务端渲染：
 
-每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。
+每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。
 
-ISR 增量静态生成:
+ISR 增量静态生成：
 
 增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。
 
-CSR （Client-Side Rendering，客户端渲染）： 
+CSR（Client-Side Rendering，客户端渲染）：
 
-更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。
+更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。
 
 Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。
 
