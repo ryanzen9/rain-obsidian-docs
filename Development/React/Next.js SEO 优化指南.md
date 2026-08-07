@@ -42,3 +42,90 @@ CSR（Client-Side Rendering，客户端渲染）：
 Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。
 
 ## 如何做好 SEO ?
+结合上一节提到的渲染策略，SEO 的落地主要围绕「让搜索引擎**看得懂、抓得快、评得高**」展开。以下是在 Next.js 中做好 SEO 的几个关键步骤：
+
+### 1. 配置页面元数据（Metadata）
+
+每个页面都应提供独立且准确的 `<title>` 和 `<meta name="description">`。Next.js 的 Metadata API 支持静态导出，也支持根据路由参数动态生成：
+
+```tsx
+// app/blog/[slug]/page.tsx
+import type { Metadata } from 'next'
+
+export async function generateMetadata({ params }): Promise<Metadata> {
+  const post = await getPost(params.slug)
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      images: [post.coverImage],
+    },
+  }
+}
+```
+
+- **title 与 description**：保持唯一并与内容强相关，description 建议控制在 150 字以内，提炼页面核心价值，直接影响搜索结果中的点击率（CTR）；
+- **Open Graph / Twitter Card**：控制链接在社交平台分享时的预览效果，间接提升流量与曝光。
+
+### 2. 添加结构化数据（JSON-LD）
+
+通过 `<script type="application/ld+json">` 注入结构化数据，帮助搜索引擎理解页面实体（文章、产品、FAQ 等），有机会获得富媒体摘要（Rich Snippets），让结果在搜索页中更醒目：
+
+```json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Next.js SEO 优化指南",
+  "datePublished": "2026-08-07"
+}
+```
+
+### 3. 配置 sitemap.xml 与 robots.txt
+
+在 `app/` 目录下导出 `sitemap()` 与 `robots()`，Next.js 会在构建时自动生成对应文件，帮助爬虫快速发现页面并明确抓取范围：
+
+```tsx
+// app/sitemap.ts
+export default function sitemap() {
+  return [
+    { url: 'https://example.com', lastModified: new Date() },
+    { url: 'https://example.com/blog', lastModified: new Date() },
+  ]
+}
+```
+
+### 4. 语义化 HTML 与清晰的标题层级
+
+- 每个页面只保留一个 `h1`，标题按 h1 → h2 → h3 逐级递进，帮助搜索引擎理解内容结构；
+- 使用 `article`、`nav`、`aside` 等语义化标签划分内容区块，比满屏的 `div` 更利于索引。
+
+### 5. 优化图片与字体
+
+- 使用 `next/image` 自动生成响应式尺寸、转换为 WebP 并启用懒加载，减小 LCP（最大内容绘制）时间；
+- 使用 `next/font` 自托管字体，避免字体加载引起的布局偏移（CLS）。
+
+### 6. 提升 Core Web Vitals 核心指标
+
+Google 已将用户体验纳入排名算法，重点关注以下三个指标：
+
+| 指标 | 含义 | 建议阈值 |
+| --- | --- | --- |
+| LCP | 最大内容绘制，衡量加载速度 | < 2.5s |
+| INP | 交互到下一次绘制的延迟 | < 200ms |
+| CLS | 累积布局偏移，衡量视觉稳定性 | < 0.1 |
+
+配合上一节的 SSG / ISR 预渲染策略，让首屏 HTML 快速返回客户端，是优化 LCP 最直接的手段。
+
+### 7. 构建合理的内部链接
+
+站内导航、相关推荐、面包屑（Breadcrumb）等内部链接能帮助爬虫持续发现新页面、传递页面权重，同时改善用户浏览体验。
+
+### 8. 持续监测与迭代
+
+- 通过 **Google Search Console** 提交 sitemap，查看收录情况与搜索表现，及时修复抓取错误；
+- 用 **PageSpeed Insights / Lighthouse** 定期检查性能得分与 Core Web Vitals；
+- 结合 **Analytics** 数据分析关键词与页面的实际表现，持续迭代内容。
+
+> SEO 不是一次性工作，而是一个「内容 + 技术 + 数据反馈」持续优化的循环。
