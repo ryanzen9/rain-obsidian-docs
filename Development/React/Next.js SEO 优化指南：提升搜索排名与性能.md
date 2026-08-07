@@ -21,4 +21,11 @@ SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲
 
 > 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。
 
-SSG 生成：
+SSG 静态生成：
+
+在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。
+
+动态路由生成：
+
+使用 `generateStaticParams` 构建阶段预先生成动态路由界面。
+
