@@ -1,6 +1,7 @@
 ## SEO 是什么？
 
-**SEO（Search Engine Optimization，搜索引擎优化）** 是指通过技术手段和内容策略来提升网站在搜索引擎（如 Google、Bing、百度）中自然排名的一套方法论。它的核心目标很简单：**让用户搜到你，点进来，留下来**。
+**SEO（Search Engine Optimization，搜索引擎优化）** 是指通过技术手段和内容策略来提升网站在搜索引擎（如 Google、Bing、百度）中自然排名的一套方法论。它的核心目标很简单：**让用户搜到你，点进来，留下来**。
+
 ## 搜索引擎处理界面的流程
 
 搜索引擎的工作流程大致可以分为三个阶段：**爬取（Crawling）**、**索引（Indexing）** 和 **排名（Ranking）**。
@@ -15,33 +16,22 @@
 
 Next.js 默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。
 
-SSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。
+- **SSR 生成，SSG 生成**：直接返回 HTML 标签，利于搜索引擎抓取渲染
+- **metadata、sitemap、robots 等 API**：提供 DX 优化
+- **图片、字体、路由等缓存**：提升网站加载速度
 
 > 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。
 
-SSG 静态生成：
-
-在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。
-
-动态路由生成：
-
-使用 `generateStaticParams` 构建阶段预先生成动态路由界面。
-
-SSR 服务端渲染：
-
-每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。
-
-ISR 增量静态生成：
-
-增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。
-
-CSR（Client-Side Rendering，客户端渲染）：
-
-更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。
+- **SSG 静态生成**：在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。
+- **动态路由生成**：使用 `generateStaticParams` 构建阶段预先生成动态路由界面。
+- **SSR 服务端渲染**：每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。
+- **ISR 增量静态生成**：增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。
+- **CSR（Client-Side Rendering，客户端渲染）**：更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。
 
 Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。
 
-## 如何做好 SEO ?
+## 如何做好 SEO？
+
 结合上一节提到的渲染策略，SEO 的落地主要围绕「让搜索引擎**看得懂、抓得快、评得高**」展开。以下是在 Next.js 中做好 SEO 的几个关键步骤：
 
 ### 1. 配置页面元数据（Metadata）
