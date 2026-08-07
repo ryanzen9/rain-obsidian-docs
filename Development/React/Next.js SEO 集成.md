@@ -1,7 +1,7 @@
 ---
 title: Next.js SEO 集成
 summary: 
-publishedAt: '2025-04-07'
+publishedAt: '2026-08-07'
 ---
 
 ## SEO 是什么？
