@@ -41,3 +41,5 @@ CSR（Client-Side Rendering，客户端渲染）：
 
 Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。
 
+## 如何做好 SEO ?
+
