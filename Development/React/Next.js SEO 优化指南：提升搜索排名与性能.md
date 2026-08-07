@@ -13,4 +13,6 @@
 
 ## Next.js SEO 优化
 
+Next.js 为什么比普通 SPA 更容易做好 SEO ？
 
+默认提供了一组
