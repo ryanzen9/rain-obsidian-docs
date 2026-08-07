@@ -41,5 +41,5 @@ CSR （Client-Side Rendering，客户端渲染）：
 
 更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。
 
-Next.js 配合不同渲染方式按需渲染，
+Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。
 
