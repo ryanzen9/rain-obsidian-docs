@@ -29,3 +29,7 @@ SSG 静态生成：
 
 使用 `generateStaticParams` 构建阶段预先生成动态路由界面。
 
+SSR 服务端渲染： 
+
+
+
