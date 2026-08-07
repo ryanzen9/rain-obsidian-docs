@@ -1,6 +1,6 @@
 ---
 title: Next.js SEO 集成
-summary: 
+summary: 系统讲解如何在 Next.js 中做好 SEO：从搜索引擎的爬取、索引、排名机制讲起，对比 SSG、SSR、ISR、CSR 等渲染方式对 SEO 的影响，并给出元数据、结构化数据、站点地图、Core Web Vitals 等 8 个实操优化步骤。
 publishedAt: '2026-08-07'
 ---
 
