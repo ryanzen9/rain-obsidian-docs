@@ -17,6 +17,8 @@ Next.js 为什么比普通 SPA 更容易做好 SEO ？
 
 默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。
 
-SSR 生成， 静态生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。
+SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。
 
 > 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。
+
+SSG 生成：
