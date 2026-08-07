@@ -37,7 +37,7 @@ ISR 增量静态生成:
 
 增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。
 
-
+CSR 
 
 Next.js 配合三种渲染方式按需渲染提示
 
