@@ -4,3 +4,5 @@
 [ ] 想法: SEO Board
 [ ] Css 变量
 [ ] 想法： 自动化浏览器 agent
+[ ] 想法： Sass 模式 创建 AI Api Manager Gateway 结合 opencode go
+
