@@ -136,7 +136,7 @@ export function TanStackTableExample() {
 }
 ```
 
-### 构成
+### Data, Features, Columns
 
 一个最简单的表:
 
@@ -154,3 +154,4 @@ const table = useTable({
 
 ```
 
+一个表由： 
