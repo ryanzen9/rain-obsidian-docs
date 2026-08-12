@@ -136,4 +136,21 @@ export function TanStackTableExample() {
 }
 ```
 
-### 
+### 构成
+
+一个最简单的表:
+
+```tsx
+import {
+  useTable,
+  stockFeatures,
+} from "@tanstack/react-table"
+
+const table = useTable({
+  features: stockFeatures,
+  data,
+  columns,
+})
+
+```
+
