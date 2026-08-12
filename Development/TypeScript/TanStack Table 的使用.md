@@ -154,4 +154,4 @@ const table = useTable({
 
 ```
 
-一个表由： 
+一个表 
