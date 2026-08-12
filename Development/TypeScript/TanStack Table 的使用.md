@@ -159,8 +159,7 @@ const table = useTable({
 **Data**
 `data` 就是表格要展示的数据数组，可以是任意类型的对象数组。它的结构不需要与列一一对应，列可以通过 `accessorKey` 或 `accessorFn` 从数据对象中提取值。比如前面例子中的 `Person`，`accessorKey: 'name'` 表示从 `{ name: '张三' }` 中取出 `name` 字段。TanStack Table 本身不修改数据，也不要求数据必须扁平——你可以传入深层嵌套对象，再通过 `accessorFn` 自定义取值逻辑。
 
-### Features
-
+**Features**
 `features` 是 TanStack Table 的“功能开关”。在 V9 中，`stockFeatures` 包含所有内置功能（排序、分页、筛选、分组、列调整、行选择等），但你也可以按需组合，避免打包体积臃肿。比如只想要排序和分页，可以显式传入 `[sorting, pagination]`。每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。
 
 ### Columns
