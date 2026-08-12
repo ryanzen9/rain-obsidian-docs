@@ -154,4 +154,25 @@ const table = useTable({
 
 ```
 
-一个表 
+一个表由三部分核心配置驱动：**Data、Features、Columns**。这三者各司其职，组合在一起才构成一个完整的表格实例——`data` 提供原始数据，`columns` 描述列的映射与渲染方式，`features` 则声明需要启用的交互能力。它们之间没有任何样式绑定，因此你可以完全控制最终渲染出的 `<table>` 结构。
+
+**Data**
+`data` 就是表格要展示的数据数组，可以是任意类型的对象数组。它的结构不需要与列一一对应，列可以通过 `accessorKey` 或 `accessorFn` 从数据对象中提取值。比如前面例子中的 `Person`，`accessorKey: 'name'` 表示从 `{ name: '张三' }` 中取出 `name` 字段。TanStack Table 本身不修改数据，也不要求数据必须扁平——你可以传入深层嵌套对象，再通过 `accessorFn` 自定义取值逻辑。
+
+### Features
+
+`features` 是 TanStack Table 的“功能开关”。在 V9 中，`stockFeatures` 包含所有内置功能（排序、分页、筛选、分组、列调整、行选择等），但你也可以按需组合，避免打包体积臃肿。比如只想要排序和分页，可以显式传入 `[sorting, pagination]`。每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。
+
+### Columns
+
+`columns` 描述了表格的列结构，常见的类型有：
+
+- **`accessorKey`**：基于数据字段的简单映射，适合大多数场景。
+- **`accessorFn`**：自定义函数，接收整行数据并返回单元格值，适合复杂计算。
+- **`header`**：列头显示内容，可以是字符串，也可以是一个函数返回动态 JSX。
+- **`cell`**：单元格渲染逻辑，默认会取 `accessor` 的值，但你完全可以根据 `info.row.original` 做自定义渲染，比如格式化日期、插入按钮或状态徽章。
+- **`enableSorting` / `enableFiltering`**：列级别的功能开关，覆盖全局 features 的设置。
+
+`columns` 还支持**分组**（grouping）、**固定列**（pinned）、**聚合**（aggregation）等高级配置，这些都由 features 提供能力支撑。
+
+当你把 `data`、`columns`、`features` 传递给 `useTable` 后，它会返回一个 `table` 实例，封装了所有状态和操作方法，比如我们之前用到的 `table.getHeaderGroups()`、`table.getRowModel()`、`table.nextPage()`。接下来要做的，就是把这些方法返回的模型对象（如 header groups、rows、cells）手动映射到你的 JSX 结构中——这正是“无头”的体现：渲染结构由你掌控，但状态和逻辑已经由 Table 内部管理好了。
