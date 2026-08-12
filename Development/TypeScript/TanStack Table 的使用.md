@@ -20,6 +20,118 @@ TanStack Table 是一款典型的**无头（Headless）表格库**，延续了�
 
 > 下文以 TanStack Table V9 为例（V7, v8 改动较大）。
 
-```typescript
+```tsx
+import {
+  useReactTable,
+  getCoreRowModel,
+  getSortedRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  flexRender,
+  type ColumnDef,
+  type SortingState,
+} from '@tanstack/react-table';
 
+import { useState } from 'react';
+
+type Person = {
+  id: number;
+  name: string;
+  age: number;
+  email: string;
+};
+
+const columns: ColumnDef<Person>[] = [
+  {
+    accessorKey: 'name',
+    header: '姓名',
+    cell: (info) => info.getValue(),
+  },
+  {
+    accessorKey: 'age',
+    header: '年龄',
+    cell: (info) => info.getValue(),
+  },
+  {
+    accessorKey: 'email',
+    header: '邮箱',
+    cell: (info) => info.getValue(),
+  },
+];
+
+const data: Person[] = [
+  { id: 1, name: '张三', age: 28, email: 'zhangsan@example.com' },
+  { id: 2, name: '李四', age: 34, email: 'lisi@example.com' },
+  { id: 3, name: '王五', age: 22, email: 'wangwu@example.com' },
+];
+
+export function TanStackTableExample() {
+  const [tableData] = useState(data);
+  const [sorting, setSorting] = useState<SortingState>([]);
+
+  const table = useReactTable({
+    data: tableData,
+    columns,
+    state: {
+      sorting,
+    },
+    onSortingChange: setSorting,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+  });
+
+  return (
+    <div>
+      <table>
+        <thead>
+          {table.getHeaderGroups().map((headerGroup) => (
+            <tr key={headerGroup.id}>
+              {headerGroup.headers.map((header) => (
+                <th key={header.id}>
+                  {header.isPlaceholder ? null : (
+                    <button
+                      onClick={header.column.getToggleSortingHandler()}
+                      className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}
+                    >
+                      {flexRender(header.column.columnDef.header, header.getContext())}
+                      {{
+                        asc: ' 🔼',
+                        desc: ' 🔽',
+                      }[header.column.getIsSorted() as string] ?? null}
+                    </button>
+                  )}
+                </th>
+              ))}
+            </tr>
+          ))}
+        </thead>
+        <tbody>
+          {table.getRowModel().rows.map((row) => (
+            <tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <td key={cell.id}>
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <div className="pagination">
+        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>
+          上一页
+        </button>
+        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>
+          下一页
+        </button>
+        <span>
+          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页
+        </span>
+      </div>
+    </div>
+  );
+}
 ```
