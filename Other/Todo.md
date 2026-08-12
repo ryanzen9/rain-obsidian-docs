@@ -6,5 +6,5 @@
 [ ] 想法： 自动化浏览器 agent
 [ ] 想法： Sass 模式 创建 AI Api Manager Gateway 结合 opencode go
 [ ] 想法： 订阅管理 App
-[ ] TODO: 优化 blog 项目结构 OR 编写 Swift App
+[ ] TODO: 优化 blog 项目结构 OR 编写 Swift App OR 二开 next-shadcn-admin-dashboard
 
