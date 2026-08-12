@@ -162,8 +162,7 @@ const table = useTable({
 **Features**
 `features` 是 TanStack Table 的“功能开关”。在 V9 中，`stockFeatures` 包含所有内置功能（排序、分页、筛选、分组、列调整、行选择等），但你也可以按需组合，避免打包体积臃肿。比如只想要排序和分页，可以显式传入 `[sorting, pagination]`。每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。
 
-### Columns
-
+**Columns**
 `columns` 描述了表格的列结构，常见的类型有：
 
 - **`accessorKey`**：基于数据字段的简单映射，适合大多数场景。
