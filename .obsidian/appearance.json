@@ -5,7 +5,7 @@
   "monospaceFontFamily": "Maple Mono NF CN",
   "baseFontSizeAction": true,
   "translucency": true,
-  "baseFontSize": 18,
+  "baseFontSize": 14,
   "enabledCssSnippets": [
     "custom-width"
   ]
