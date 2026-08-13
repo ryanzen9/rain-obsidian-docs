@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "d898500f": {
+      "hash": "d898500f",
+      "content": [
+        {
+          "type": "text",
+          "text": "## Mentioned Vault Files (outline only)\n- `Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md`\n  - L1 ## SEO 是什么？\n\nThis section provides only paths and outlines. Use file tools only if you need the full contents or a specific line range.\n\n\n帮我补充 章节 Next.js SEO 优化指南：提升搜索排名与性能.md  的内容\n\n"
+        }
+      ],
+      "createdAt": 1786007028737,
+      "updatedAt": 1786007028737
+    },
+    "4918de5b": {
+      "hash": "4918de5b",
+      "content": [
+        {
+          "type": "text",
+          "text": "<user_selected_content path=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\" startLine=\"12\" endLine=\"12\">\n```Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\n12|搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。\n```\n</user_selected_content>\n\n\nNext.js SEO 优化指南：提升搜索排名与性能.md (65 词/字) 润色\n\n"
+        }
+      ],
+      "createdAt": 1786084336920,
+      "updatedAt": 1786084336920
+    },
+    "b3662a60": {
+      "hash": "b3662a60",
+      "content": [
+        {
+          "type": "text",
+          "text": "<user_selected_content path=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\" startLine=\"14\" endLine=\"44\">\n```Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\n14|## Next.js SEO 优化\n15|\n16|Next.js 为什么比普通 SPA 更容易做好 SEO ？\n17|\n18|默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\n19|\n20|SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。\n21|\n22|> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\n23|\n24|SSG 静态生成：\n25|\n26|在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\n27|\n28|动态路由生成：\n29|\n30|使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\n31|\n32|SSR 服务端渲染： \n33|\n34|每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。\n35|\n36|ISR 增量静态生成:\n37|\n38|增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\n39|\n40|CSR （Client-Side Rendering，客户端渲染）： \n41|\n42|更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\n43|\n44|Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\n```\n</user_selected_content>\n\n\nNext.js SEO 优化指南：提升搜索排名与性能.md (456 词/字) 帮我把这段话进行格式化，不要改动内容\n\n"
+        }
+      ],
+      "createdAt": 1786087629271,
+      "updatedAt": 1786087629271
+    },
+    "18c83b67": {
+      "hash": "18c83b67",
+      "content": [
+        {
+          "type": "text",
+          "text": "<user_selected_content path=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\" startLine=\"44\" endLine=\"44\">\n```Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\n44|## 如何做好 SEO ?\n```\n</user_selected_content>\n\n\nNext.js SEO 优化指南：提升搜索排名与性能.md (5 词/字) 根据文章上文，帮我续写这个章节的内容。\n\n"
+        }
+      ],
+      "createdAt": 1786087803657,
+      "updatedAt": 1786087803657
+    }
+  }
+}

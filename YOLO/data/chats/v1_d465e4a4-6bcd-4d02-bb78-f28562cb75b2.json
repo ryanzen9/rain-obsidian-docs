@@ -1,0 +1,1084 @@
+{
+  "id": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+  "title": "补充Next.js SEO优化指南内容",
+  "messages": [
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": "帮我补充 章节 ",
+                  "type": "text",
+                  "version": 1
+                },
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "Next.js SEO 优化指南：提升搜索…",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "Next.js SEO 优化指南：提升搜索排名与性能.md",
+                  "mentionable": {
+                    "type": "file",
+                    "file": "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": "  的内容",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "d898500f"
+      },
+      "id": "1b29fdc8-176b-4ed6-9a80-a648123f8cad",
+      "mentionables": [
+        {
+          "type": "file",
+          "file": "Development/React/Next.js SEO 优化指南.md"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-06 17:03 (Thursday)"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "reasoning": "用户正在查看一个关于 Next.js SEO 优化指南的 markdown 文件，只有 3 行内容。让我先读取整个文件，看看里面有什么内容。",
+      "toolCallRequests": [
+        {
+          "id": "call_00_tpWpdcbFo5tPtWWUAttw8033",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+              ]
+            },
+            "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"]}"
+          }
+        }
+      ],
+      "id": "9d7bf12e-fdc3-408e-bf8f-04dcafc7202c",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-pro",
+          "model": "deepseek-v4-pro",
+          "name": "deepseek-v4-pro",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 4982,
+          "completion_tokens": 101,
+          "total_tokens": 5083
+        },
+        "durationMs": 3282,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-pro",
+        "branchLabel": "deepseek-v4-pro"
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_tpWpdcbFo5tPtWWUAttw8033",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+                ]
+              },
+              "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"]}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_tpWpdcbFo5tPtWWUAttw8033\",\n  \"requestedOperation\": {\n    \"type\": \"full\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\",\n      \"ok\": true,\n      \"totalLines\": 3,\n      \"hasMoreBelow\": false,\n      \"nextStartLine\": null,\n      \"content\": \"1|## SEO 是什么？\\n2|\\n3|\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "full",
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "341e0632-c37c-4e78-81a6-bb1b0a9a53e5",
+      "metadata": {
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-pro",
+        "branchLabel": "deepseek-v4-pro"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "文件目前只有一个空标题，我来帮你从「SEO 是什么？」这一节开始，系统性地补完全文。下面是我规划的完整结构：\n\n1. **SEO 是什么？** — 概念、重要性、与 Next.js 的关系\n2. **Next.js 的 SEO 基础** — SSR/SSG/ISR 如何助力 SEO\n3. **Metadata API — 动态管理页面元数据**\n4. **Open Graph & Twitter Card — 社交分享优化**\n5. **Sitemap & robots.txt — 搜索引擎爬取策略**\n6. **结构化数据 (JSON-LD)** — 富文本搜索结果\n7. **Canonical URL & hreflang — 避免重复内容**\n8. **图片与字体优化 — Core Web Vitals**\n9. **移动端适配与性能指标**\n10. **实战清单与常见问题**\n\n以下是完整内容，直接替换文件：\n\n<yolo_block filename=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\">\n<<<<<<< REPLACE\n[old]\n## SEO 是什么？\n\n=======\n[new]\n## SEO 是什么？\n\n**SEO（Search Engine Optimization，搜索引擎优化）** 是指通过技术手段和内容策略来提升网站在搜索引擎（如 Google、Bing、百度）中自然排名的一套方法论。它的核心目标很简单：**让用户搜到你，点进来，留下来**。\n\n### SEO 的三大支柱\n\n1. **技术 SEO** — 确保搜索引擎能正确爬取、索引和理解你的网站（URL 结构、Sitemap、结构化数据、页面速度等）。\n2. **站内 SEO** — 内容质量、关键词策略、标题/描述优化、内部链接结构。\n3. **站外 SEO** — 外链建设、品牌提及、社交媒体信号。\n\n### 为什么 Next.js 天然适合 SEO？\n\n传统的 SPA（单页应用，如纯 React CRA）在 SEO 上有先天劣势：搜索引擎爬虫往往只会看到空壳 `<div id=\"root\">`，因为内容在客户端才渲染。**Next.js 从根本上解决了这个问题**，它提供了多种渲染策略，让内容在服务端或构建时就能产出完整的 HTML：\n\n| 渲染策略 | Next.js 实现 | SEO 友好度 | 适用场景 |\n|---------|-------------|-----------|---------|\n| SSR（服务端渲染） | `getServerSideProps` / `force-dynamic` | ⭐⭐⭐⭐⭐ | 个性化、实时数据页面 |\n| SSG（静态生成） | `getStaticProps` / `generateStaticParams` | ⭐⭐⭐⭐⭐ | 博客、文档、营销页 |\n| ISR（增量静态再生成） | `revalidate` 选项 | ⭐⭐⭐⭐⭐ | 内容更新频繁但不需要即时 |\n| CSR（客户端渲染） | `'use client'` + `useEffect` 获取数据 | ⭐⭐ | 后台管理、应用内交互 |\n\n> 在 Next.js App Router（v13+）中，**默认就是 Server Component**，这意味着你不需要额外配置就能获得 SEO 友好的 SSR 行为。\n\n---\n\n## Next.js Metadata API — 页面元数据\n\n从 Next.js 13.2 开始，推荐使用 **Metadata API** 来声明页面级别的 SEO 信息。它取代了旧式的 `next/head`，支持静态配置和动态生成两种模式。\n\n### 基础用法\n\n```tsx\n// app/layout.tsx — 全局默认元数据\nimport type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n  title: {\n    default: '我的网站',\n    template: '%s | 我的网站',  // 子页面 title 会自动拼接\n  },\n  description: '这是一个 Next.js 构建的高性能网站',\n  metadataBase: new URL('https://example.com'),\n  alternates: {\n    canonical: '/',\n  },\n  openGraph: {\n    title: '我的网站',\n    description: '这是一个 Next.js 构建的高性能网站',\n    url: 'https://example.com',\n    siteName: '我的网站',\n    locale: 'zh_CN',\n    type: 'website',\n  },\n  twitter: {\n    card: 'summary_large_image',\n    title: '我的网站',\n    description: '这是一个 Next.js 构建的高性能网站',\n  },\n  robots: {\n    index: true,\n    follow: true,\n  },\n}\n```\n\n### 动态生成 Metadata\n\n当 SEO 信息依赖动态数据时（如博客文章详情页），使用 `generateMetadata`：\n\n```tsx\n// app/blog/[slug]/page.tsx\nimport type { Metadata } from 'next'\nimport { getPostBySlug } from '@/lib/posts'\n\ninterface Props {\n  params: Promise<{ slug: string }>\n}\n\nexport async function generateMetadata({ params }: Props): Promise<Metadata> {\n  const { slug } = await params\n  const post = await getPostBySlug(slug)\n\n  return {\n    title: post.title,\n    description: post.excerpt,\n    openGraph: {\n      title: post.title,\n      description: post.excerpt,\n      type: 'article',\n      publishedTime: post.publishedAt,\n      authors: [post.author],\n      images: [\n        {\n          url: post.ogImage,\n          width: 1200,\n          height: 630,\n          alt: post.title,\n        },\n      ],\n    },\n  }\n}\n\nexport default async function BlogPost({ params }: Props) {\n  const { slug } = await params\n  const post = await getPostBySlug(slug)\n  return <article>{/* ... */}</article>\n}\n```\n\n### 元数据文件约定\n\nNext.js 还支持通过文件系统约定来管理 SEO 资源（放在 `app/` 目录下）：\n\n| 文件 | 作用 |\n|------|------|\n| `favicon.ico` | 网站图标 |\n| `icon.svg` / `icon.png` | 图标（支持多尺寸） |\n| `apple-icon.png` | Apple 设备图标 |\n| `opengraph-image.png` | 默认 OG 图片（1200×630） |\n| `twitter-image.png` | 默认 Twitter 卡片图片 |\n| `sitemap.ts` | 动态生成 sitemap |\n| `robots.ts` | 动态生成 robots.txt |\n\n---\n\n## Open Graph & Twitter Card — 社交分享优化\n\n当你的链接被分享到 Facebook、Twitter（X）、LinkedIn、Slack 等平台时，这些平台会抓取 OG/Twitter 标签来生成富媒体预览卡片。**缺少 OG 标签是 SEO 中最常见的漏项之一**。\n\n### 关键 OG 标签\n\n```tsx\nexport const metadata: Metadata = {\n  openGraph: {\n    title: '页面标题',              // 通常比 meta title 更短\n    description: '页面摘要（2-3 句）',\n    url: 'https://example.com/page',\n    siteName: '网站名称',\n    images: [\n      {\n        url: 'https://example.com/og-image.jpg',\n        width: 1200,               // 推荐 1200×630\n        height: 630,\n        alt: '图片描述',\n      },\n    ],\n    locale: 'zh_CN',\n    type: 'website',               // article | profile | ...\n  },\n  twitter: {\n    card: 'summary_large_image',   // summary | summary_large_image | app\n    title: '页面标题',\n    description: '页面摘要',\n    images: ['https://example.com/twitter-image.jpg'],\n    creator: '@username',           // 作者 Twitter 账号\n  },\n}\n```\n\n### 社交分享调试工具\n\n- **[Facebook Sharing Debugger](https://developers.facebook.com/tools/debug/)**\n- **[Twitter Card Validator](https://cards-dev.twitter.com/validator)**\n- **[LinkedIn Post Inspector](https://www.linkedin.com/post-inspector/)**\n\n---\n\n## Sitemap & robots.txt — 搜索引擎爬取策略\n\n### Sitemap\n\nSitemap 告诉搜索引擎你的网站有哪些页面、每个页面的优先级和更新频率。App Router 中可编程生成：\n\n```tsx\n// app/sitemap.ts\nimport type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n  const baseUrl = 'https://example.com'\n\n  // 静态路由\n  const staticRoutes = [\n    { url: baseUrl, lastModified: new Date(), changeFrequency: 'daily' as const, priority: 1 },\n    { url: `${baseUrl}/about`, lastModified: new Date(), changeFrequency: 'monthly' as const, priority: 0.8 },\n    { url: `${baseUrl}/blog`, lastModified: new Date(), changeFrequency: 'weekly' as const, priority: 0.9 },\n  ]\n\n  // 动态路由（如博客文章）可通过 async 函数从 CMS/数据库获取\n  // const posts = await getAllPosts()\n  // const blogRoutes = posts.map(post => ({ ... }))\n\n  return [...staticRoutes]\n}\n```\n\n> 生成后访问 `https://example.com/sitemap.xml` 即可看到标准 XML 格式的 sitemap。对于内容很多的站点，还可以使用 `generateSitemaps` 分片生成。\n\n### robots.txt\n\n```tsx\n// app/robots.ts\nimport type { MetadataRoute } from 'next'\n\nexport default function robots(): MetadataRoute.Robots {\n  return {\n    rules: [\n      {\n        userAgent: '*',\n        allow: '/',\n        disallow: ['/api/', '/admin/', '/dashboard/'],\n      },\n      {\n        userAgent: 'GPTBot',       // 阻止 AI 爬虫抓取\n        disallow: '/',\n      },\n    ],\n    sitemap: 'https://example.com/sitemap.xml',\n  }\n}\n```\n\n---\n\n## 结构化数据 — JSON-LD（Rich Results）\n\n**结构化数据** 用标准化的格式告诉搜索引擎「这个页面的内容到底是什么」——是文章、产品、面包屑、FAQ、还是评价。Google 会根据结构化数据在搜索结果中展示 **富文本摘要（Rich Snippets）**，极大提升点击率。\n\n### 在 Next.js 中嵌入 JSON-LD\n\n```tsx\n// components/JsonLd.tsx\nexport function ArticleJsonLd({ post }: { post: any }) {\n  const jsonLd = {\n    '@context': 'https://schema.org',\n    '@type': 'Article',\n    headline: post.title,\n    description: post.excerpt,\n    image: post.ogImage,\n    datePublished: post.publishedAt,\n    dateModified: post.updatedAt,\n    author: {\n      '@type': 'Person',\n      name: post.author,\n    },\n    publisher: {\n      '@type': 'Organization',\n      name: '我的网站',\n      logo: {\n        '@type': 'ImageObject',\n        url: 'https://example.com/logo.png',\n      },\n    },\n  }\n\n  return (\n    <script\n      type=\"application/ld+json\"\n      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}\n    />\n  )\n}\n```\n\n然后在页面中引入：`<ArticleJsonLd post={post} />`\n\n### 常见结构化数据类型\n\n| 类型 | Schema.org Type | 适用场景 |\n|------|----------------|---------|\n| 文章 | `Article` / `BlogPosting` | 博客、新闻 |\n| 面包屑 | `BreadcrumbList` | 全站导航 |\n| 产品 | `Product` + `Offer` | 电商商品页 |\n| FAQ | `FAQPage` | 问答页面 |\n| 评价 | `Review` | 评论/评分 |\n| 组织 | `Organization` / `LocalBusiness` | 公司、门店信息 |\n| 视频 | `VideoObject` | 视频内容 |\n\n> 使用 [Google Rich Results Test](https://search.google.com/test/rich-results) 和 [Schema Markup Validator](https://validator.schema.org/) 验证结构化数据是否正确。\n\n---\n\n## Canonical URL & hreflang — 避免重复内容\n\n### 规范化 URL（Canonical）\n\n当同一内容可通过多个 URL 访问时（如带/不带尾斜杠、带查询参数），需要声明**规范化 URL** 以避免被搜索引擎判定为重复内容（Duplicate Content）。\n\n```tsx\n// 在页面 metadata 中设置\nexport const metadata: Metadata = {\n  alternates: {\n    canonical: 'https://example.com/blog/my-post',\n    languages: {\n      'en-US': 'https://example.com/en/blog/my-post',\n      'zh-CN': 'https://example.com/zh/blog/my-post',\n    },\n  },\n}\n```\n\n### 多语言站点\n\n如果有多语言版本，使用 `alternates.languages` 声明各语言对应 URL。搜索引擎会据此理解页面的语言变体关系。\n\n---\n\n## 图片与字体优化 — Core Web Vitals\n\nGoogle 将 **Core Web Vitals（核心网页指标）** 作为排名因素。Next.js 在这方面提供了丰富的内置优化。\n\n### 图片优化（LCP — Largest Contentful Paint）\n\n```tsx\nimport Image from 'next/image'\n\n// ✅ 自动优化：懒加载、WebP 转换、尺寸优化、防止 CLS\n<Image\n  src=\"/hero.jpg\"\n  alt=\"首页主图\"\n  width={1200}\n  height={800}\n  priority        // 首屏关键图片，预加载\n  sizes=\"(max-width: 768px) 100vw, 1200px\"\n  quality={85}\n/>\n\n// 对于从 CMS/外部加载的图片，在 next.config.ts 中配置域名\n// images: { remotePatterns: [{ protocol: 'https', hostname: 'cdn.example.com' }] }\n```\n\n### 字体优化（CLS 预防）\n\n```tsx\n// app/layout.tsx — 使用 next/font，字体在构建时下载到本地，零外部请求\nimport { Inter, Noto_Sans_SC } from 'next/font/google'\n\nconst inter = Inter({ subsets: ['latin'], display: 'swap' })\nconst notoSansSC = Noto_Sans_SC({\n  subsets: ['latin'],\n  weight: ['400', '700'],\n  display: 'swap',          // 先用后备字体，避免 FOIT\n  preload: true,\n})\n```\n\n`display: 'swap'` 确保文字在字体加载期间立即可见（使用后备字体），从而避免 **CLS（Cumulative Layout Shift，累计布局偏移）**。\n\n---\n\n## 移动端适配与性能指标\n\n### 响应式与移动优先\n\nGoogle 使用 **移动优先索引**（Mobile-First Indexing），这意味着它主要使用移动版页面进行索引和排名。\n\n- ✅ 使用 `viewport` meta 标签（Next.js 默认已包含）\n- ✅ 触摸友好的按钮/链接间距（最小 48×48px 点击区域）\n- ✅ 移动端可读的字体大小（不小于 16px）\n- ✅ 避免移动端弹窗遮挡主要内容\n\n### Core Web Vitals 三指标\n\n| 指标 | 全称 | 良好阈值 | 衡量什么 |\n|------|------|---------|---------|\n| **LCP** | Largest Contentful Paint | ≤ 2.5s | 最大内容块加载速度 |\n| **INP** | Interaction to Next Paint | ≤ 200ms | 页面交互响应速度 |\n| **CLS** | Cumulative Layout Shift | ≤ 0.1 | 视觉稳定性 |\n\n### 性能监控\n\n- **本地开发**：`next build` 后使用 Lighthouse（DevTools → Lighthouse 面板）\n- **线上监控**：Google Search Console → Core Web Vitals 报告\n- **实时监控**：`@vercel/speed-insights` 或 `useReportWebVitals`\n\n```tsx\n// app/layout.tsx\nimport { SpeedInsights } from '@vercel/speed-insights/next'\n\nexport default function RootLayout({ children }) {\n  return (\n    <html lang=\"zh-CN\">\n      <body>\n        {children}\n        <SpeedInsights />\n      </body>\n    </html>\n  )\n}\n```\n\n---\n\n## 实战 SEO 检查清单\n\n### 上线前必查\n\n- [ ] 每个页面都有唯一的 `<title>` 和 `<meta description>`\n- [ ] `metadataBase` 已设置为生产域名\n- [ ] OG 和 Twitter Card 标签已配置并通过调试工具验证\n- [ ] `sitemap.xml` 正常生成且提交到 Google Search Console\n- [ ] `robots.txt` 正确配置，未误屏蔽重要页面\n- [ ] 所有页面都有 Canonical URL\n- [ ] 关键页面包含 JSON-LD 结构化数据\n- [ ] 图片使用 `next/image` 且首屏大图加了 `priority`\n- [ ] 字体使用 `next/font`，配置了 `display: 'swap'`\n- [ ] 移动端体验流畅，无横向溢出\n- [ ] Lighthouse 评分：Performance ≥ 90，SEO = 100，Best Practices ≥ 90\n- [ ] `<html lang>` 属性正确设置（如 `zh-CN`）\n\n### Google Search Console 操作\n\n1. 添加并验证网站属性\n2. 提交 `sitemap.xml`\n3. 使用 URL 检查工具测试关键页面\n4. 监控「Core Web Vitals」报告\n5. 检查「手动操作」和「安全问题」面板\n\n### 常见问题\n\n**Q: 为什么我的页面在 Google 上搜不到？**\nA: 检查 `robots.txt` 是否屏蔽、meta robots 是否为 `noindex`、是否提交了 sitemap、页面是否返回 200（不是 404/重定向）。\n\n**Q: SSR/SSG 页面还需要额外 SEO 配置吗？**\nA: 需要。SSR/SSG 只保证 HTML 中有内容，但 meta 标签、结构化数据、sitemap 等仍需手动配置。\n\n**Q: 中文 SEO 和英文 SEO 有区别吗？**\nA: Google 对中英文的规则基本一致；百度有自己的一套标准（如需要主动提交链接、对 JS 渲染支持较弱），如果面向国内市场，建议同时关注百度搜索资源平台。\n\n---\n\n> **核心原则**：SEO 不是一次性工作，而是一个持续优化的过程。Next.js 为你提供了最好的工具底座，但内容质量、用户体验和持续的技术投入才是排名的终极决定因素。\n>>>>>>> END\n</yolo_block>",
+      "reasoning": "用户希望我补充 `Next.js SEO 优化指南：提升搜索排名与性能` 这个文件的内容。目前文件只有一个空的 `## SEO 是什么？` 标题。\n\n我需要写一份完整的 Next.js SEO 优化指南。这个章节应该涵盖：\n\n1. SEO 是什么 - 基础概念\n2. Next.js 的 SEO 优势\n3. 具体的 Next.js SEO 优化技巧\n4. 性能优化与 Core Web Vitals\n5. 结构化数据\n6. 等等\n\n让我写一个全面的指南。这是一份中文的 Next.js SEO 指南。\n\n需要考虑的内容：\n- SEO 基础概念（搜索引擎优化）\n- Next.js 对 SEO 的好处（SSR、SSG、ISR）\n- Meta 标签管理（Metadata API）\n- Open Graph / Twitter Cards\n- Sitemap 和 robots.txt\n- 结构化数据（JSON-LD）\n- Canonical URLs\n- 图片优化\n- 性能优化（Core Web Vitals）\n- 移动端适配\n- 常见问题\n\n让我先整理一下结构，然后一次性生成整个页面，用 `fs_edit` 替换整个文件内容。",
+      "id": "2b7baf51-7574-4c8c-980c-04558eafb206",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-pro",
+          "model": "deepseek-v4-pro",
+          "name": "deepseek-v4-pro",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 5224,
+          "completion_tokens": 4236,
+          "total_tokens": 9460,
+          "cache_read_input_tokens": 4864
+        },
+        "durationMs": 97063,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-pro",
+        "branchLabel": "deepseek-v4-pro"
+      }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "Next.js SEO 优化指南… (65 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "Next.js SEO 优化指南：提升搜索排名与性能.md (65 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md",
+                    "startLine": 12,
+                    "endLine": 12,
+                    "source": "selection-sync",
+                    "contentHash": "5b2d1abf",
+                    "contentCount": 65,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 润色",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "4918de5b"
+      },
+      "id": "e154c458-4dc8-4dc8-bd44-54e702001224",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。",
+          "file": "Development/React/Next.js SEO 优化指南.md",
+          "startLine": 12,
+          "endLine": 12,
+          "source": "selection-sync",
+          "contentHash": "5b2d1abf",
+          "contentCount": 65,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-07 14:32 (Friday)"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "reasoning": "用户选中了第 12 行的一段内容，要求润色。让我先看看当前文件的内容，确认第 12 行的上下文。\n\n用户选中的内容是：\n```\n搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。\n```\n\n这是之前我写入的「SEO 是什么？」部分下面的内容？等等，我之前写入的内容里好像没有这一段。让我读一下文件看看当前完整状态。文件总共 12 行，可见 1-12 行。可能是用户自己在文档中添加了内容。\n\n让我读取文件来确认第 12 行的上下文。",
+      "toolCallRequests": [
+        {
+          "id": "call_00_EBpw5CY9NSgyPAilN6Y65221",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+              ]
+            },
+            "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"]}"
+          }
+        }
+      ],
+      "id": "3a046c7f-1fd9-43f7-8f4e-538f618e8079",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 9714,
+          "completion_tokens": 232,
+          "total_tokens": 9946
+        },
+        "durationMs": 2507,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_EBpw5CY9NSgyPAilN6Y65221",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+                ]
+              },
+              "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"]}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_EBpw5CY9NSgyPAilN6Y65221\",\n  \"requestedOperation\": {\n    \"type\": \"full\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\",\n      \"ok\": true,\n      \"totalLines\": 12,\n      \"hasMoreBelow\": false,\n      \"nextStartLine\": null,\n      \"content\": \"1|## SEO 是什么？\\n2|\\n3|**SEO（Search Engine Optimization，搜索引擎优化）** 是指通过技术手段和内容策略来提升网站在搜索引擎（如 Google、Bing、百度）中自然排名的一套方法论。它的核心目标很简单：**让用户搜到你，点进来，留下来**。\\n4|## SEO 的过程\\n5|\\n6|搜索引擎的工作流程大致可以分为三个阶段：**爬取（Crawling）**、**索引（Indexing）** 和 **排名（Ranking）**。\\n7|\\n8|1. **爬取**：搜索引擎的爬虫（如 Googlebot）会沿着链接不断发现网页，抓取页面上的文本、图片、脚本等资源。如果网站加载慢、资源被屏蔽或链接结构混乱，爬虫就无法高效获取内容。  \\n9|2. **索引**：抓取到的内容会被整理和存储到搜索引擎的数据库中。这一阶段需要页面有清晰的标题、描述、结构化数据等，帮助搜索引擎理解网页的主题和关键信息。  \\n10|3. **排名**：当用户输入搜索词时，搜索引擎会从索引库中挑选最相关、最有价值的页面，按照数百种算法因子排序后展示。排名的依据包括内容质量、关键词匹配、用户体验、页面速度、移动端适配等。\\n11|\\n12|搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "full",
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "b232f9ae-e966-40b8-8685-cdb83b7da0d2",
+      "metadata": {
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "这段文字内容是对的，但标点混乱（半角逗号/句点混用）、「站内链接」重复出现、逻辑链条不够清晰。我来润色一下：\n\n<yolo_block filename=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\">\n<<<<<<< REPLACE\n[old]\n搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。\n=======\n[new]\n具体来说，爬虫会先遍历站内链接来**发现**页面，可抓取的入口包括但不限于：`<a href>` 超链接、`sitemap.xml` 中的条目以及站内导航等。随后爬虫通过请求 URL **访问**网页，获取页面上的结构化数据与各类资源，渲染 HTML 后解析内容，最终**建立索引数据**。\n>>>>>>> END\n</yolo_block>\n\n主要润色点：\n\n- **标点规范化**：统一为全角标点，去掉多余的半角逗号和句点，避免中英混排割裂。\n- **去重**：原文「站内链接」重复出现两次，合并为「站内导航」。\n- **逻辑链清晰化**：用 **发现 → 访问 → 建立索引** 三个加粗动作串联，与上文第 6 行「爬取 → 索引 → 排名」的三阶段框架呼应。\n- **术语规范化**：`sitemap.xml`、`<a href>` 用行内代码包裹，`html` 规范为大写 `HTML`。",
+      "reasoning": "用户选中了第 12 行，要求润色这一段。原文是：\n\n```\n搜索引擎先遍历站内链接，包括但不限于： 可抓取的 `<a href>` 链接， sitemap.xml, - 站内链接 等。 通过爬虫请求访问 URL. 获取网页的结构化数据以及资源，渲染 html 等，建立索引数据。\n```\n\n这段文字存在以下问题：\n1. 标点混乱（半角逗号、句点混用）\n2. \"站内链接\" 重复出现\n3. 结构不够清晰\n4. 中文语境下应使用全角标点\n5. 逻辑可以更通顺\n\n这段内容其实与上面第 8 点「爬取」的描述有些重叠，但用户只是要求润色这一句，不需要删除或重构整个文件。我应该润色这一段，让它更通顺、规范。\n\n润色版本：\n\n```\n具体来说，爬虫会遍历站内链接来发现页面，可抓取的链接包括但不限于：`<a href>` 超链接、sitemap.xml 中的条目、站内导航等。爬虫通过请求 URL 访问网页，获取页面上的结构化数据与各类资源，渲染 HTML 后进行内容解析，最终建立索引数据。\n```\n\n这样修正了：\n- 标点统一为全角\n- 去重「站内链接」\n- 逻辑更清晰：「发现页面 → 访问 → 解析 → 建索引」\n- 术语更规范\n\n用 fs_edit 替换第 12 行。",
+      "id": "19b1a82f-add8-4b41-b4a2-830ce624b46c",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 10427,
+          "completion_tokens": 704,
+          "total_tokens": 11131,
+          "cache_read_input_tokens": 9600
+        },
+        "durationMs": 4994,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "Next.js SEO 优化指… (456 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "Next.js SEO 优化指南：提升搜索排名与性能.md (456 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md",
+                    "startLine": 14,
+                    "endLine": 44,
+                    "source": "selection-sync",
+                    "contentHash": "2e32166e",
+                    "contentCount": 456,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 帮我把这段话进行格式化，不要改动内容",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "b3662a60"
+      },
+      "id": "8414e2dc-2de9-48b6-9a18-0656cdfdc19e",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "## Next.js SEO 优化\n\nNext.js 为什么比普通 SPA 更容易做好 SEO ？\n\n默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\n\nSSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。\n\n> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\n\nSSG 静态生成：\n\n在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\n\n动态路由生成：\n\n使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\n\nSSR 服务端渲染： \n\n每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。\n\nISR 增量静态生成:\n\n增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\n\nCSR （Client-Side Rendering，客户端渲染）： \n\n更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\n\nNext.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。",
+          "file": "Development/React/Next.js SEO 优化指南.md",
+          "startLine": 14,
+          "endLine": 44,
+          "source": "selection-sync",
+          "contentHash": "2e32166e",
+          "contentCount": 456,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-07 15:27 (Friday)"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "reasoning": "用户要求格式化第 14-44 行的内容，不改动内容。让我看看当前文件的相关部分，然后进行格式化（主要是一些标点、空格、换行的规范化）。\n\n先读取文件确认当前状态。",
+      "toolCallRequests": [
+        {
+          "id": "call_00_ph2KKszvkLMerZ3WUSJp4051",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+              ],
+              "startLine": 14,
+              "endLine": 46
+            },
+            "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"], \"startLine\": 14, \"endLine\": 46}"
+          }
+        }
+      ],
+      "id": "8ff9575b-427c-456f-b9eb-1a1bf7bab873",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 11711,
+          "completion_tokens": 145,
+          "total_tokens": 11856,
+          "cache_read_input_tokens": 9600
+        },
+        "durationMs": 2075,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_ph2KKszvkLMerZ3WUSJp4051",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md"
+                ],
+                "startLine": 14,
+                "endLine": 46
+              },
+              "rawText": "{\"paths\": [\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\"], \"startLine\": 14, \"endLine\": 46}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_ph2KKszvkLMerZ3WUSJp4051\",\n  \"requestedOperation\": {\n    \"type\": \"lines\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\",\n      \"ok\": true,\n      \"totalLines\": 46,\n      \"returnedRange\": {\n        \"startLine\": 14,\n        \"endLine\": 46\n      },\n      \"hasMoreBelow\": false,\n      \"nextStartLine\": null,\n      \"content\": \"14|## Next.js SEO 优化\\n15|\\n16|Next.js 为什么比普通 SPA 更容易做好 SEO ？\\n17|\\n18|默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\\n19|\\n20|SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。\\n21|\\n22|> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\\n23|\\n24|SSG 静态生成：\\n25|\\n26|在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\\n27|\\n28|动态路由生成：\\n29|\\n30|使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\\n31|\\n32|SSR 服务端渲染： \\n33|\\n34|每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。\\n35|\\n36|ISR 增量静态生成:\\n37|\\n38|增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\\n39|\\n40|CSR （Client-Side Rendering，客户端渲染）： \\n41|\\n42|更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\\n43|\\n44|Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\\n45|\\n46|\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "lines",
+                  "startLine": 14,
+                  "endLine": 46,
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "76988bed-c9f1-4747-ad3f-bbad2c09d19e",
+      "metadata": {
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "我来对这段内容做纯格式规范化（只动标点、空格、大小写，不改任何词句）。先说明这次处理的原则：\n\n- **标点统一**：半角 `,` `.` `:` 统一为全角 `，` `。` `：`（URL 和代码内不动）\n- **空格清理**：中文标点后不留空格，行尾多余空格删除\n- **大小写统一**：`html` → `HTML`，`api` → `API`，`dx` → `DX`（术语规范化）\n- **文字内容零改动**\n\n<yolo_block filename=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\">\n<<<<<<< REPLACE\n[old]\n## Next.js SEO 优化\n\nNext.js 为什么比普通 SPA 更容易做好 SEO ？\n\n默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\n\nSSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。\n\n> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\n\nSSG 静态生成：\n\n在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\n\n动态路由生成：\n\n使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\n\nSSR 服务端渲染： \n\n每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。\n\nISR 增量静态生成:\n\n增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\n\nCSR （Client-Side Rendering，客户端渲染）： \n\n更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\n\nNext.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\n=======\n[new]\n## Next.js SEO 优化\n\nNext.js 为什么比普通 SPA 更容易做好 SEO？\n\n默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\n\nSSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。\n\n> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\n\nSSG 静态生成：\n\n在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\n\n动态路由生成：\n\n使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\n\nSSR 服务端渲染：\n\n每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。\n\nISR 增量静态生成：\n\n增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\n\nCSR（Client-Side Rendering，客户端渲染）：\n\n更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\n\nNext.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\n>>>>>>> END\n</yolo_block>\n\n格式化明细：\n\n| 位置 | 原样 | 处理后 | 说明 |\n|------|------|--------|------|\n| 16 行 | `做好 SEO ？` | `做好 SEO？` | 删除中文标点前空格 |\n| 20 行 | `SSR 生成， SSG生成` | `SSR 生成，SSG 生成` | 半角逗号转全角、清理空格 |\n| 20 行 | `sitemap, robots 等api` | `sitemap，robots 等 API` | 半角逗号转全角、`api`→`API` |\n| 20 行 | `dx 优化` | `DX 优化` | 术语统一大写 |\n| 32 行 | `渲染： `（行尾） | `渲染：` | 删除行尾多余空格 |\n| 34 行 | `生成 HTML， 服务端…生成 html` | `生成 HTML，服务端…生成 HTML` | 清理空格、`html`→`HTML` |\n| 36 行 | `增量静态生成:` | `增量静态生成：` | 半角冒号转全角 |\n| 40 行 | `CSR （…）： ` | `CSR（…）：` | 删除括号前空格及行尾空格 |\n| 42 行 | `SPA 应用， 是指` | `SPA 应用，是指` | 删除逗号后多余空格 |\n\n所有文字内容原样保留，仅做格式规范化。",
+      "reasoning": "用户要求格式化第 14-44 行的内容，不要改动内容。我需要做的是：\n\n1. 规范标点（半角逗号、句点 → 全角）\n2. 统一术语大小写（html → HTML, api → API, dx → DX, SPA 等）\n3. 去掉多余空格（如「CSR （」→「CSR（」，「渲染： 」→「渲染：」）\n4. 统一冒号（「生成:」→「生成：」）\n5. 保持内容语义不变\n\n注意：用户说\"不要改动内容\"，所以只做格式上的规范化：\n- 标点：半角逗号「,」→ 全角「，」，半角句点「.」→ 全角「。」，但注意 URL 和代码不能动\n- 大小写：html → HTML，api → API，dx → DX（这是格式统一，不算内容改动）\n- 空格规范化：「CSR （」→「CSR（」，删除多余空格\n- 冒号统一：「生成:」→「生成：」\n\n让我逐行处理：\n\n第 16 行：`Next.js 为什么比普通 SPA 更容易做好 SEO ？` → `Next.js 为什么比普通 SPA 更容易做好 SEO？`（中文和标点之间的空格应去掉）\n\n第 18 行：没问题，保持不变。\n\n第 20 行：`SSR 生成， SSG生成，直接返回 HTML 标签，利于搜索引擎抓取渲染； metadata， sitemap, robots 等api 提供 dx 优化； 图片，字体，路由等缓存提升网站加载速度。`\n→ `SSR、SSG 生成直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata、sitemap、robots 等 API 提供 DX 优化；图片、字体、路由等缓存提升网站加载速度。`\n\n等等，这里要小心。用户说\"不要改动内容\"。所以：\n- 「SSR 生成， SSG生成」→「SSR 生成，SSG 生成」——只改空格和标点\n- 逗号后的空格删除：`, ` → `，`\n- `sitemap, robots` → `sitemap、robots`？这算改动吗？把逗号改成顿号是格式化常见做法。但为了保守，可以保留逗号但统一为全角「，」。\n\n嗯，格式化标点时，把半角标点统一成全角是合理的。逗号改顿号有点超出\"格式\"范围（虽然中文中列举常用顿号，但用逗号也不算错）。为了\"不要改动内容\"，我倾向保守：半角 → 全角，空格整理，大小写统一，冒号统一。不改词、不改标点类型。\n\n不过「SSR 生成， SSG生成」中间的逗号后面有空格，还有「生成」没有空格。我统一为「SSR 生成，SSG 生成」。\n\n第 20 行详细处理：\n- `SSR 生成， SSG生成` → `SSR 生成，SSG 生成`\n- `直接返回 HTML 标签，利于搜索引擎抓取渲染；` 保持不变\n- ` metadata，` → `metadata、`？不，保留逗号：`metadata，`\n- `sitemap, robots` → `sitemap、robots`？保守起见 `sitemap，robots`？嗯。\n\n让我想想：这里「metadata， sitemap, robots 等api」是一个列举。中文规范中列举用顿号「、」。但用户说不要改动内容。标点类型的变化算不算内容改动？严格来说，格式化就包括标点规范。上一轮润色时我就做了标点规范化，用户接受了。这次用户明确说\"帮我把这段话进行格式化，不要改动内容\"，意思是不要改词句，只要整理格式。\n\n我认为标点规范化（半角→全角）是格式化的核心。逗号改顿号算是规范化的常见做法。但为了稳妥，我可以：\n- 半角标点 → 全角标点\n- 中文标点后空格删除\n- 字母大小写统一（html→HTML, api→API, dx→DX）\n- 冒号统一（: → ：）\n\n逗号→顿号我保留原逗号类型，只是半角转全角。这样最保守。\n\n第 20 行最终：\n`SSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。`\n\n等等，原文是「SSR 生成， SSG生成，直接返回」。第二个逗号后「直接返回」也没有多余空格。好。\n\n第 22 行：`> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。` 保持。\n\n第 24 行：`SSG 静态生成：` 保持。\n\n第 26 行：检查标点。看起来都用了全角，保持。最后「访问时直接返回已经生成的页面。」好。\n\n第 28 行：`动态路由生成：` 保持。\n\n第 30 行：`使用 `generateStaticParams` 构建阶段预先生成动态路由界面。` 保持。\n\n第 32 行：`SSR 服务端渲染： ` → 删除尾部空格 → `SSR 服务端渲染：`\n\n第 34 行：`每次请求时生成 HTML， 服务端根据请求情况生成 html 后返回给客户端。`\n→ `每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。`\n（删除逗号后空格，html → HTML）\n\n第 36 行：`ISR 增量静态生成:` → `ISR 增量静态生成：`\n\n第 38 行：检查。`增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。` 看起来 OK。\n\n第 40 行：`CSR （Client-Side Rendering，客户端渲染）： ` → `CSR（Client-Side Rendering，客户端渲染）：`\n\n第 42 行：`更类似于 SPA 应用， 是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。`\n→ `更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。`\n（删除「， 」中的空格）\n\n第 44 行：检查 OK。\n\n另外，第 16 行：「SEO ？」 → 「SEO？」\n\n现在用 fs_edit 做这些修改。这些是同一文件的多处编辑，系统会自动合并。我需要用 oldText 精确匹配。\n\n我打算用多个 fs_edit 调用，或者干脆用 startLine/endLine 替换整个 14-44 区域？用行范围替换更保险，但需要精确知道每一行的内容。我知道内容了，可以用行范围 14-44 一次性替换。\n\n不过注意：行范围替换后，如果中间行号有出入就麻烦。让我确认行号：14-44 恰好覆盖用户选中的范围。我用 startLine=14, endLine=44 替换。\n\n但是要小心，替换文本必须与目标完全匹配才能确保只替换这一段。行范围替换不要求匹配，直接替换 14-44 行。\n\n让我构造新的 14-44 行内容：\n\n```\n14|## Next.js SEO 优化\n15|\n16|Next.js 为什么比普通 SPA 更容易做好 SEO？\n17|\n18|默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\n19|\n20|SSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。\n21|\n22|> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\n23|\n24|SSG 静态生成：\n25|\n26|在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\n27|\n28|动态路由生成：\n29|\n30|使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\n31|\n32|SSR 服务端渲染：\n33|\n34|每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。\n35|\n36|ISR 增量静态生成：\n37|\n38|增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\n39|\n40|CSR（Client-Side Rendering，客户端渲染）：\n41|\n42|更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\n43|\n44|Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\n```\n\n等一下，第 20 行我改了「等api」→「等 API」、「dx」→「DX」。这是大小写规范化，属于格式范畴。用户上一轮接受了我对 html→HTML 的规范化。合理。\n\n关于第 20 行「SSR 生成， SSG生成」——原文第 18 行已说明 SSR 和 SSG，第 20 行说「SSR 生成， SSG生成，直接返回 HTML 标签」。这里逻辑上是在说「SSR 生成、SSG 生成都直接返回 HTML」。我保持逗号，不合并成顿号（保守）。\n\n不过等等，「metadata， sitemap, robots」中间还有半角逗号 `,`。我统一为全角「，」。\n\n好，另外我要考虑：是否用多个小的 fs_edit 而不是一个大范围替换？大范围替换需要重新输出整段文本，容易引入笔误，但也更彻底。既然用户要求\"格式化这段\"，我直接用行范围替换即可。\n\n其实还有一点：第 20 行「metadata， sitemap, robots 等api 提供 dx 优化」——「等api」后有个空格「等api 提供」。规范为「等 API 提供」。\n\n最后，我用 fs_edit 的 startLine/endLine 模式。\n\n修改内容总结（格式层面）：\n1. L16: 删除「SEO ？」前的空格 → 「SEO？」\n2. L20: 半角逗号转全角、删除逗号后多余空格、api→API、dx→DX\n3. L32: 删除行尾空格\n4. L34: 删除逗号后空格、html→HTML\n5. L36: 半角冒号→全角冒号\n6. L40: 删除「CSR 」与「（」之间的空格、删除行尾空格\n7. L42: 删除「， 」中的空格\n\n好，执行。",
+      "id": "f2da5dcc-1f1a-4239-b7db-b64135ea7dbd",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "reasoningType": "openai",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 12517,
+          "completion_tokens": 3864,
+          "total_tokens": 16381,
+          "cache_read_input_tokens": 10240
+        },
+        "durationMs": 27237,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "Next.js SEO 优化指南… (5 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "Next.js SEO 优化指南：提升搜索排名与性能.md (5 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md",
+                    "startLine": 44,
+                    "endLine": 44,
+                    "source": "selection-sync",
+                    "contentHash": "c59cd651",
+                    "contentCount": 5,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 根据文章上文，帮我续写这个章节的内容。",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "18c83b67"
+      },
+      "id": "7d97032d-d157-4fe5-afe6-79915d0557ae",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "## 如何做好 SEO ?",
+          "file": "Development/React/Next.js SEO 优化指南.md",
+          "startLine": 44,
+          "endLine": 44,
+          "source": "selection-sync",
+          "contentHash": "c59cd651",
+          "contentCount": 5,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-07 15:30 (Friday)"
+    },
+    {
+      "role": "assistant",
+      "content": "可以从**页面可发现性、元数据、内容语义、结构化数据、性能与持续监控**几个方面展开：\n\n<yolo_block filename=\"Development/React/Next.js SEO 优化指南：提升搜索排名与性能.md\">\n<<<<<<< INSERT_AFTER\n[anchor]\n## 如何做好 SEO ?\n=======\n[new]\n\n做好 SEO 不仅需要选择合适的渲染方式，还需要确保搜索引擎能够发现、抓取、理解并正确索引页面，同时为用户提供高质量的内容和良好的访问体验。\n\n### 1. 选择合适的渲染方式\n\n根据页面内容和更新频率选择渲染方式：\n\n- **SSG**：适合博客、文档、产品介绍和营销页面等内容相对固定的页面。\n- **ISR**：适合需要定期更新，但不要求实时展示最新数据的页面。\n- **SSR**：适合内容随请求变化，或需要根据用户、地区和请求参数动态生成的页面。\n- **CSR**：适合后台管理系统、登录后的个性化页面和交互密集型功能。\n\n对于需要被搜索引擎收录的核心内容，应优先使用 SSG、ISR 或 SSR，确保服务器返回的初始 HTML 中已经包含页面正文。\n\n### 2. 配置页面元数据\n\n每个可索引页面都应该拥有唯一且准确的标题和描述。在 App Router 中，可以使用 `metadata` 或 `generateMetadata` 配置元数据。\n\n```tsx\nimport type { Metadata } from 'next'\n\nexport const metadata: Metadata = {\n  title: 'Next.js SEO 优化指南',\n  description: '介绍 Next.js 中的渲染策略、元数据配置和性能优化方法。',\n}\n```\n\n动态页面可以根据文章、商品或其他业务数据生成元数据：\n\n```tsx\nimport type { Metadata } from 'next'\n\ntype Props = {\n  params: Promise<{ slug: string }>\n}\n\nexport async function generateMetadata({\n  params,\n}: Props): Promise<Metadata> {\n  const { slug } = await params\n  const article = await getArticle(slug)\n\n  return {\n    title: article.title,\n    description: article.description,\n  }\n}\n```\n\n标题应准确描述页面主题，避免多个页面使用相同标题；描述应概括页面核心内容，并自然包含用户可能搜索的关键词。\n\n### 3. 设置 Canonical URL\n\n当相同或相似的内容可以通过多个 URL 访问时，可以使用 Canonical URL 指定规范页面，减少查询参数、分页规则或重复路径带来的重复内容问题。\n\n```tsx\nexport const metadata: Metadata = {\n  alternates: {\n    canonical: 'https://example.com/articles/nextjs-seo',\n  },\n}\n```\n\n生产环境中还应在根布局设置 `metadataBase`，便于 Next.js 正确生成绝对地址：\n\n```tsx\nexport const metadata: Metadata = {\n  metadataBase: new URL('https://example.com'),\n}\n```\n\n### 4. 生成 sitemap.xml\n\n`sitemap.xml` 用于向搜索引擎提供站点中的重要 URL。Next.js 可以通过 `app/sitemap.ts` 动态生成站点地图。\n\n```tsx\nimport type { MetadataRoute } from 'next'\n\nexport default function sitemap(): MetadataRoute.Sitemap {\n  return [\n    {\n      url: 'https://example.com',\n      lastModified: new Date(),\n      changeFrequency: 'weekly',\n      priority: 1,\n    },\n    {\n      url: 'https://example.com/articles',\n      lastModified: new Date(),\n      changeFrequency: 'daily',\n      priority: 0.8,\n    },\n  ]\n}\n```\n\n对于文章和商品等动态页面，可以从数据库或 CMS 中读取数据，并将对应 URL 添加到站点地图中。\n\n### 5. 配置 robots.txt\n\n`robots.txt` 用于控制爬虫可以访问哪些路径。Next.js 可以通过 `app/robots.ts` 生成该文件。\n\n```tsx\nimport type { MetadataRoute } from 'next'\n\nexport default function robots(): MetadataRoute.Robots {\n  return {\n    rules: {\n      userAgent: '*',\n      allow: '/',\n      disallow: ['/admin/', '/api/'],\n    },\n    sitemap: 'https://example.com/sitemap.xml',\n  }\n}\n```\n\n后台页面、接口地址和内部搜索结果等无须参与排名的内容，可以禁止抓取或设置为不建立索引。配置时需要谨慎，避免误将整个站点或重要页面屏蔽。\n\n### 6. 优化站内链接\n\n使用语义明确且可抓取的 `<a href>` 链接连接相关页面，帮助爬虫发现内容并理解网站结构。在 Next.js 中，站内导航通常使用 `Link` 组件：\n\n```tsx\nimport Link from 'next/link'\n\nexport function ArticleLink() {\n  return (\n    <Link href=\"/articles/nextjs-seo\">\n      阅读 Next.js SEO 优化指南\n    </Link>\n  )\n}\n```\n\n链接文本应描述目标页面的内容，避免大量使用“点击这里”“查看更多”等含义不明确的文案。重要页面还应从导航、分类页或相关文章中获得稳定的内部链接。\n\n### 7. 使用语义化 HTML\n\n清晰的 HTML 结构可以帮助搜索引擎理解页面内容。页面中应合理使用：\n\n- `<header>` 表示页头；\n- `<nav>` 表示导航；\n- `<main>` 表示页面主要内容；\n- `<article>` 表示独立文章；\n- `<section>` 表示内容章节；\n- `<h1>` 至 `<h6>` 表示标题层级；\n- `<footer>` 表示页脚。\n\n每个页面通常只设置一个表达核心主题的 `<h1>`，其他章节按照层级使用 `<h2>`、`<h3>`，不要仅为了改变字号而选择标题标签。\n\n### 8. 添加结构化数据\n\n结构化数据可以帮助搜索引擎识别文章、商品、组织和面包屑等内容，并可能获得更丰富的搜索结果展示。\n\n```tsx\nconst jsonLd = {\n  '@context': 'https://schema.org',\n  '@type': 'Article',\n  headline: 'Next.js SEO 优化指南',\n  description: '介绍 Next.js 中常用的 SEO 优化方法。',\n  datePublished: '2026-08-07',\n  author: {\n    '@type': 'Person',\n    name: '作者名称',\n  },\n}\n\nexport default function Page() {\n  return (\n    <>\n      <script\n        type=\"application/ld+json\"\n        dangerouslySetInnerHTML={{\n          __html: JSON.stringify(jsonLd).replace(/</g, '\\\\u003c'),\n        }}\n      />\n      <main>{/* 页面内容 */}</main>\n    </>\n  )\n}\n```\n\n结构化数据必须与页面实际可见内容一致，不能添加页面中不存在的信息。\n\n### 9. 优化图片和字体\n\n图片尺寸过大、字体加载缓慢会影响页面速度和 Core Web Vitals。Next.js 可以通过 `Image` 和 `next/font` 进行优化。\n\n```tsx\nimport Image from 'next/image'\n\n<Image\n  src=\"/images/nextjs-seo.png\"\n  alt=\"Next.js SEO 优化流程\"\n  width={1200}\n  height={630}\n  priority\n/>\n```\n\n图片优化时需要注意：\n\n- 为图片提供准确的 `alt` 文本；\n- 明确设置宽度和高度，减少布局偏移；\n- 仅对首屏关键图片使用 `priority`；\n- 根据展示区域设置合理的 `sizes`；\n- 压缩图片并避免上传远超显示尺寸的资源。\n\n字体应优先使用 `next/font`，减少外部字体请求，并降低字体加载引起的布局偏移。\n\n### 10. 优化 Core Web Vitals\n\n页面性能不仅影响用户体验，也会影响搜索表现。常见的核心指标包括：\n\n- **LCP（Largest Contentful Paint）**：衡量主要内容的加载速度；\n- **INP（Interaction to Next Paint）**：衡量页面对用户交互的响应速度；\n- **CLS（Cumulative Layout Shift）**：衡量页面的视觉稳定性。\n\n可以通过以下方式改善这些指标：\n\n- 减少不必要的客户端组件和 JavaScript；\n- 将数据获取和内容渲染尽量放在服务端；\n- 优化首屏图片、字体和关键资源；\n- 对非关键组件进行延迟加载；\n- 避免在页面加载后插入没有预留空间的内容；\n- 合理使用 Next.js 的缓存与预渲染能力。\n\n### 11. 优化社交分享信息\n\nOpen Graph 元数据可以控制页面被分享到社交平台时展示的标题、描述和图片。\n\n```tsx\nexport const metadata: Metadata = {\n  openGraph: {\n    title: 'Next.js SEO 优化指南',\n    description: '了解 Next.js 的 SEO 优化方法。',\n    url: 'https://example.com/articles/nextjs-seo',\n    siteName: '示例网站',\n    type: 'article',\n    images: [\n      {\n        url: '/images/nextjs-seo-og.png',\n        width: 1200,\n        height: 630,\n        alt: 'Next.js SEO 优化指南',\n      },\n    ],\n  },\n}\n```\n\n虽然社交分享信息不会直接决定搜索排名，但清晰的分享卡片有助于提高内容的传播效果和点击率。\n\n### 12. 持续检查和监控\n\nSEO 是一个持续优化的过程。网站上线后，可以使用 Google Search Console 和 Lighthouse 定期检查：\n\n- 页面是否已被搜索引擎收录；\n- 爬虫是否能够正常访问页面；\n- `sitemap.xml` 是否成功读取；\n- 页面是否存在重复标题或重复内容；\n- 结构化数据是否有效；\n- Core Web Vitals 是否达到良好标准；\n- 页面是否存在失效链接、错误重定向或 404；\n- 移动端页面是否具备良好的可用性。\n\n完成修改后，可以通过 Google Search Console 的 URL 检查工具请求重新编入索引，并持续观察页面的曝光量、点击率、平均排名和收录情况。\n>>>>>>> END\n</yolo_block>",
+      "id": "67d14d85-9f10-4583-bdc0-54d76d1e0b1e",
+      "metadata": {
+        "model": {
+          "providerId": "codex",
+          "id": "codex/gpt-5.6-sol",
+          "model": "gpt-5.6-sol",
+          "name": "gpt-5.6-sol",
+          "reasoningType": "openai",
+          "modalities": [
+            "text",
+            "vision"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 12145,
+          "completion_tokens": 2297,
+          "total_tokens": 14442
+        },
+        "durationMs": 44986,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "codex/gpt-5.6-sol",
+        "branchLabel": "gpt-5.6-sol"
+      }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": "太多层级与分点了，抓住重点，要有取舍和合并",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "id": "a70426ed-61e2-4ad0-a705-8b5852054269",
+      "mentionables": [],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-07 15:31 (Friday)"
+    },
+    {
+      "role": "assistant",
+      "content": "",
+      "toolCallRequests": [
+        {
+          "id": "call_JC4PhSDlAa8ol8GFydj0rIBE",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/React/Next.js SEO 优化指南.md"
+              ]
+            },
+            "rawText": "{\"paths\":[\"Development/React/Next.js SEO 优化指南.md\"]}"
+          }
+        }
+      ],
+      "id": "ded3c863-2eae-4d99-8492-3d91d269bfbf",
+      "metadata": {
+        "model": {
+          "providerId": "codex",
+          "id": "codex/gpt-5.6-sol",
+          "model": "gpt-5.6-sol",
+          "name": "gpt-5.6-sol",
+          "reasoningType": "openai",
+          "modalities": [
+            "text",
+            "vision"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 14394,
+          "completion_tokens": 53,
+          "total_tokens": 14447
+        },
+        "durationMs": 2548,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "codex/gpt-5.6-sol",
+        "branchLabel": "gpt-5.6-sol"
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_JC4PhSDlAa8ol8GFydj0rIBE",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/React/Next.js SEO 优化指南.md"
+                ]
+              },
+              "rawText": "{\"paths\":[\"Development/React/Next.js SEO 优化指南.md\"]}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_JC4PhSDlAa8ol8GFydj0rIBE\",\n  \"requestedOperation\": {\n    \"type\": \"full\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/React/Next.js SEO 优化指南.md\",\n      \"ok\": true,\n      \"totalLines\": 46,\n      \"hasMoreBelow\": false,\n      \"nextStartLine\": null,\n      \"content\": \"1|## SEO 是什么？\\n2|\\n3|**SEO（Search Engine Optimization，搜索引擎优化）** 是指通过技术手段和内容策略来提升网站在搜索引擎（如 Google、Bing、百度）中自然排名的一套方法论。它的核心目标很简单：**让用户搜到你，点进来，留下来**。\\n4|## 搜索引擎处理界面的流程\\n5|\\n6|搜索引擎的工作流程大致可以分为三个阶段：**爬取（Crawling）**、**索引（Indexing）** 和 **排名（Ranking）**。\\n7|\\n8|1. **爬取**：搜索引擎的爬虫（如 Googlebot）会沿着链接不断发现网页，抓取页面上的文本、图片、脚本等资源。如果网站加载慢、资源被屏蔽或链接结构混乱，爬虫就无法高效获取内容。  \\n9|2. **索引**：抓取到的内容会被整理和存储到搜索引擎的数据库中。这一阶段需要页面有清晰的标题、描述、结构化数据等，帮助搜索引擎理解网页的主题和关键信息。  \\n10|3. **排名**：当用户输入搜索词时，搜索引擎会从索引库中挑选最相关、最有价值的页面，按照数百种算法因子排序后展示。排名的依据包括内容质量、关键词匹配、用户体验、页面速度、移动端适配等。\\n11|\\n12|具体来说，爬虫会先遍历站内链接来**发现**页面，可抓取的入口包括但不限于：`<a href>` 超链接、`sitemap.xml` 中的条目以及站内导航等。随后爬虫通过请求 URL **访问**网页，获取页面上的结构化数据与各类资源，渲染 HTML 后解析内容，最终**建立索引数据**。\\n13|\\n14|## Next.js 为什么比普通 SPA 更容易做好 SEO？\\n15|\\n16|Next.js 默认提供了一组强大的 SEO 功能，包括服务端渲染（SSR）、静态生成（SSG）和元数据 API，能让搜索引擎快速抓取和索引页面。\\n17|\\n18|SSR 生成，SSG 生成，直接返回 HTML 标签，利于搜索引擎抓取渲染；metadata，sitemap，robots 等 API 提供 DX 优化；图片，字体，路由等缓存提升网站加载速度。\\n19|\\n20|> 查询 [Google Search Console](https://search.google.com/search-console) 分析网站的 SEO 情况。\\n21|\\n22|SSG 静态生成：\\n23|\\n24|在构建时预渲染成静态 HTML，无需服务器实时处理，页面响应快，利于爬虫抓取，适合内容相对固定的页面。只要页面没有使用必须按请求执行的动态 API，并且数据能够被缓存，Next.js 就可能静态生成页面。访问时直接返回已经生成的页面。\\n25|\\n26|动态路由生成：\\n27|\\n28|使用 `generateStaticParams` 构建阶段预先生成动态路由界面。\\n29|\\n30|SSR 服务端渲染：\\n31|\\n32|每次请求时生成 HTML，服务端根据请求情况生成 HTML 后返回给客户端。\\n33|\\n34|ISR 增量静态生成：\\n35|\\n36|增量静态再生（ISR，Incremental Static Regeneration）在 SSG 基础上按需重新生成页面。设置 `revalidate` 后，页面在过期后重新请求最新数据。\\n37|\\n38|CSR（Client-Side Rendering，客户端渲染）：\\n39|\\n40|更类似于 SPA 应用，是指页面内容在浏览器端通过 JavaScript 动态生成，搜索引擎爬虫抓取到的初始 HTML 较为空泛，因此 SEO 友好度较低，适合对实时交互要求高的页面。\\n41|\\n42|Next.js 配合不同渲染方式按需渲染，将 SSG、SSR、ISR 和 CSR 按页面特性灵活组合，在性能、实时性与 SEO 之间取得最佳平衡。\\n43|\\n44|## 如何做好 SEO ?\\n45|\\n46|\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "full",
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "5ddd7f0a-065d-4781-8f41-31dc29eb58d8",
+      "metadata": {
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "codex/gpt-5.6-sol",
+        "branchLabel": "gpt-5.6-sol"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "可以将内容合并为四个核心方向：**可渲染、可发现、可理解、体验好**，避免继续拆分大量小节。\n\n<yolo_block filename=\"Development/React/Next.js SEO 优化指南.md\">\n<<<<<<< INSERT_AFTER\n[anchor]\n## 如何做好 SEO ?\n=======\n[new]\n\n做好 SEO 的核心，是让搜索引擎能够**发现页面、读取内容、理解主题并判断页面价值**。\n\n1. **保证核心内容可直接获取**：需要参与搜索排名的页面应优先使用 SSG、ISR 或 SSR，让服务端返回的初始 HTML 包含完整正文。CSR 更适合后台系统和交互密集的功能，不应承载需要收录的核心内容。\n\n2. **完善页面的抓取与索引信息**：使用 `metadata` 或 `generateMetadata` 为每个页面设置唯一的标题、描述和 Canonical URL；通过 `sitemap.xml` 提交重要页面，并使用 `robots.txt` 控制爬虫访问范围，避免误收录后台、接口和重复页面。\n\n3. **帮助搜索引擎理解内容**：使用语义化 HTML 和清晰的标题层级组织正文，通过 `<a href>` 或 Next.js 的 `Link` 组件建立站内链接。文章、商品等页面还可以添加 JSON-LD 结构化数据，使搜索引擎更准确地识别内容类型。\n\n4. **优化加载速度与用户体验**：使用 `next/image`、`next/font`、缓存和预渲染能力减少资源体积与请求时间，同时控制客户端 JavaScript 的数量，重点关注 LCP、INP 和 CLS 等 Core Web Vitals 指标。\n\nSEO 并不是一次性配置。网站上线后，还需要通过 Google Search Console 检查页面收录、抓取错误、结构化数据和搜索表现，并结合 Lighthouse 持续优化页面性能。\n>>>>>>> END\n</yolo_block>",
+      "id": "20771b2d-5252-47fd-a542-63bcd3b586fa",
+      "metadata": {
+        "model": {
+          "providerId": "codex",
+          "id": "codex/gpt-5.6-sol",
+          "model": "gpt-5.6-sol",
+          "name": "gpt-5.6-sol",
+          "reasoningType": "openai",
+          "modalities": [
+            "text",
+            "vision"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            }
+          }
+        },
+        "usage": {
+          "prompt_tokens": 15553,
+          "completion_tokens": 602,
+          "total_tokens": 16155
+        },
+        "durationMs": 12471,
+        "generationState": "completed",
+        "branchConversationId": "d465e4a4-6bcd-4d02-bb78-f28562cb75b2",
+        "branchModelId": "codex/gpt-5.6-sol",
+        "branchLabel": "gpt-5.6-sol"
+      }
+    }
+  ],
+  "createdAt": 1786007028743,
+  "updatedAt": 1786087915901,
+  "schemaVersion": 1,
+  "overrides": {
+    "chatMode": "agent",
+    "agentYoloEnabled": false
+  },
+  "conversationModelId": "codex/gpt-5.6-sol",
+  "messageModelMap": {
+    "1b29fdc8-176b-4ed6-9a80-a648123f8cad": "deepseek/deepseek-v4-pro",
+    "e154c458-4dc8-4dc8-bd44-54e702001224": "deepseek/deepseek-v4-flash",
+    "8414e2dc-2de9-48b6-9a18-0656cdfdc19e": "deepseek/deepseek-v4-flash",
+    "7d97032d-d157-4fe5-afe6-79915d0557ae": "codex/gpt-5.6-sol",
+    "a70426ed-61e2-4ad0-a705-8b5852054269": "codex/gpt-5.6-sol"
+  },
+  "assistantGroupBoundaryMessageIds": [],
+  "reasoningLevel": "auto",
+  "compaction": [],
+  "origin": "user"
+}
