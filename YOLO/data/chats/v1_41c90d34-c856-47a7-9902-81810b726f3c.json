@@ -369,10 +369,86 @@
         "branchLabel": "deepseek-v4-pro",
         "reasoningDurationMs": 3833
       }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "TanStack Table 的使… (44 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "TanStack Table 的使用.md (44 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/TypeScript/TanStack Table 的使用.md",
+                    "startLine": 310,
+                    "endLine": 334,
+                    "source": "selection-sync",
+                    "contentHash": "e02f3115",
+                    "contentCount": 44,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 在帮我优化润色一下这段",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "2f6672a8"
+      },
+      "id": "1422990e-541a-4840-8aae-ca08dcfff0ef",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "#### 4. 使用 useTable (users.tsx)\n\n```tsx\n  const table = useTable({\n    features: dataTableFeatures,\n    data: users,\n    columns: userColumns,\n    defaultColumn: {\n      size: 140,\n      minSize: 80,\n      maxSize: 420,\n    },\n    state: { columnFilters, pagination: { pageIndex, pageSize } },\n    onColumnFiltersChange: setColumnFilters,\n    onPaginationChange: handlePageChange,\n    autoResetPageIndex: false,\n    initialState: {\n      columnVisibility: { group: false, search: false },\n    },\n  });\n  \n  ...\n  \n  <UserTable table={table}><UserTable/>\n```",
+          "file": "Development/TypeScript/TanStack Table 的使用.md",
+          "startLine": 310,
+          "endLine": 334,
+          "source": "selection-sync",
+          "contentHash": "e02f3115",
+          "contentCount": 44,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-17 15:18 (Monday)"
     }
   ],
   "createdAt": 1786950535521,
-  "updatedAt": 1786950757997,
+  "updatedAt": 1786951136379,
   "schemaVersion": 1,
   "compaction": [],
   "origin": "user",
@@ -382,7 +458,8 @@
   },
   "conversationModelId": "deepseek/deepseek-v4-pro",
   "messageModelMap": {
-    "8138a427-3fe4-4526-80e6-86207710ab7d": "deepseek/deepseek-v4-pro"
+    "8138a427-3fe4-4526-80e6-86207710ab7d": "deepseek/deepseek-v4-pro",
+    "1422990e-541a-4840-8aae-ca08dcfff0ef": "deepseek/deepseek-v4-pro"
   },
   "assistantGroupBoundaryMessageIds": [],
   "reasoningLevel": "auto"

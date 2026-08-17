@@ -11,6 +11,17 @@
       ],
       "createdAt": 1786950535514,
       "updatedAt": 1786950535514
+    },
+    "2f6672a8": {
+      "hash": "2f6672a8",
+      "content": [
+        {
+          "type": "text",
+          "text": "<user_selected_content path=\"Development/TypeScript/TanStack Table 的使用.md\" startLine=\"310\" endLine=\"334\">\n```Development/TypeScript/TanStack Table 的使用.md\n310|#### 4. 使用 useTable (users.tsx)\n311|\n312|```tsx\n313|  const table = useTable({\n314|    features: dataTableFeatures,\n315|    data: users,\n316|    columns: userColumns,\n317|    defaultColumn: {\n318|      size: 140,\n319|      minSize: 80,\n320|      maxSize: 420,\n321|    },\n322|    state: { columnFilters, pagination: { pageIndex, pageSize } },\n323|    onColumnFiltersChange: setColumnFilters,\n324|    onPaginationChange: handlePageChange,\n325|    autoResetPageIndex: false,\n326|    initialState: {\n327|      columnVisibility: { group: false, search: false },\n328|    },\n329|  });\n330|  \n331|  ...\n332|  \n333|  <UserTable table={table}><UserTable/>\n334|```\n```\n</user_selected_content>\n\n\nTanStack Table 的使用.md (44 词/字) 在帮我优化润色一下这段\n\n"
+        }
+      ],
+      "createdAt": 1786951136196,
+      "updatedAt": 1786951136196
     }
   }
 }
