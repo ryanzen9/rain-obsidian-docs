@@ -228,3 +228,26 @@ const columns: ColumnDef<typeof features, User>[] = [
 ]
 ```
 
+在 v9 中可以使用 `createColumnHelper` 来进行定义(利于  Typescript 推导)：
+
+```tsx
+const columnHelper = createColumnHelper<typeof features, User>()
+
+const columns = columnHelper.columns([
+  columnHelper.accessor("name", {
+    header: "姓名",
+
+    cell: (info) => {
+      return info.getValue()
+    },
+  }),
+
+  columnHelper.accessor("age", {
+    header: "年龄",
+
+    cell: (info) => {
+      return `${info.getValue()} 岁`
+    },
+  }),
+])
+```
