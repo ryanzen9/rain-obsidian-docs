@@ -200,6 +200,7 @@ interface User{
 > 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
 > features 在 v9 中指使用 tableFeatures 引入的对象
 > 分为三种： Accessor列， Display列， Group 列
+> tip： 应该让 accessor 保持原始、有语义的数据值，再通过 `cell` 转换成 Badge、货币、日期等 UI。这样排序、过滤和服务端查询逻辑都更稳定。
 
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
