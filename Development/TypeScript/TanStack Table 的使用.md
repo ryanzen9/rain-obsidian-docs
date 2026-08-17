@@ -199,6 +199,7 @@ interface User{
 
 > 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
 > features 在 v9 中指使用 tableFeatures 引入的对象
+> 分为三种： Accessor列， Display列， Group 列
 
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
@@ -260,6 +261,20 @@ const columns = columnHelper.columns([
       编辑 {row.original.name}
     </Button>
   ),
+}),
+
+columnHelper.group({
+  header: "用户信息",
+
+  columns: [
+    columnHelper.accessor("name", {
+      header: "姓名",
+    }),
+
+    columnHelper.accessor("age", {
+      header: "年龄",
+    }),
+  ],
 })
 ])
 ```
