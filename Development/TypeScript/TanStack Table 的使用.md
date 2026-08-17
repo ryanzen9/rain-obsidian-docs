@@ -178,13 +178,15 @@ const table = useTable({
 
 ### 示例
 
-以定义一套 User Table 为例。
+下面以一套 **User 表格**为例，演示从数据模型到列定义的完整写法。为了贯彻"逻辑与 UI 分离"的思路，示例将定义拆分为两个文件：
 
-**对象模型定义**： 在 `users/_components/user-table/data.ts`
+- `users/_components/user-table/data.ts` —— 数据模型与示例数据
+- `users/_components/user-table/column.ts` —— 列定义
+
+#### 1. 数据模型（data.ts）
 
 ```typescript
-
-interface User{
+export interface User {
   id: string
   name: string
   age: number
@@ -193,19 +195,42 @@ interface User{
   createdAt: string
 }
 
+export const users: User[] = [
+  {
+    id: "1",
+    name: "张三",
+    age: 28,
+    email: "zhangsan@example.com",
+    status: "active",
+    createdAt: "2026-08-01",
+  },
+  // ...
+]
 ```
 
-**列定义**： 在 `users/_components/user-table/column.ts`
+`User` 是表格要展示的数据对象，`users` 数组即 `useTable` 的 `data` 入参。
 
-> 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
-> features 在 v9 中指使用 tableFeatures 引入的对象
-> 分为三种： Accessor列， Display列， Group 列
-> tip： 应该让 accessor 保持原始、有语义的数据值，再通过 `cell` 转换成 Badge、货币、日期等 UI。这样排序、过滤和服务端查询逻辑都更稳定。
+#### 2. 列定义（column.ts）
+
+TanStack Table 提供三种列类型，分别适用于不同场景：
+
+| 类型 | 定义方式 | 说明 |
+| --- | --- | --- |
+| **Accessor 列** | `accessorKey` / `accessorFn` | 从数据对象中提取字段值，用于展示原始数据（如姓名、年龄） |
+| **Display 列** | `display` | 不绑定任何字段，仅用于自定义渲染（如操作按钮、勾选框） |
+| **Group 列** | `group` | 将多个子列聚合到同一表头下（如多级表头） |
+
+> **Tip**：尽量让 accessor 保持**原始、有语义**的数据值（如时间戳、状态码），再通过 `cell` 转换成 Badge、货币、日期等 UI 表现。这样排序、过滤以及服务端查询的逻辑都更稳定，UI 变化也不会污染数据层。
+
+> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。
+
+最简单的写法是直接声明 `ColumnDef` 数组：
 
 ```tsx
 import type { ColumnDef } from "@tanstack/react-table"
 
 const columns: ColumnDef<typeof features, User>[] = [
+  // Accessor 列：直接映射字段
   {
     accessorKey: "name",
     header: "姓名",
@@ -214,68 +239,70 @@ const columns: ColumnDef<typeof features, User>[] = [
     accessorKey: "age",
     header: "年龄",
   },
+  // Display 列：渲染操作按钮
   {
-	 id: 'action',
-	 header: '操作',
-	 cell: ({row}) => {
-		 const user = row.original
+    id: "actions",
+    header: "操作",
+    cell: ({ row }) => {
+      const user = row.original
 
-	     return (
-	      <Button onClick={() => editUser(user.id)}>	
-	        编辑
-	      </Button>
-	    )
-	 }
-  }
+      return (
+        <Button onClick={() => editUser(user.id)}>
+          编辑
+        </Button>
+      )
+    },
+  },
 ]
 ```
 
-在 v9 中可以使用 `createColumnHelper` 来进行定义(利于  Typescript 推导)：
+> 示例中的 `Button`、`editUser` 为项目自定义组件与函数，可按实际 UI 替换。
+
+#### 3. 使用 createColumnHelper（推荐）
+
+直接手写对象的方式类型推导不够精确。V9 中推荐使用 `createColumnHelper` 来定义列，它用 `accessor` / `display` / `group` 三个方法分别对应上述三种列类型，并带来完整的 TypeScript 类型推导：
 
 ```tsx
+import { createColumnHelper } from "@tanstack/react-table"
+
 const columnHelper = createColumnHelper<typeof features, User>()
 
 const columns = columnHelper.columns([
+  // Accessor 列
   columnHelper.accessor("name", {
     header: "姓名",
-
-    cell: (info) => {
-      return info.getValue()
-    },
+    cell: (info) => info.getValue(),
   }),
 
   columnHelper.accessor("age", {
     header: "年龄",
-
-    cell: (info) => {
-      return `${info.getValue()} 岁`
-    },
+    cell: (info) => `${info.getValue()} 岁`,
   }),
-  
+
+  // Display 列
   columnHelper.display({
-  id: "actions",
+    id: "actions",
+    header: "操作",
+    cell: ({ row }) => (
+      <Button>
+        编辑 {row.original.name}
+      </Button>
+    ),
+  }),
 
-  header: "操作",
-
-  cell: ({ row }) => (
-    <Button>
-      编辑 {row.original.name}
-    </Button>
-  ),
-}),
-
-columnHelper.group({
-  header: "用户信息",
-
-  columns: [
-    columnHelper.accessor("name", {
-      header: "姓名",
-    }),
-
-    columnHelper.accessor("age", {
-      header: "年龄",
-    }),
-  ],
-})
+  // Group 列：多级表头
+  columnHelper.group({
+    header: "用户信息",
+    columns: [
+      columnHelper.accessor("name", {
+        header: "姓名",
+      }),
+      columnHelper.accessor("age", {
+        header: "年龄",
+      }),
+    ],
+  }),
 ])
 ```
+
+`columnHelper.accessor("name", ...)` 中的 `"name"` 会被推断为 `User` 的字段名，拼错字段或传错类型时 TypeScript 会直接报错；`cell` 回调中的 `info.getValue()` 也会自动推导出对应字段的类型（如 `name` 为 `string`、`age` 为 `number`），无需手动标注。
