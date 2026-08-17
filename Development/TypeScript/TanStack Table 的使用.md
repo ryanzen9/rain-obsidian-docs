@@ -182,7 +182,7 @@ const table = useTable({
 
 - `users/_components/user-table/data.ts` —— 数据模型与示例数据
 - `users/_components/user-table/column.ts` —— 列定义
-- `users/_components/user-table/users.tsx` —— 
+- `users/_components/user-table/users.tsx` —— ，
 
 #### 1. 数据模型（data.ts）
 
