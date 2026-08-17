@@ -180,4 +180,34 @@ const table = useTable({
 
 以定义一套 User Table 为例。
 
-**列定义**： 
+**对象模型定义**： 在 `users/_components/user-table/data.ts`
+
+```typescript
+
+interface User{
+  id: string
+  name: string
+  age: number
+  email: string
+  status: "active" | "disabled"
+  createdAt: string
+}
+
+```
+
+**列定义**： 在 `users/_components/user-table/column.ts`
+
+```ts
+import type { ColumnDef } from "@tanstack/react-table"
+
+const columns: ColumnDef<typeof features, User>[] = [
+  {
+    accessorKey: "name",
+    header: "姓名",
+  },
+  {
+    accessorKey: "age",
+    header: "年龄",
+  },
+]
+```
