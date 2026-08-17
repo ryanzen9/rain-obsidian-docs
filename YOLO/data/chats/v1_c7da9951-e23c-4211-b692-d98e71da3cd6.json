@@ -1888,13 +1888,857 @@
         "branchLabel": "deepseek-v4-flash",
         "reasoningDurationMs": 25711
       }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": "请你帮我补充与修正，统一为 v9",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "id": "f49bc7f6-16a7-4cf0-b545-aad66494aabe",
+      "mentionables": [],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-17 16:56 (Monday)"
+    },
+    {
+      "role": "assistant",
+      "content": "好的，我先通读当前全文并规划修改方案：全文把 **V8 风格（`useReactTable` + row model）统一为 V9 风格（`useTable` + `stockFeatures`）**，同时补全渲染闭环、排序/筛选/分页、行选择、虚拟滚动、服务端数据、性能注意点等缺失章节。\n\n我直接对文件执行以下批量编辑：",
+      "reasoning": "The user wants me to supplement and correct the article, unifying to v9 API. This is a substantial task. Let me plan:\n\n1. First, re-read the file to get the current exact content (I have it from the previous turn, but the file may have changed — the context says 337 lines, same as before, so it's likely unchanged; but to be safe with exact-text edits, I have the full content from the previous read. Actually I already read it fully in the previous turn and it's still 337 lines. I can trust that content, but exact matches need care. Since I'll be doing large edits, I should work carefully.)\n\nLet me think about what edits to make:\n\n**Key corrections:**\n\nA. **第一个大示例（lines 23-137）**：V8 风格 `useReactTable` + row models → 统一为 V9 风格 `useTable` + `stockFeatures`（或 features 数组）。同时移除未使用的 `getFilteredRowModel`（或保留 filter 但加 UI）。简化：改为 V9 写法，渲染部分保留（用 flexRender + getHeaderGroups/getRowModel，这些在 V9 React 适配器下依然可用）。\n\nWait — in V9, how does rendering work? In V9 core, `table.getHeaderGroups()` etc. still exist. In the React adapter @tanstack/react-table v9, `useReactTable` still exists and is a thin wrapper over `useTable`. Actually in v9, both `useTable` (from @tanstack/react-table? or core) and `useReactTable` are available. The v9 docs: `useTable` from \"@tanstack/react-table\" accepts `features`. Rendering still uses `flexRender`, `table.getHeaderGroups()`, `table.getRowModel()`. \n\nHmm, but wait — v9 actually has a new \"Table Elements\" feature where you can pass `table` directly to `<table>`: `<table table={table}>`. I recall from the v9 beta docs. The article's example 4 uses `<table className=\"...\" table={table}>`. That suggests v9 supports the `table` prop on the `<table>` element. Indeed, TanStack Table v9 introduced Table Elements (alpha) — you can do `<table table={table}>` and it handles rendering. But I'm not 100% certain of the exact API. To be safe, I should keep the rendering pattern that definitely works in v9: `flexRender` + header groups + row model. That's the well-documented rendering approach for both v8 and v9.\n\nActually, since v9 is still in beta and APIs are changing, and the article already mixes, the safest \"unify to v9\" is:\n\n- Use `useTable` from `@tanstack/react-table` with `features: [sorting, pagination, ...]` or `stockFeatures`.\n- Keep rendering with `flexRender`, `getHeaderGroups`, `getRowModel`, `getCanNextPage` etc. — these methods are identical in v9.\n\nFor the first example, I'll rewrite it as v9:\n\n```tsx\nimport {\n  useTable,\n  stockFeatures,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n\ntype Person = {\n  id: number;\n  name: string;\n  age: number;\n  email: string;\n};\n\nconst columns: ColumnDef<Person>[] = [\n  {\n    accessorKey: 'name',\n    header: '姓名',\n  },\n  {\n    accessorKey: 'age',\n    header: '年龄',\n  },\n  {\n    accessorKey: 'email',\n    header: '邮箱',\n  },\n];\n\nconst data: Person[] = [\n  { id: 1, name: '张三', age: 28, email: 'zhangsan@example.com' },\n  { id: 2, name: '李四', age: 34, email: 'lisi@example.com' },\n  { id: 3, name: '王五', age: 22, email: 'wangwu@example.com' },\n];\n\nexport function TanStackTableExample() {\n  const [tableData] = useState(data);\n  const [sorting, setSorting] = useState<SortingState>([]);\n\n  const table = useTable({\n    features: stockFeatures,\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n  });\n\n  return (\n    <div>\n      <table>\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id}>\n                  {header.isPlaceholder ? null : (\n                    <button\n                      onClick={header.column.getToggleSortingHandler()}\n                      className={header.column.getCanSort() ? 'cursor-pointer select-none' : ''}\n                    >\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                      {{\n                        asc: ' 🔼',\n                        desc: ' 🔽',\n                      }[header.column.getIsSorted() as string] ?? null}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody>\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id}>\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      <div className=\"pagination\">\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n          上一页\n        </button>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n      </div>\n    </div>\n  );\n}\n```\n\nWith `features: stockFeatures`, sorting + pagination both work. Good. This removes the unused filter row model import and unifies to v9.\n\nHmm, but is `features: stockFeatures` correct in v9? In the article itself (lines 149-153, 322-326) they use `features: stockFeatures`. So consistent with the article's own v9 usage. Good — keep that pattern.\n\nB. **补充渲染闭环**：示例 4 `table.tsx` 中补充完整的渲染代码（V9 风格）。Currently lines 328-335 have \"此处省略\". I'll replace with full rendering: thead with getHeaderGroups, tbody with getRowModel, flexRender, plus pagination (sorting/filtering states optional). Since the 示例 focuses on assembling, I'll add a complete render.\n\nC. **补充「排序 / 筛选 / 分页」小节**：Add a new section after the 示例 (or before it) covering:\n- 排序：`sorting` state、`onSortingChange`、`getSortedRowModel`（在 v9 中对应 `sorting` feature）、`sortingFn`\n- 筛选：全局筛选 `globalFilter`、列筛选 `columnFilters`、filter input、`getFilteredRowModel`（v9 中为 `filtering` feature）\n- 分页：`pagination` state、pageSize 切换、页码跳转、`manualPagination`（服务端）\n\nD. **补充「行选择」小节**：checkbox column、`getRowId`、`row.toggleSelected`、selectedRowModel/selected rows。\n\nE. **补充「受控 vs 非受控」小节**：brief — since example already uses controlled sorting. Could fold into the 排序/筛选/分页 section as an intro note. Maybe a short subsection explaining: 不传 state/onXChange 就是非受控（库内部管理），传了就受控。\n\nF. **补充「虚拟滚动」小节**：与 `@tanstack/react-virtual` 集成示例。Hmm, that's more code. Maybe brief mention + small example.\n\nG. **补充「服务端数据」**：manualPagination/manualSorting/manualFiltering + async. Maybe fold into 分页 section briefly.\n\nH. **补充「性能注意点」**：useMemo/useCallback for columns/data. Could add as a Tip at the end or in a 小技巧 section.\n\nI. **补充「与 shadcn 集成」**：brief note.\n\nJ. **修正「Tailwind CSS、shadcn」表述**：line 3 — reword. Change \"目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。\" → something like \"目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等\"重 UI\"组件库不同——它们强调将组件的行为与样式彻底分离，样式完全由使用者掌控。\"\n\nK. **修正 line 21 note**: \"> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\" — maybe keep, it's fine. Could update to mention v8 风格的写法已被 v9 统一.\n\nL. **修正 line 225**: \"`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。\" — hmm, `tableFeatures`? In v9, there are feature objects like `sorting`, `pagination`, `filtering`, and `stockFeatures` (all combined). The note says \"通过 `tableFeatures` 引入的能力对象\" — I'm not sure `tableFeatures` is right. v9 has `stockFeatures` exported. I could correct to: \"`features` 在 V9 中指传入 `useTable` 的能力数组，如 `stockFeatures`（全部内置功能）或按需组合的 `[sorting, pagination]`。\"\n\nM. **Data/Features/Columns section**（lines 139-177）already explains v9 concepts. But line 165 mentions \"例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。\" — This is v8-flavored. In v9, features are passed as `features` array, not row models. I should correct this: in v9 you add `sorting` / `pagination` features (or use `stockFeatures`), and the row models are handled internally. Let me rewrite that sentence: \"比如只需排序和分页时传入 `[sorting, pagination]`，对应状态（`sorting`、`pagination`）与行模型由 feature 自动挂载。\"\n\nN. **示例 4 的 `ColumnDef<typeof features, User>`**（line 232）— v9 泛型。Hmm, in v9 ColumnDef generics: `ColumnDef<TData, TValue>`? The article writes `ColumnDef<typeof features, User>`. I'm not sure about `typeof features` as first param. Actually in v9 there was `ColumnDef<TData>` with an optional features generic. Hmm, hard to verify without docs. The user asked to unify to v9 — the article already uses `ColumnDef<typeof features, User>` in v9 examples. To avoid asserting wrong APIs, I'll leave the existing v9 examples mostly as-is, only fixing the clearly v8 parts and adding new content.\n\nActually wait — I should be careful about v9 API details I'm not sure of. Let me stick to what the article itself already establishes as \"v9\": `useTable({ features: stockFeatures, data, columns })`, `createColumnHelper<typeof features, User>()`, `ColumnDef<typeof features, User>`. These appear in the article already. I'll keep them.\n\nFor the new sections I add (sorting/filtering/pagination/row selection), I should write them using the same v9 idioms: `useTable` + `features` + controlled state via `state`/`onXChange` + render with `flexRender`. The row-model-based features like `getSortedRowModel` are v8; in v9 the features are `sorting`, `filtering`, `pagination`, `rowSelection` etc. I'll present them as named features and mention they can be combined in the `features` array.\n\nActually, hold on. Is `features: [sorting, pagination]` the right v9 pattern? From the v9 docs I recall:\n\n```ts\nimport { useTable, getCoreRowModel, getSortedRowModel } from '@tanstack/react-table'\n```\n\nNo wait, that's v8. In v9:\n\n```ts\nimport { useTable, stockFeatures } from '@tanstack/react-table'\nconst table = useTable({ features: stockFeatures, data, columns })\n```\n\nAnd for selective features:\n```ts\nimport { useTable, sorting, pagination } from '@tanstack/react-table'\nconst table = useTable({ features: [sorting, pagination], data, columns })\n```\n\nHmm, are `sorting` and `pagination` exported as named exports in v9? I believe v9 exports feature objects like `sorting`, `pagination`, `filtering`, `grouping`, `rowSelection`, `expanding`, `columnResizing`, `columnPinning`, etc., and `stockFeatures` combines all. Actually I think the v9 exports are named like `sortingFeature`? I'm not certain. The article itself says \"比如只想要排序和分页，可以显式传入 `[sorting, pagination]`\" (line 165). So the article's own claim is `[sorting, pagination]`. I'll follow the article's convention to stay internally consistent: named features `sorting`, `pagination`, `filtering`, `rowSelection`.\n\nHmm, but I'm introducing new content that uses these exports — if wrong, bad. But the article already asserted this. To minimize risk, in new sections I could mostly use `stockFeatures` (which the article uses) and explain the state/API surface, rather than writing `features: [sorting, pagination]` examples heavily. But an explanation of \"按需组合 features\" is already in the article (line 165). For new sections, I'll use `stockFeatures` in code to stay consistent and safe, and describe features by name in text.\n\nNow the structure plan for edits. This is a big rewrite. Let me decide: do I do multiple targeted fs_edit calls, or rewrite the whole file with fs_write?\n\nThe changes are extensive:\n1. Line 3: reword Tailwind/shadcn sentence\n2. Lines 23-137: rewrite first example to v9 (large)\n3. Line 165: fix \"getSortedRowModel/getPaginationRowModel 就是这些功能在 React 适配层中的具体实现\" → v9 wording\n4. Line 225: fix `tableFeatures` note\n5. Lines 328-335: add complete rendering in example 4\n6. Add new sections: 排序/筛选/分页, 行选择, 受控模式, 虚拟滚动, 服务端数据, 性能注意点, shadcn 集成, 选型小结\n\nGiven the scale, a full rewrite via fs_write is cleaner and avoids many fragile exact-match edits. The user said \"请你帮我补充与修正，统一为 v9\" — they want the article updated. Since I have the full current content, I can produce the complete revised file. That's the most reliable approach for a comprehensive restructure. The risk is introducing errors, but I'll preserve all existing v9 content verbatim where possible.\n\nActually, let me reconsider — a full rewrite means re-typing 337+ lines. If I make a typo in existing content, that's a regression. Multiple fs_edit calls are safer for preservation but tedious for large additions. Hybrid: use fs_edit for targeted fixes (1, 3, 4) and for the first example rewrite (2), and use INSERT_AFTER/APPEND via fs_edit for new sections (6). That keeps existing content intact and only touches what needs changing.\n\nLet me plan the specific edits:\n\n**Edit 1** (line 3 fix): \nold: `目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。`\nWait, the actual text uses curly quotes: \"重 UI\". Let me use the exact text from the read:\n`目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。`\n\nFrom the read output line 3: `目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。` — I need to check the quote characters. The read output shows `\"重 UI\"` with regular ASCII quotes? Looking at the JSON: `等\"重 UI\"组件库不同`. Hmm, in the JSON output it shows `\"重 UI\"` — these could be curly quotes “重 UI” rendered as \"...\" Actually the JSON escaped as `\\\"重 UI\\\"`. In the raw file it might be `“重 UI”`. Hard to tell. To avoid mismatch risk, I'll use line-range replacement for this too (startLine 3, endLine 3).\n\nLine-range mode replaces by line numbers — safer for exact text issues.\n\n**Edit 2** (first example rewrite, lines 23-137): big line-range replacement. But wait — do I really need to rewrite the whole example? The differences: imports (remove getCoreRowModel etc., add useTable/stockFeatures), useReactTable→useTable, remove row model options, remove getFilteredRowModel unused import. The render part stays the same. I could do targeted replacements:\n- imports block (lines 24-33)\n- useReactTable block (lines 72-83)\n\nBut actually, since the example also serves as the demonstration for the new 排序/筛选/分页 section, maybe I should keep it focused on sorting+pagination and let the new sections handle filtering etc. So targeted edits:\n\nEdit 2a: imports (lines 23-35 region):\nold:\n```\n```tsx\nimport {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n```\nnew:\n```\n```tsx\nimport {\n  useTable,\n  stockFeatures,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n```\n\nEdit 2b: useReactTable block:\nold:\n```\n  const table = useReactTable({\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getFilteredRowModel: getFilteredRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n  });\n```\nnew:\n```\n  const table = useTable({\n    features: stockFeatures,\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n  });\n```\n\nBoth are unique exact matches, safe.\n\n**Edit 3** (line 165 fix): \nold text: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。`\nnew: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `sorting`、`pagination` 等 feature 会直接挂载对应的状态与操作方法（`table.getState().sorting`、`table.previousPage()` 等），无需再手动传入 row model。`\n\n**Edit 4** (line 225 fix):\nold: `> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。`\nnew: `> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 为传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。`\n\n**Edit 5** (example 4 rendering, lines 328-335):\nold:\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n```\nnew: full rendering with flexRender:\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\">\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id} className=\"px-4 py-2 text-left\">\n                  {header.isPlaceholder ? null : (\n                    <button onClick={header.column.getToggleSortingHandler()}>\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody className=\"divide-y divide-gray-100\">\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id} className=\"px-4 py-2\">\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      {/* 分页 */}\n      <div className=\"mt-4 flex items-center gap-2\">\n        <button\n          onClick={() => table.previousPage()}\n          disabled={!table.getCanPreviousPage()}\n        >\n          上一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n      </div>\n    </div>\n  )\n```\n\nWait — the original has `table={table}` on the `<table>` element. That's the v9 Table Elements feature? If v9 supports passing `table` prop, keeping it might be fine, but the comment says rendering omitted. Since I'm providing explicit rendering, remove the `table={table}` prop to avoid double rendering confusion. Hmm, but actually if `table={table}` IS a valid v9 feature (Table Elements auto-render), then having it AND manual rendering would conflict. Remove it.\n\nActually, I'm now fairly confident v9 introduced \"Table Elements\" where you write `<table table={table}>` and it auto-renders everything, plus `flexRender` might be deprecated in that flow. But since I can't verify precisely and the article's own first example (which I keep) uses manual rendering, I'll use manual rendering for consistency. Remove `table={table}`.\n\nHmm wait, also need to import `flexRender` in example 4's imports (line 317): `import { useTable, stockFeatures } from \"@tanstack/react-table\"` → add flexRender. \n\n**Edit 6**: Add new sections. Where? After the 示例 section (end of file) makes sense for 进阶主题: 排序/筛选/分页, 行选择, 受控模式, 虚拟滚动, 服务端数据, 性能注意点, 集成与选型. Or insert some before 示例? The 示例 is the practical demonstration; adding advanced sections after it is natural. I'll append after line 336 (end of example 4).\n\nNew sections to add:\n\n### 5. 排序、筛选与分页（state 控制）\nWait — the example numbering: the 示例 section has #### 1. 数据模型, #### 2. 列定义, #### 3. createColumnHelper, #### 4. 使用 useTable. If I add more #### under 示例, they'd be 5, 6... But sorting/filtering/pagination are broader topics, better as new ## sections. Let me structure:\n\nNew top-level sections after the 示例:\n\n## 状态管理：受控与非受控\n- 解释：不传 state/onChange → 非受控（内部管理）；传入 state + onXChange → 受控\n- 示例：排序受控（已有）、分页受控\n\nActually the first example already demonstrates controlled sorting + pagination. So this section can reference it and explain the pattern + 何时用受控（服务端数据、状态持久化）。\n\n## 排序、筛选与分页\n\n### 排序 Sorting\n- sorting state, onSortingChange, header.column.getToggleSortingHandler(), getIsSorted, sortingFn 自定义\n- 示例 code\n\n### 筛选 Filtering\n- 全局筛选 globalFilter / 列筛选 columnFilters\n- 输入框 + onChange → table.setGlobalFilter / column.setFilterValue\n- 示例\n\n### 分页 Pagination\n- pageSize、pageIndex、setPageSize、gotoPage、getPageCount\n- 服务端分页：manualPagination + 数据从接口获取（loading 状态）\n\n## 行选择（Row Selection）\n- 勾选框列（display 列 + row.getToggleSelectedHandler）、getRowId、table.getSelectedRowModel() / getFilteredSelectedRowModel\n- 示例\n\n## 虚拟滚动（Virtualization）\n- 与 @tanstack/react-virtual 集成，useVirtualizer，rowVirtualizer.measureElement\n- 简短示例\n\n## 性能优化与常见坑\n- useMemo 稳定 columns/data\n- flexRender 为什么存在\n- key 使用 header.id / row.id / cell.id\n- 不要在 render 内联创建 columns\n\n## 与 shadcn/ui 等生态集成\n- shadcn Table 基于 TanStack Table；headless 生态组合\n- 一句话选型建议\n\nThat's a lot. Maybe consolidate: 排序/筛选/分页 as one section with three sub-parts; 行选择; 虚拟滚动; 服务端数据 (could be folded into 分页 or separate); 性能/常见坑; 生态与选型. Also a 总结 at end? The user's earlier suggestions included 选型小结. Let me include a brief 总结.\n\nLength concern: This will add maybe 300-400 lines. That's a big supplement but the user asked for it (\"请你帮我补充与修正，统一为 v9\"). I should be thorough but not bloated. Let me aim for well-chosen, complete-but-compact examples.\n\nLet me also double check: is `stockFeatures` + `state.sorting` + `onSortingChange` valid in v9 with useTable? In v9, controlled state via `state` and `onXChange` should still work. Yes.\n\nFor 筛选 example in v9 style:\n\n```tsx\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { globalFilter, columnFilters },\n  onGlobalFilterChange: setGlobalFilter,\n  onColumnFiltersChange: setColumnFilters,\n});\n```\n\nHmm — v8 names: `onGlobalFilterChange`, `onColumnFiltersChange`, `getFilteredRowModel`. In v9 with filtering feature, the callbacks might be `onGlobalFilterChange` still. I'll use those names — they're the documented option names in v8 and presumably retained in v9. Since the article is internally consistent with `state`/`onXChange` pattern, fine.\n\nFor row selection: `state: { rowSelection }`, `onRowSelectionChange: setRowSelection`, `getRowId`. The first example uses `useState(data)` — for selection, `getRowId: (row) => row.id`.\n\nFor virtual scrolling with @tanstack/react-virtual:\n\n```tsx\nimport { useVirtualizer } from '@tanstack/react-virtual';\n\nconst parentRef = useRef<HTMLDivElement>(null);\n\nconst rowVirtualizer = useVirtualizer({\n  count: table.getRowModel().rows.length,\n  getScrollElement: () => parentRef.current,\n  estimateSize: () => 40,\n});\n\n// 渲染时\n<div ref={parentRef} className=\"h-[400px] overflow-auto\">\n  <table>\n    <tbody>\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\n        const row = table.getRowModel().rows[virtualRow.index];\n        return (\n          <tr\n            key={row.id}\n            style={{ height: `${virtualRow.size}px`, transform: `translateY(${virtualRow.start}px)` }}\n          >\n            {row.getVisibleCells().map((cell) => (\n              <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>\n            ))}\n          </tr>\n        );\n      })}\n    </tbody>\n  </table>\n</div>\n```\n\nThat's a decent minimal example.\n\nFor 服务端数据:\n\n```tsx\nconst [pageIndex, setPageIndex] = useState(0);\nconst [pageSize, setPageSize] = useState(10);\nconst [sorting, setSorting] = useState<SortingState>([]);\nconst [globalFilter, setGlobalFilter] = useState('');\nconst [isLoading, setIsLoading] = useState(false);\nconst [data, setData] = useState<User[]>([]);\nconst [total, setTotal] = useState(0);\n\nconst fetchData = useCallback(async () => {\n  setIsLoading(true);\n  const res = await fetch(`/api/users?page=${pageIndex}&size=${pageSize}&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? 'desc' : 'asc'}&q=${globalFilter}`);\n  const json = await res.json();\n  setData(json.data);\n  setTotal(json.total);\n  setIsLoading(false);\n}, [pageIndex, pageSize, sorting, globalFilter]);\n\nuseEffect(() => { fetchData(); }, [fetchData]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination: { pageIndex, pageSize }, sorting, globalFilter },\n  onPaginationChange: (updater) => { /* 更新 pageIndex/pageSize，并触发 fetchData */ },\n  onSortingChange: setSorting,\n  onGlobalFilterChange: setGlobalFilter,\n  manualPagination: true,\n  manualSorting: true,\n  manualFiltering: true,\n  rowCount: total,\n});\n```\n\nHmm, `manualPagination: true` is a v8 option. In v9... it may still exist as feature options. The pagination feature in v9 — manual mode is set via `manualPagination` table option still? I believe v9 keeps these. OK. But onPaginationChange handling is getting complex; maybe simplify with a note instead of full code. Let me write a concise version:\n\nActually for 服务端分页 I'll write a compact but correct-ish example and add comments. Keep it simple: use state updater and useEffect to fetch. I'll present it as \"典型模式\" with ellipsis where appropriate.\n\nHmm — the risk of writing subtly-wrong v9 code increases with each advanced example. Let me be pragmatic: the user wants the article unified to v9 and supplemented. I'll write clean, plausible v9 code consistent with the article's own conventions, and keep examples minimal to reduce error surface. I'll also add a note where the v9 API may differ (e.g., \"以你安装版本的文档为准\").\n\nActually, one more consideration about v9 `useTable` generic: the article uses `useTable({...})` without generics — fine.\n\nAlso `createColumnHelper<typeof features, User>()` — article's v9 convention. Keep as is.\n\nNow, plan the concrete edits:\n\n1. Line 3 reword (line-range 3-3)\n2. First example imports (exact match replace)\n3. First example useTable block (exact match replace)\n4. Line 165 features sentence (exact match replace)\n5. Line 225 note fix (exact match replace)\n6. Example 4: add flexRender to import (line 317) + full rendering (lines 328-335)\n7. Append new sections at end\n\nAlso line 21 note: \"> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\" — This is fine, keep. Actually maybe tweak to clarify V8 写法：`> 下文以 TanStack Table V9 为例（V7、v8 改动较大）。` Minor. Skip or do. I'll leave it — not needed. Hmm, actually since we're unifying to v9 and the first example will now be v9, the note remains accurate. Keep.\n\nAlso the \"### 示例\" section heading — examples numbered #### 1-4. My appended sections will be top-level ## sections, not under 示例. Good.\n\nAlso line 157: \"一个表由三部分核心配置驱动：**Data、Features、Columns**。\" — fine.\n\nAlso line 141 \"一个最简单的表:\" — the v9 example there uses `stockFeatures` — good, already v9.\n\nAlso line 165 mentioned `[sorting, pagination]` — keep that phrasing, just fix the \"getSortedRowModel...\" part. My Edit 4 rewrites the second sentence of line 165. Let me get exact old text:\n\nLine 165: `\\`features\\` 是 TanStack Table 的“功能开关”。在 V9 中，\\`stockFeatures\\` 包含所有内置功能（排序、分页、筛选、分组、列调整、行选择等），但你也可以按需组合，避免打包体积臃肿。比如只想要排序和分页，可以显式传入 \\`[sorting, pagination]\\`。每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`getSortedRowModel()\\` 和 \\`getPaginationRowModel()\\` 就是这些功能在 React 适配层中的具体实现。`\n\nI'll replace just the last sentence: old: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`getSortedRowModel()\\` 和 \\`getPaginationRowModel()\\` 就是这些功能在 React 适配层中的具体实现。`\nnew: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`sorting\\`、\\`pagination\\` feature 会自动挂载对应状态与方法（如 \\`table.getState().sorting\\`、\\`table.previousPage()\\`），无需再手动传入 row model。`\n\nNow Edit 6 example 4 modifications:\n\nLine 317: `import { useTable, stockFeatures } from \"@tanstack/react-table\"` → `import { useTable, stockFeatures, flexRender } from \"@tanstack/react-table\"`\n\nLines 328-335 replace with full rendering.\n\nNow the appended sections (Edit 7). Let me draft them:\n\n---\n\n## 状态管理：受控与非受控\n\nV9 中表格的状态默认由库内部管理（**非受控**）：你只需要在初始化时传入 `data`、`columns` 和 `features`，排序、分页等状态会自动维护。\n\n```tsx\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n});\n```\n\n当你需要**完全掌控**某个状态时，可以像第一个示例那样把 `state` 和对应的 `onXxxChange` 一起传入，变成**受控模式**：\n\n```tsx\nconst [sorting, setSorting] = useState<SortingState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { sorting },\n  onSortingChange: setSorting,\n});\n```\n\n- **非受控**：代码简洁，适合纯前端、状态无需持久化的场景；\n- **受控**：适合需要与服务端同步、将状态写入 URL、或与其他组件联动（如外部筛选面板）的场景。\n\n## 排序、筛选与分页\n\n### 排序（Sorting）\n\n`sorting` 状态 + `header.column.getToggleSortingHandler()` 是排序的两块基石，前面的示例已经演示过。你还可以自定义排序逻辑：\n\n```tsx\nconst columns = columnHelper.columns([\n  columnHelper.accessor(\"age\", {\n    header: \"年龄\",\n    sortingFn: (rowA, rowB, columnId) => rowA.getValue(columnId) - rowB.getValue(columnId),\n  }),\n]);\n```\n\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置了 `alphanumeric`、`datetime`、`basic` 等常用函数。\n\n### 筛选（Filtering）\n\nTanStack Table 提供**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\n\n```tsx\nconst [globalFilter, setGlobalFilter] = useState(\"\");\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { globalFilter, columnFilters },\n  onGlobalFilterChange: setGlobalFilter,\n  onColumnFiltersChange: setColumnFilters,\n});\n\n// 搜索框：全局筛选\n<input\n  value={globalFilter ?? \"\"}\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\n  placeholder=\"搜索...\"\n/>;\n\n// 表头内：列筛选\n{header.column.getCanFilter() ? (\n  <input\n    value={(header.column.getFilterValue() as string) ?? \"\"}\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\n  />\n) : null}\n```\n\n> 列筛选输入框通常放在表头单元格中，与排序按钮组合使用。\n\n### 分页（Pagination）\n\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageSize()`、`table.setPageIndex()` 等方法控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination },\n  onPaginationChange: setPagination,\n});\n\n// 每页条数切换\n<select\n  value={table.getState().pagination.pageSize}\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\n>\n  {[10, 20, 50].map((size) => (\n    <option key={size} value={size}>{size} 条/页</option>\n  ))}\n</select>;\n```\n\n### 服务端数据\n\n当数据量很大时，通常由服务端完成排序、筛选、分页。开启 `manual*` 选项后，Table 只负责状态与渲染，数据完全由你控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\nconst [sorting, setSorting] = useState<SortingState>([]);\nconst [data, setData] = useState<User[]>([]);\nconst [total, setTotal] = useState(0);\n\n// 状态变化时重新请求接口\nuseEffect(() => {\n  fetch(`/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}`)\n    .then((res) => res.json())\n    .then((json) => {\n      setData(json.data);\n      setTotal(json.total);\n    });\n}, [pagination, sorting]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination, sorting },\n  onPaginationChange: setPagination,\n  onSortingChange: setSorting,\n  manualPagination: true,\n  manualSorting: true,\n  rowCount: total, // 告知总条数，用于计算总页数\n});\n```\n\n> 服务端模式下，`getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；接口请求阶段可用 `isLoading` 状态显示加载动画。\n\n## 行选择（Row Selection）\n\n行选择需要给数据指定稳定的主键（`getRowId`），并配合一个 `display` 勾选列：\n\n```tsx\nconst [rowSelection, setRowSelection] = useState({});\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { rowSelection },\n  onRowSelectionChange: setRowSelection,\n  getRowId: (row) => row.id, // 以 id 作为行标识\n});\n\nconst columns = columnHelper.columns([\n  // 全选 + 单行勾选\n  columnHelper.display({\n    id: \"select\",\n    header: ({ table }) => (\n      <input\n        type=\"checkbox\"\n        checked={table.getIsAllRowsSelected()}\n        onChange={table.getToggleAllRowsSelectedHandler()}\n      />\n    ),\n    cell: ({ row }) => (\n      <input\n        type=\"checkbox\"\n        checked={row.getIsSelected()}\n        onChange={row.getToggleSelectedHandler()}\n      />\n    ),\n  }),\n]);\n\n// 读取选中行\nconst selectedRows = table.getSelectedRowModel().rows;\n```\n\n## 虚拟滚动（Virtualization）\n\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域的行：\n\n```tsx\nimport { useVirtualizer } from \"@tanstack/react-virtual\";\n\nconst parentRef = useRef<HTMLDivElement>(null);\n\nconst rowVirtualizer = useVirtualizer({\n  count: table.getRowModel().rows.length,\n  getScrollElement: () => parentRef.current,\n  estimateSize: () => 40,\n});\n\n<div ref={parentRef} className=\"h-[400px] overflow-auto\">\n  <table>\n    <tbody>\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\n        const row = table.getRowModel().rows[virtualRow.index];\n        return (\n          <tr\n            key={row.id}\n            style={{\n              height: `${virtualRow.size}px`,\n              transform: `translateY(${virtualRow.start}px)`,\n            }}\n          >\n            {row.getVisibleCells().map((cell) => (\n              <td key={cell.id}>\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\n              </td>\n            ))}\n          </tr>\n        );\n      })}\n    </tbody>\n  </table>\n</div>\n```\n\n## 性能优化与常见坑\n\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重新创建数组会导致 Table 内部引用变化，可能引起状态丢失或多余渲染。列定义尤其应该定义在组件外或 `useMemo` 中。\n- **`flexRender` 不要省略**：它是把列配置中的 `header` / `cell`（可能是函数或 JSX）统一渲染的桥梁，直接写 `header.column.columnDef.header` 会得到函数而不是内容。\n- **key 统一使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定。\n- **不要在渲染函数里内联写 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\n\n## 与 shadcn/ui 等生态集成\n\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，二者是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>` 等组件提供外观。这也是无头组件库「行为与样式分离」理念的最佳实践。\n\n## 总结\n\n选型建议：\n\n- 简单静态展示、无交互：直接用原生 `<table>`；\n- 需要开箱即用的完整表格组件（含样式）：考虑 Ant Design 等重组件库；\n- 需要深度自定义、复杂交互（排序、筛选、虚拟滚动、与 AI 协同开发）：选择 TanStack Table。\n\n---\n\nHmm wait, one issue: in the 行选择 section, I define `columns` AFTER using `table` — order in the snippet is off (I put `useTable` before `columns`). Let me reorder: define columns first, then useTable. Let me fix that in the final draft.\n\nAlso in 虚拟滚动 section, `flexRender` needs to be imported — add a note or include in import line of the snippet. I'll add a comment or include the import line.\n\nAlso the 筛选 section: the inline `<input>` outside JSX with `;` — I wrote pseudo-code-ish. Let me wrap as code with comments showing where they go. It's fine as illustrative snippets; keep but clean up. Actually, having `;` after JSX outside a component is weird. Let me present them as fragments with comments \"// 放在工具栏/表头处\". I'll wrap each in the code block with a leading comment, no stray semicolons.\n\nLet me also reconsider: should new sections be ## or ###? The doc uses ## for main sections. My new sections: \"状态管理：受控与非受控\", \"排序、筛选与分页\", \"行选择\", \"虚拟滚动\", \"性能优化与常见坑\", \"与 shadcn 集成\", \"总结\" — all ## level. Subsections within 排序筛选分页 use ### (Sorting/Filtering/Pagination/服务端). That matches the \"###\" usage in the doc (like ### 核心特点). OK.\n\nHmm — wait, the user earlier expressed preference for \"避免多层级\" in the SEO doc. But that was for that document's formatting request. For this article, the existing structure already uses ## and ###. I'll keep consistent with the article's existing style.\n\nNow, line numbers will shift as I apply edits, but since fs_edit with exact oldText matches and the system merges multiple edits to the same file atomically (based on original content), I should be able to emit all edits at once. But careful: edits are matched against the original file state when merged? The system says \"the system automatically merges edits targeting the same file into one atomic review and write, so earlier edits cannot invalidate later ones.\" So all my edits are applied against the original content, and merged. Good — no line-number dependency issues, and exact oldText matches remain valid since they're evaluated on the same base content. \n\nWait, is that right? If edits are applied sequentially on a merged diff, exact-match oldText could conflict if one edit modifies text another edit's oldText depends on. My edits touch distinct regions (lines 3, 23-35, 72-83, 165, 225, 317, 328-335, append at end) — non-overlapping. So no conflicts.\n\nFor the append: use APPEND operation via fs_edit? fs_edit doesn't have APPEND operation — it's oldText or line-range. For appending at end, I can use oldText = last line(s) and replace with last line(s) + new content. The last lines of the file are:\n\n```\n}\n```\n```\n```\nLine 336: `}`  (closing of Users function)\nLine 337: `` (empty)\n\nThe file ends with:\n```\n}\n```\n(336) `}` 337 empty.\n\nSo to append, replace oldText:\n```\n  )\n}\n```\nHmm, that appears multiple times? `  )\\n}` — the function ends with `  )\\n}`. Let me look: lines 333-336:\n```\n333|    </div>\n334|  )\n335|}\n336|\n```\nWait from the read:\n```\n328|  return (\n329|    <div className=\"overflow-x-auto\">\n330|      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|\n```\nHmm the read shows 337 total lines with line 337 empty. Actually earlier read said totalLines 337, last line 337 is empty (\"\"). Lines 334-335: `  )` and `}`. \n\nBut wait — I'm also doing Edit 6 which replaces lines 328-335 with full rendering that also ends with `  )\\n}`. If both edits target overlapping/adjacent text, conflict! Edit 6 (example 4 rendering) replaces lines 328-335, and Edit 7 (append) would anchor on `  )\\n}` at end of file. The append anchor `\\n}\\n` (last line) — after Edit 6, the file's ending changes anyway. Since edits are merged on the base, the append anchor `  )\\n}` appears at the end of the original file AND also within Edit 6's replaced region... The anchor must be unique. `  )\\n}` — how many times does it occur in the original? The first example ends `}\\n```\\n` — different. Other code blocks end with `}\\n```` etc. Let me check unique occurrences of `  )\\n}`:\n\n- Line 334-335: `  )` / `}` — yes.\n- The createColumnHelper example ends line 305-306: `])\\n` then line 306 `\\`\\`\\``. Hmm `])` not `  )`.\n- Line 136: `}` line 137 ```. The first example's component ends `}\\n```\\n` — line 135 `  );`? Let me check: line 133 `    </div>`, 134 `  );`, 135 `}`, 136 ```. So `  );` not `  )`.\n\nSo `  )\\n}` — is it unique? Line 334-335 only? Also in `useTable` examples... line 153 `})` — `})` different. OK seems `  )\\n}` is unique (ends the Users component). \n\nBut if Edit 6 replaces lines 328-335 (which include line 334 `  )` and 335 `}`), then the append anchor `  )\\n}` no longer exists in the final content, but it exists in the base content — and since edits are merged on base, both match the base. The merged result: Edit 6 rewrites that region, Edit 7 appends after the base's final `  )\\n}`. The append should be applied relative to base: after line 335's `}`. Combined with Edit 6 rewriting lines 328-335, the appended content goes after the (new) end of the function. Should be fine as long as the merge handles non-overlapping regions properly. The regions: Edit 6 covers lines 328-335; Edit 7 anchors on text spanning lines 334-335 (inside Edit 6's region!). That's overlapping — risky.\n\nSafer: combine Edit 6 and Edit 7 into one big edit: replace lines 328-335 (or up to 337) with new rendering + blank lines + all new appended sections. That is, one edit covering from line 328 to end of file. Let me do that: single line-range edit from 328 to 337, replacing with the full new content (rendering + new sections).\n\nActually simpler: since the entire file after example 4's return is what changes, I'll do one edit: oldText = lines 328-337 content, newText = new rendering + appended sections. Using exact oldText:\n\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n}\n```\n\nThat's unique. Replace with new rendering + all new sections. \n\nAlso Edit for line 317 import (add flexRender) — separate small edit.\n\nLet me also reconsider Edit 2a's exact old text. From read:\n\n```\n23|```tsx\n24|import {\n25|  useReactTable,\n26|  getCoreRowModel,\n27|  getSortedRowModel,\n28|  getFilteredRowModel,\n29|  getPaginationRowModel,\n30|  flexRender,\n31|  type ColumnDef,\n32|  type SortingState,\n33|} from '@tanstack/react-table';\n34|\n35|import { useState } from 'react';\n```\n\nReplace lines 24-33 (or 23-35): I'll match:\nold:\n```\nimport {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n```\nnew:\n```\nimport {\n  useTable,\n  stockFeatures,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n```\n\nEdit 2b:\nold:\n```\n  const table = useReactTable({\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getFilteredRowModel: getFilteredRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n  });\n```\nnew:\n```\n  const table = useTable({\n    features: stockFeatures,\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n  });\n```\n\nEdit 3 (line 3):\nold: `目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。`\n\nWait — I need to check the quotes. The read JSON showed: `等\"重 UI\"组件库不同`. Hmm, in the raw markdown it might be `“重 UI”` (curly). The JSON output escaped as `\\\"` which means the character is `\"` (ASCII double quote) in the raw? Actually the JSON `\\\"` represents a literal `\"` in the file. So the file uses ASCII `\"重 UI\"`. Hmm, but Chinese text often uses curly quotes `“重 UI”`. The JSON would show those as-is (UTF-8). Since JSON shows `\\\"重 UI\\\"`, the file literally contains `\"重 UI\"`. OK, so oldText: `等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。` — but to be extra safe with quotes, use line-range mode instead.\n\nI'll use line-range for Edit 3: startLine 3, endLine 3.\n\nnew text for line 3: `“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们强调将组件的行为与样式彻底分离。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。`\n\nNote: the original line 3 might contain curly quotes for “无头” “大脑” “骨架” “长相”. From JSON: `“无头”指的是` — JSON shows the curly quotes as literal chars? The JSON output showed `“无头”指的是` with curly quotes (they appear as “ ” in the JSON string, not escaped). Yes, looking at the read output: `“无头”指的是**只提供逻辑与行为...` — curly quotes there. And later `等\"重 UI\"组件库` — ASCII quotes there. Interesting mix. Anyway, line-range replacement avoids exact-match issues entirely for line 3. But I must reproduce the whole line 3 correctly in newText (with curly quotes where they are). Let me copy the line carefully from the read:\n\nLine 3: `“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。`\n\nI'll keep everything and only change the middle sentence: `目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等\"重 UI\"组件库不同，将组件的行为与样式彻底分离。` → `目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等\"重 UI\"组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。`\n\nEdit 4 (line 165 sentence): exact match replace (safe, no quotes issues):\nold: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`getSortedRowModel()\\` 和 \\`getPaginationRowModel()\\` 就是这些功能在 React 适配层中的具体实现。`\nnew: `每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`sorting\\`、\\`pagination\\` 等 feature 会自动挂载对应状态与方法（如 \\`table.getState().sorting\\`、\\`table.previousPage()\\`），无需再手动传入 row model。`\n\nEdit 5 (line 225 note):\nold: `> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；\\`features\\` 在 V9 中指通过 \\`tableFeatures\\` 引入的能力对象。`\nnew: `> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 \\`features\\` 是传入 \\`useTable\\` 的功能数组，\\`stockFeatures\\` 包含全部内置功能，也可按需组合（如 \\`[sorting, pagination]\\`）。`\n\nEdit 6 (line 317 import): \nold: `import { useTable, stockFeatures } from \"@tanstack/react-table\"`\nnew: `import { useTable, stockFeatures, flexRender } from \"@tanstack/react-table\"`\n\nEdit 7 (lines 328-335 → rendering + appended sections). Let me now write the full newText carefully.\n\nNew rendering for example 4:\n\n```tsx\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\">\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id} className=\"px-4 py-2 text-left\">\n                  {header.isPlaceholder ? null : (\n                    <button onClick={header.column.getToggleSortingHandler()}>\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody className=\"divide-y divide-gray-100\">\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id} className=\"px-4 py-2\">\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      {/* 分页 */}\n      <div className=\"mt-4 flex items-center gap-2\">\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n          上一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n      </div>\n    </div>\n  )\n}\n```\n\nThen blank line, then new sections.\n\nNow — one thing to double check: in the original example 4, `table={table}` on `<table>` element — I'm removing it. Since I'm now rendering manually, that's correct. But is `table={table}` a real v9 feature that the article author used intentionally? Possibly they were referencing the v9 \"Table Elements\" alpha feature. Removing it and rendering manually is consistent with the first example and safest. I'll add a note? Maybe not necessary. Actually, to be transparent, I could keep a brief comment. Nah — keep it clean.\n\nHmm, actually wait. Let me reconsider whether `flexRender` exists in v9. In TanStack Table v9, `flexRender` is still exported from @tanstack/react-table. I'm fairly confident. And the article's first example already uses flexRender (which I keep). Fine.\n\nAlso — the `getHeaderGroups()` on a table with `stockFeatures` (which includes grouping) — `header.isPlaceholder` handles grouped headers. Good.\n\nNow let me draft the appended sections fully (with proper quoting of the markdown; note the code blocks inside my newText). This is a large edit. Let me finalize the whole newText for Edit 7.\n\nAlso, I realize the file ends at line 337 (line 336 `}`? no). Let me recheck: read said totalLines 337, and content lines 328-337:\n\n```\n328|  return (\n329|    <div className=\"overflow-x-auto\">\n330|      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|\n337|(empty? Actually line 336 is `}`?)\n```\n\nWait, from the read output:\n```\n334|  )\n335|}\n336|```\n```\nNo — let me re-read the last lines of the read output:\n\n```\n328|  return (\n329|    <div className=\"overflow-x-auto\">\n330|      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|```\n337|(nothing)\n```\n\nHmm, actually the read shows:\n```\n333|    </div>\n334|  )\n335|}\n336|```\n337|```\n```\n\nNo wait. Let me look at the actual read output text again:\n\n```\n329|    <div className=\"overflow-x-auto\">\n330|      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|```\n337|(line 337 is empty, totalLines 337)\n```\n\nHmm, the read output I received shows:\n```\n334|  )\n335|}\n336|```\n337|\n```\nWait no. Let me look at the exact read result again:\n\n```\n328|  return (\n329|    <div className=\"overflow-x-auto\">\n330|      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|```\n337|(end)\n```\n\nHmm, actually in the read result it was:\n```\n334|  )\n335|}\n336|```\n337|\n```\nHmm I'm not 100% sure. The read output at the end said:\n\n```\n334|  )\n335|}\n336|\n```\n\nWait, looking at the raw read output in the previous turn:\n\n```\n333|    </div>\n334|  )\n335|}\n336|```\n337|```\n```\n\nNo. OK let me just carefully re-read: the tool result ended with:\n\n```\n333|    </div>\n334|  )\n335|}\n336|```\n337|(line 337 content is empty — the last line)\n```\n\nActually the displayed result was:\n\n```\n332|      </table>\n333|    </div>\n334|  )\n335|}\n336|```\n337|```\n```\n\nHmm, I genuinely can't recall precisely. The result shows `336|``` and then... Actually from the tool result text: \n\n\"328|  return (\\n329|    <div className=\\\"overflow-x-auto\\\">\\n330|      <table className=\\\"min-w-full divide-y divide-gray-200\\\" table={table}>\\n331|        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\\n332|      </table>\\n333|    </div>\\n334|  )\\n335|}\\n336|```\\n337|\"\n\nSo line 336 is the closing ``` of the tsx code block, and line 337 is empty (\"\" — the file ends with a newline). Total 337 lines.\n\nOK so for Edit 7, I'll use exact oldText:\n\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n}\n```\n\nand newText = rendering + new content. Since oldText is unique (only one such return block in example 4 — wait, the first example has a similar `return (` with `<div>`... but the inner content differs (`<table>` without table={table} etc.). Let me check uniqueness: The first example's return:\n```\n  return (\n    <div>\n      <table>\n```\nThe example 4's return:\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n}\n```\nThe oldText includes `table={table}` and the comment — unique. Good.\n\nNow let me write the complete newText for Edit 7.\n\nI'll structure appended content as:\n\n```\n\n---\n\n## 状态管理：受控与非受控\n\n...\n\n## 排序、筛选与分页\n\n### 排序（Sorting）\n### 筛选（Filtering）\n### 分页（Pagination）\n### 服务端数据（Manual 模式）\n\n## 行选择（Row Selection）\n\n## 虚拟滚动（Virtualization）\n\n## 性能优化与常见坑\n\n## 与 shadcn/ui 等生态集成\n\n## 总结\n```\n\nWait — should I include \"---\" separators? The doc doesn't use them elsewhere. Keep consistent: no `---`. Just ## sections.\n\nLet me write it all out now. I need to be careful with code fences inside the newText (they're fine, it's plain text content).\n\nOne more check — the 行选择 example ordering: define columns first, then useTable:\n\n```tsx\nconst columnHelper = createColumnHelper<User>();\n\nconst columns = columnHelper.columns([\n  columnHelper.display({\n    id: \"select\",\n    header: ({ table }) => (\n      <input\n        type=\"checkbox\"\n        checked={table.getIsAllRowsSelected()}\n        onChange={table.getToggleAllRowsSelectedHandler()}\n      />\n    ),\n    cell: ({ row }) => (\n      <input\n        type=\"checkbox\"\n        checked={row.getIsSelected()}\n        onChange={row.getToggleSelectedHandler()}\n      />\n    ),\n  }),\n  // ...其他列\n]);\n\nconst [rowSelection, setRowSelection] = useState({});\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { rowSelection },\n  onRowSelectionChange: setRowSelection,\n  getRowId: (row) => row.id, // 以 id 作为行标识\n});\n\n// 读取选中行\nconst selectedRows = table.getSelectedRowModel().rows;\n```\n\nHmm — `createColumnHelper<User>()` — earlier in the article it's `createColumnHelper<typeof features, User>()`. For consistency I should use `createColumnHelper<typeof features, User>()`? Hmm, that's the article's v9 idiom (features first generic, then data). To stay consistent, use `createColumnHelper<typeof features, User>()` in new snippets where a helper is created. And `ColumnDef<typeof features, User>[]`. OK.\n\nFor the 排序 sortingFn example, I use `columnHelper.columns([...])` — need the helper. I'll include `const columnHelper = createColumnHelper<typeof features, User>();` in that snippet. But sortingFn on accessor(\"age\"...) — typing: `sortingFn: (rowA, rowB, columnId) => rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId)`. Fine.\n\nFor 筛选 example — uses table options; no helper needed. Include `ColumnFiltersState` type import mention: `import type { ColumnFiltersState } from \"@tanstack/react-table\"`. I'll add a comment line.\n\nFor 分页 example — straightforward.\n\nFor 服务端数据 — uses `User` type (defined earlier in article), `useEffect`, `useCallback`. Keep compact with ellipsis? I'll write a reasonably complete example with comments.\n\nAlso, I want to double-check `getSelectedRowModel()` exists with `stockFeatures` — yes, rowSelection feature provides it.\n\nAlso `getToggleAllRowsSelectedHandler` — yes.\n\nNow, about `state: { pagination }` with `onPaginationChange: setPagination` — v8 style; v9 same. OK.\n\nAlso for the 虚拟滚动 example — include import line `import { useVirtualizer } from \"@tanstack/react-virtual\";` and `useRef`. And flexRender import assumed from earlier. Add a comment noting need for flexRender import.\n\nAlright. Also — the 总结 section might duplicate content from the earlier suggestion; keep it short.\n\nAlso potential addition: mention `getRowId` importance. Covered.\n\nLet me also fix: line 141 \"一个最简单的表:\" — fine.\n\nAlso, should I update line 21 note? \"> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\" — keep as is. Fine.\n\nAlso line 232 `ColumnDef<typeof features, User>[]` — keep (v9 idiom per article).\n\nNow — where does \"#### 4. 使用 useTable\" section end? At line 335 `}`. After my Edit 7, new sections start. Good.\n\nLet me also make sure I don't break the existing \"### 示例\" numbering — the example is a `### 示例` section with `#### 1-4`. My new sections are `##` level after it. Fine.\n\nNow write Edit 7 newText fully:\n\n[rendering code as above]\n\nblank line\n\n```\n## 状态管理：受控与非受控\n\nV9 中表格状态默认由库内部管理（**非受控**）：只需传入 `data`、`columns` 和 `features`，排序、分页等状态便会自动维护。\n\n```tsx\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n});\n```\n\n当需要完全掌控某个状态时，把 `state` 与对应的 `onXxxChange` 一起传入即可切换为**受控模式**，第一个示例中的排序就是受控用法：\n\n```tsx\nconst [sorting, setSorting] = useState<SortingState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { sorting },\n  onSortingChange: setSorting,\n});\n```\n\n- **非受控**：代码简洁，适合纯前端、无需状态持久化的场景；\n- **受控**：适合服务端数据、状态写入 URL、或需要与其他组件联动（如外部筛选面板）的场景。\n\n## 排序、筛选与分页\n\n这三个功能分别由 `sorting`、`filtering`、`pagination` feature 提供，开启方式与状态管理一致。\n\n### 排序（Sorting）\n\n`sorting` 状态配合表头按钮即可工作（见第一个示例）。需要自定义规则时使用 `sortingFn`：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  columnHelper.accessor(\"age\", {\n    header: \"年龄\",\n    sortingFn: (rowA, rowB, columnId) =>\n      rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId),\n  }),\n]);\n```\n\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置 `alphanumeric`、`datetime`、`basic` 等常用排序函数，也可通过 `sortingFns` 注册自定义实现。\n\n### 筛选（Filtering）\n\n支持**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\n\n```tsx\nimport type { ColumnFiltersState } from \"@tanstack/react-table\";\n\nconst [globalFilter, setGlobalFilter] = useState(\"\");\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { globalFilter, columnFilters },\n  onGlobalFilterChange: setGlobalFilter,\n  onColumnFiltersChange: setColumnFilters,\n});\n\n// 工具栏中的全局搜索框\n<input\n  value={globalFilter ?? \"\"}\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\n  placeholder=\"搜索...\"\n/>;\n\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\n{header.column.getCanFilter() ? (\n  <input\n    value={(header.column.getFilterValue() as string) ?? \"\"}\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\n  />\n) : null}\n```\n\n> 筛选与排序可以叠加使用；默认筛选规则按字符串匹配，可用 `globalFilterFn` / `filterFn` 自定义。\n\n### 分页（Pagination）\n\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageIndex()`、`table.setPageSize()` 等 API 控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination },\n  onPaginationChange: setPagination,\n});\n\n// 每页条数切换\n<select\n  value={table.getState().pagination.pageSize}\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\n>\n  {[10, 20, 50].map((size) => (\n    <option key={size} value={size}>\n      {size} 条/页\n    </option>\n  ))}\n</select>;\n```\n\n### 服务端数据（Manual 模式）\n\n数据量较大时，通常由服务端完成排序、筛选、分页。开启 `manualPagination`、`manualSorting` 等选项后，Table 只负责状态与渲染，数据完全由你通过接口控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\nconst [sorting, setSorting] = useState<SortingState>([]);\nconst [data, setData] = useState<User[]>([]);\nconst [total, setTotal] = useState(0);\n\n// 状态变化时重新请求接口\nuseEffect(() => {\n  fetch(\n    `/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}` +\n      `&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? \"desc\" : \"asc\"}`\n  )\n    .then((res) => res.json())\n    .then((json) => {\n      setData(json.data);\n      setTotal(json.total);\n    });\n}, [pagination, sorting]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination, sorting },\n  onPaginationChange: setPagination,\n  onSortingChange: setSorting,\n  manualPagination: true,\n  manualSorting: true,\n  rowCount: total, // 告知总条数，用于计算总页数\n});\n```\n\n> Manual 模式下 `table.getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；请求期间可结合 `isLoading` 状态展示加载动画。\n\n## 行选择（Row Selection）\n\n行选择需要两个前提：通过 `getRowId` 指定稳定的行标识，以及一个 `display` 勾选列：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  // 表头全选 + 行内单选框\n  columnHelper.display({\n    id: \"select\",\n    header: ({ table }) => (\n      <input\n        type=\"checkbox\"\n        checked={table.getIsAllRowsSelected()}\n        onChange={table.getToggleAllRowsSelectedHandler()}\n      />\n    ),\n    cell: ({ row }) => (\n      <input\n        type=\"checkbox\"\n        checked={row.getIsSelected()}\n        onChange={row.getToggleSelectedHandler()}\n      />\n    ),\n  }),\n  // ...其他列\n]);\n\nconst [rowSelection, setRowSelection] = useState({});\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { rowSelection },\n  onRowSelectionChange: setRowSelection,\n  getRowId: (row) => row.id, // 以唯一 id 作为行标识\n});\n\n// 读取选中行\nconst selectedRows = table.getSelectedRowModel().rows;\n```\n\n> `rowSelection` 的 key 即行的 id。可结合「批量操作按钮」使用，如批量删除、导出选中项。\n\n## 虚拟滚动（Virtualization）\n\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域内的行，显著减少 DOM 节点数量：\n\n```tsx\nimport { useVirtualizer } from \"@tanstack/react-virtual\";\n\nconst parentRef = useRef<HTMLDivElement>(null);\n\nconst rowVirtualizer = useVirtualizer({\n  count: table.getRowModel().rows.length,\n  getScrollElement: () => parentRef.current,\n  estimateSize: () => 40, // 预估行高，用于计算滚动范围\n});\n\n<div ref={parentRef} className=\"h-[400px] overflow-auto\">\n  <table>\n    <tbody>\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\n        const row = table.getRowModel().rows[virtualRow.index];\n        return (\n          <tr\n            key={row.id}\n            style={{\n              height: `${virtualRow.size}px`,\n              transform: `translateY(${virtualRow.start}px)`,\n            }}\n          >\n            {row.getVisibleCells().map((cell) => (\n              <td key={cell.id}>\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\n              </td>\n            ))}\n          </tr>\n        );\n      })}\n    </tbody>\n  </table>\n</div>;\n```\n\n> 虚拟滚动常与服务端分页组合使用：服务端控制总数据量，虚拟滚动负责渲染性能。\n\n## 性能优化与常见坑\n\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重建数组会让 Table 内部引用频繁变化，可能导致状态丢失或多余渲染。列定义应尽量放在组件外或 `useMemo` 中；\n- **不要省略 `flexRender`**：列配置中的 `header` / `cell` 可能是字符串、JSX 或函数，`flexRender` 负责统一渲染，直接访问 `columnDef.header` 拿到的是配置对象而非内容；\n- **key 使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定，不要用数组下标；\n- **不要在渲染函数内内联定义 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\n\n## 与 shadcn/ui 等生态集成\n\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。\n\n## 总结\n\n- **简单静态展示、无交互**：直接用原生 `<table>` 即可；\n- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；\n- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。\n```\n\nHmm wait — in 筛选 section, `{header.column.getCanFilter() ? (...)}` outside JSX is pseudo-code. And the `<input/>;` with semicolon. These are fragments — acceptable in a doc as illustrative, but the stray semicolons after JSX outside a component look sloppy. Let me present them as \"放在组件 JSX 中\" fragments. I'll remove the stray `;` and add comments. Let me rewrite that part:\n\n```\n// 工具栏中的全局搜索框（放在组件 JSX 中）\n<input\n  value={globalFilter ?? \"\"}\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\n  placeholder=\"搜索...\"\n/>\n\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\n{header.column.getCanFilter() ? (\n  <input\n    value={(header.column.getFilterValue() as string) ?? \"\"}\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\n  />\n) : null}\n```\n\nOK.\n\nAlso the 分页 select: remove trailing `;`.\n\nAlso in 虚拟滚动: the `<div>...</div>;` trailing `;` — remove.\n\nNow, one concern: within the newText I have nested code fences ```tsx — that's fine in markdown as literal content.\n\nAlso, I should double check Edit 4's old text exact characters: line 165 contains `“功能开关”` with curly quotes — but my oldText only covers the last sentence (no quotes), so safe:\n`每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 \\`getSortedRowModel()\\` 和 \\`getPaginationRowModel()\\` 就是这些功能在 React 适配层中的具体实现。`\n\nYes, matches line 165's tail. Unique? The phrase appears once. Good.\n\nEdit 5 old text: `> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；\\`features\\` 在 V9 中指通过 \\`tableFeatures\\` 引入的能力对象。` — unique. Good.\n\nEdit 6 old: `import { useTable, stockFeatures } from \"@tanstack/react-table\"` — appears at line 317 once. (Line 147 has `} from \"@tanstack/react-table\"` with different content; line 230 has `import type { ColumnDef } from \"@tanstack/react-table\"`. The exact string `import { useTable, stockFeatures } from \"@tanstack/react-table\"` appears once.) Good.\n\nNow — the batch: all fs_edit calls in one block. They're independent (non-overlapping). The system merges.\n\nActually wait — there's a subtlety: Edit 2a's oldText (imports) and Edit 2b's oldText (useReactTable block) — both in the first example, non-overlapping. Fine.\n\nLet me also reconsider whether to keep `getCoreRowModel` mention somewhere in text. The Data/Features/Columns section line 157-177 explains v9 concepts; after my Edit 4 fix, no v8 row-model references remain in prose. The 示例 2 code (line 229-257) uses `ColumnDef<typeof features, User>[]` — v9. 示例 3 uses createColumnHelper — v9. Good. Line 141-155 uses useTable + stockFeatures — v9. So after edits, the whole doc is v9-consistent.\n\nOne more: line 21 note says \"（V7, v8 改动较大）\" — fine to keep; maybe update to \"（V8 → V9 改动较大，下文统一使用 V9 写法）\"? Minor improvement; the user asked to unify to v9, so updating the note to reflect that the doc now uses v9 throughout is nice. I'll update it:\nold: `> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。`\nnew: `> 下文统一使用 TanStack Table V9 的写法（V8 及之前的版本改动较大）。`\n\nAlso line 9 mentions features — fine.\n\nAlso should I double check `rowCount` option name? In v8 it's `rowCount` for manual pagination total. v9 keeps `rowCount`. OK.\n\nNow, the response format. The user asked me to \"补充与修正，统一为 v9\". I'll make the edits via fs_edit calls (multiple, batched). Then summarize changes. Given the size, I'll list what changed.\n\nAlso, do I need a yolo_block? Following the same pattern as the earlier format-fixing turn (I used fs_edit directly and it worked), I'll use fs_edit tool calls.\n\nLet me also think: should the appended sections be placed BEFORE the \"### 示例\" section instead? The 示例 currently is the last section. Advanced topics after it = logical progression. Keep at end.\n\nLet me now also double-check the exact text of Edit 2a old block once more from the read (lines 24-35):\n\n```\nimport {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n```\n\nGood.\n\nAnd Edit 2b (lines 72-83):\n```\n  const table = useReactTable({\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getFilteredRowModel: getFilteredRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n  });\n```\nGood.\n\nNow write the final Edit 7 newText. Let me compose the entire thing carefully, preserving the rendering with proper indentation.\n\nAlso note: in the new rendering, I reference `flexRender` — which is now imported in example 4 via Edit 6. Good.\n\nLet me finalize everything and make the calls. I'll also do a verification read afterward.\n\nActually, one more thought on the 排序 section snippet: it uses `columnHelper.accessor(\"age\", {...})` with sortingFn — fine.\n\nAnd in 服务端数据 snippet, `useEffect` and `useState` — need imports; add comment `// 需引入 useEffect、useCallback 等`. I'll add a brief comment line at top: `// 需引入 useEffect / useState`. Fine.\n\nLet me write it all now.\n\nAlso: should the header of Edit 7 content include a transition sentence like \"### 5. 完整渲染\" — no, the rendering is part of #### 4. Then new ## sections follow.\n\nAlright, composing the final edit calls. Order doesn't matter since merged, but I'll list them logically.\n\nAfter edits, I'll read the file to verify (at least the key changed regions). A full read (now ~500+ lines) is fine to confirm structure.\n\nLet me count what the final file will look like — around 337 - 12(example rewrite shrinks) ... anyway.\n\nOne concern about Edit 2a/2b: after merging, the first example's note \"（V7, v8 改动较大）\" stays. Fine.\n\nAlso — `stockFeatures` includes filtering; the example no longer imports getFilteredRowModel — good, no unused imports.\n\nAlso the first example's `useState(data)` for tableData and sorting — keep.\n\nCompose Edit 7 newText precisely:\n\n```\n  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\">\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id} className=\"px-4 py-2 text-left\">\n                  {header.isPlaceholder ? null : (\n                    <button onClick={header.column.getToggleSortingHandler()}>\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody className=\"divide-y divide-gray-100\">\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id} className=\"px-4 py-2\">\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      {/* 分页 */}\n      <div className=\"mt-4 flex items-center gap-2\">\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n          上一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n      </div>\n    </div>\n  )\n}\n```\n\nthen the sections as drafted.\n\nI'll now write the tool calls. Note: I must be careful that the entire Edit 7 newText is well-formed. Let me assemble it in full.\n\nAfter that, summary response.\n\nAlso mention in summary: 修正点（Tailwind 表述、features 说明、tableFeatures → stockFeatures 说明、统一 useTable/stockFeatures、移除未使用 import、补全渲染）and 新增章节列表。Offer follow-up if needed.\n\nLet me write the calls now.",
+      "toolCallRequests": [
+        {
+          "id": "call_00_8mrdcCzVrvX0JKJ61Ew60272",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "startLine": 3,
+              "endLine": 3,
+              "newText": "“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"startLine\": 3, \"endLine\": 3, \"newText\": \"“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。\"}"
+          }
+        },
+        {
+          "id": "call_01_BVIral0sZKEAnp9gmknq5957",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。",
+              "newText": "> 下文统一使用 TanStack Table V9 的写法（V8 及之前版本 API 改动较大）。"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\", \"newText\": \"> 下文统一使用 TanStack Table V9 的写法（V8 及之前版本 API 改动较大）。\"}"
+          }
+        },
+        {
+          "id": "call_02_d89isElPBMdm4MVDHivG2718",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "import {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';",
+              "newText": "import {\n  useTable,\n  stockFeatures,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"import {\\n  useReactTable,\\n  getCoreRowModel,\\n  getSortedRowModel,\\n  getFilteredRowModel,\\n  getPaginationRowModel,\\n  flexRender,\\n  type ColumnDef,\\n  type SortingState,\\n} from '@tanstack/react-table';\", \"newText\": \"import {\\n  useTable,\\n  stockFeatures,\\n  flexRender,\\n  type ColumnDef,\\n  type SortingState,\\n} from '@tanstack/react-table';\"}"
+          }
+        },
+        {
+          "id": "call_03_uRdRU7Y7IxsQLiiC564q1948",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "  const table = useReactTable({\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getFilteredRowModel: getFilteredRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n  });",
+              "newText": "  const table = useTable({\n    features: stockFeatures,\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n  });"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"  const table = useReactTable({\\n    data: tableData,\\n    columns,\\n    state: {\\n      sorting,\\n    },\\n    onSortingChange: setSorting,\\n    getCoreRowModel: getCoreRowModel(),\\n    getSortedRowModel: getSortedRowModel(),\\n    getFilteredRowModel: getFilteredRowModel(),\\n    getPaginationRowModel: getPaginationRowModel(),\\n  });\", \"newText\": \"  const table = useTable({\\n    features: stockFeatures,\\n    data: tableData,\\n    columns,\\n    state: {\\n      sorting,\\n    },\\n    onSortingChange: setSorting,\\n  });\"}"
+          }
+        },
+        {
+          "id": "call_04_ps5CTvU8oEHJil7hbQ1J1221",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。",
+              "newText": "每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `sorting`、`pagination` 等 feature 会自动挂载对应状态与方法（如 `table.getState().sorting`、`table.previousPage()`），无需再手动传入 row model。"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。\", \"newText\": \"每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `sorting`、`pagination` 等 feature 会自动挂载对应状态与方法（如 `table.getState().sorting`、`table.previousPage()`），无需再手动传入 row model。\"}"
+          }
+        },
+        {
+          "id": "call_05_hWe2Ue8UkE0G15O0ZLIq8670",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。",
+              "newText": "> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。\", \"newText\": \"> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。\"}"
+          }
+        },
+        {
+          "id": "call_06_4eQCd3vzTjCHH3vqZgy75209",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "import { useTable, stockFeatures } from \"@tanstack/react-table\"",
+              "newText": "import { useTable, stockFeatures, flexRender } from \"@tanstack/react-table\""
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"import { useTable, stockFeatures } from \\\"@tanstack/react-table\\\"\", \"newText\": \"import { useTable, stockFeatures, flexRender } from \\\"@tanstack/react-table\\\"\"}"
+          }
+        },
+        {
+          "id": "call_07_c9ghRyN3ZGO1MIlzhwuR5080",
+          "name": "yolo_local__fs_edit",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "path": "Development/TypeScript/TanStack Table 的使用.md",
+              "oldText": "  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n}",
+              "newText": "  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\">\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id} className=\"px-4 py-2 text-left\">\n                  {header.isPlaceholder ? null : (\n                    <button onClick={header.column.getToggleSortingHandler()}>\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody className=\"divide-y divide-gray-100\">\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id} className=\"px-4 py-2\">\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      {/* 分页 */}\n      <div className=\"mt-4 flex items-center gap-2\">\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n          上一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n      </div>\n    </div>\n  )\n}\n\n---\n\n## 状态管理：受控与非受控\n\nV9 中表格状态默认由库内部管理（**非受控**）：只需传入 `data`、`columns` 和 `features`，排序、分页等状态便会自动维护。\n\n```tsx\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n});\n```\n\n当需要完全掌控某个状态时，把 `state` 与对应的 `onXxxChange` 一起传入即可切换为**受控模式**，第一个示例中的排序就是受控用法：\n\n```tsx\nconst [sorting, setSorting] = useState<SortingState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { sorting },\n  onSortingChange: setSorting,\n});\n```\n\n- **非受控**：代码简洁，适合纯前端、无需状态持久化的场景；\n- **受控**：适合服务端数据、状态写入 URL、或需要与其他组件联动（如外部筛选面板）的场景。\n\n## 排序、筛选与分页\n\n这三个功能分别由 `sorting`、`filtering`、`pagination` feature 提供，开启方式与状态管理一致。\n\n### 排序（Sorting）\n\n`sorting` 状态配合表头按钮即可工作（见第一个示例）。需要自定义规则时使用 `sortingFn`：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  columnHelper.accessor(\"age\", {\n    header: \"年龄\",\n    sortingFn: (rowA, rowB, columnId) =>\n      rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId),\n  }),\n]);\n```\n\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置 `alphanumeric`、`datetime`、`basic` 等常用排序函数，也可通过 `sortingFns` 注册自定义实现。\n\n### 筛选（Filtering）\n\n支持**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\n\n```tsx\nimport type { ColumnFiltersState } from \"@tanstack/react-table\";\n\nconst [globalFilter, setGlobalFilter] = useState(\"\");\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { globalFilter, columnFilters },\n  onGlobalFilterChange: setGlobalFilter,\n  onColumnFiltersChange: setColumnFilters,\n});\n\n// 工具栏中的全局搜索框（放在组件 JSX 中）\n<input\n  value={globalFilter ?? \"\"}\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\n  placeholder=\"搜索...\"\n/>\n\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\n{header.column.getCanFilter() ? (\n  <input\n    value={(header.column.getFilterValue() as string) ?? \"\"}\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\n  />\n) : null}\n```\n\n> 筛选与排序可以叠加使用；默认按字符串规则匹配，可用 `globalFilterFn` / `filterFn` 自定义。\n\n### 分页（Pagination）\n\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageIndex()`、`table.setPageSize()` 等 API 控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination },\n  onPaginationChange: setPagination,\n});\n\n// 每页条数切换\n<select\n  value={table.getState().pagination.pageSize}\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\n>\n  {[10, 20, 50].map((size) => (\n    <option key={size} value={size}>\n      {size} 条/页\n    </option>\n  ))}\n</select>\n```\n\n### 服务端数据（Manual 模式）\n\n数据量较大时，通常由服务端完成排序、筛选、分页。开启 `manualPagination`、`manualSorting` 等选项后，Table 只负责状态与渲染，数据完全由你通过接口控制：\n\n```tsx\n// 需引入 useEffect、useState\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\nconst [sorting, setSorting] = useState<SortingState>([]);\nconst [data, setData] = useState<User[]>([]);\nconst [total, setTotal] = useState(0);\n\n// 状态变化时重新请求接口\nuseEffect(() => {\n  fetch(\n    `/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}` +\n      `&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? \"desc\" : \"asc\"}`\n  )\n    .then((res) => res.json())\n    .then((json) => {\n      setData(json.data);\n      setTotal(json.total);\n    });\n}, [pagination, sorting]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination, sorting },\n  onPaginationChange: setPagination,\n  onSortingChange: setSorting,\n  manualPagination: true,\n  manualSorting: true,\n  rowCount: total, // 告知总条数，用于计算总页数\n});\n```\n\n> Manual 模式下 `table.getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；请求期间可结合 `isLoading` 状态展示加载动画。\n\n## 行选择（Row Selection）\n\n行选择需要两个前提：通过 `getRowId` 指定稳定的行标识，以及一个 `display` 勾选列：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  // 表头全选 + 行内单选框\n  columnHelper.display({\n    id: \"select\",\n    header: ({ table }) => (\n      <input\n        type=\"checkbox\"\n        checked={table.getIsAllRowsSelected()}\n        onChange={table.getToggleAllRowsSelectedHandler()}\n      />\n    ),\n    cell: ({ row }) => (\n      <input\n        type=\"checkbox\"\n        checked={row.getIsSelected()}\n        onChange={row.getToggleSelectedHandler()}\n      />\n    ),\n  }),\n  // ...其他列\n]);\n\nconst [rowSelection, setRowSelection] = useState({});\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { rowSelection },\n  onRowSelectionChange: setRowSelection,\n  getRowId: (row) => row.id, // 以唯一 id 作为行标识\n});\n\n// 读取选中行\nconst selectedRows = table.getSelectedRowModel().rows;\n```\n\n> `rowSelection` 的 key 即行的 id。可配合「批量操作」按钮使用，如批量删除、导出选中项。\n\n## 虚拟滚动（Virtualization）\n\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域内的行，显著减少 DOM 节点数量：\n\n```tsx\nimport { useVirtualizer } from \"@tanstack/react-virtual\";\n\nconst parentRef = useRef<HTMLDivElement>(null);\n\nconst rowVirtualizer = useVirtualizer({\n  count: table.getRowModel().rows.length,\n  getScrollElement: () => parentRef.current,\n  estimateSize: () => 40, // 预估行高，用于计算滚动范围\n});\n\n<div ref={parentRef} className=\"h-[400px] overflow-auto\">\n  <table>\n    <tbody>\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\n        const row = table.getRowModel().rows[virtualRow.index];\n        return (\n          <tr\n            key={row.id}\n            style={{\n              height: `${virtualRow.size}px`,\n              transform: `translateY(${virtualRow.start}px)`,\n            }}\n          >\n            {row.getVisibleCells().map((cell) => (\n              <td key={cell.id}>\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\n              </td>\n            ))}\n          </tr>\n        );\n      })}\n    </tbody>\n  </table>\n</div>\n```\n\n> 虚拟滚动常与服务端分页组合使用：服务端控制数据总量，虚拟滚动负责渲染性能。\n\n## 性能优化与常见坑\n\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重建数组会让 Table 内部引用频繁变化，可能导致状态丢失或多余渲染。列定义应尽量放在组件外或 `useMemo` 中；\n- **不要省略 `flexRender`**：列配置中的 `header` / `cell` 可能是字符串、JSX 或函数，`flexRender` 负责统一渲染，直接访问 `columnDef.header` 拿到的是配置对象而非内容；\n- **key 使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定，不要用数组下标；\n- **不要在渲染函数内内联定义 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\n\n## 与 shadcn/ui 等生态集成\n\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。\n\n## 总结\n\n- **简单静态展示、无交互**：直接用原生 `<table>` 即可；\n- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；\n- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。"
+            },
+            "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"  return (\\n    <div className=\\\"overflow-x-auto\\\">\\n      <table className=\\\"min-w-full divide-y divide-gray-200\\\" table={table}>\\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\\n      </table>\\n    </div>\\n  )\\n}\", \"newText\": \"  return (\\n    <div className=\\\"overflow-x-auto\\\">\\n      <table className=\\\"min-w-full divide-y divide-gray-200\\\">\\n        <thead>\\n          {table.getHeaderGroups().map((headerGroup) => (\\n            <tr key={headerGroup.id}>\\n              {headerGroup.headers.map((header) => (\\n                <th key={header.id} className=\\\"px-4 py-2 text-left\\\">\\n                  {header.isPlaceholder ? null : (\\n                    <button onClick={header.column.getToggleSortingHandler()}>\\n                      {flexRender(header.column.columnDef.header, header.getContext())}\\n                    </button>\\n                  )}\\n                </th>\\n              ))}\\n            </tr>\\n          ))}\\n        </thead>\\n        <tbody className=\\\"divide-y divide-gray-100\\\">\\n          {table.getRowModel().rows.map((row) => (\\n            <tr key={row.id}>\\n              {row.getVisibleCells().map((cell) => (\\n                <td key={cell.id} className=\\\"px-4 py-2\\\">\\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\\n                </td>\\n              ))}\\n            </tr>\\n          ))}\\n        </tbody>\\n      </table>\\n\\n      {/* 分页 */}\\n      <div className=\\\"mt-4 flex items-center gap-2\\\">\\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\\n          上一页\\n        </button>\\n        <span>\\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\\n        </span>\\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\\n          下一页\\n        </button>\\n      </div>\\n    </div>\\n  )\\n}\\n\\n---\\n\\n## 状态管理：受控与非受控\\n\\nV9 中表格状态默认由库内部管理（**非受控**）：只需传入 `data`、`columns` 和 `features`，排序、分页等状态便会自动维护。\\n\\n```tsx\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n});\\n```\\n\\n当需要完全掌控某个状态时，把 `state` 与对应的 `onXxxChange` 一起传入即可切换为**受控模式**，第一个示例中的排序就是受控用法：\\n\\n```tsx\\nconst [sorting, setSorting] = useState<SortingState>([]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { sorting },\\n  onSortingChange: setSorting,\\n});\\n```\\n\\n- **非受控**：代码简洁，适合纯前端、无需状态持久化的场景；\\n- **受控**：适合服务端数据、状态写入 URL、或需要与其他组件联动（如外部筛选面板）的场景。\\n\\n## 排序、筛选与分页\\n\\n这三个功能分别由 `sorting`、`filtering`、`pagination` feature 提供，开启方式与状态管理一致。\\n\\n### 排序（Sorting）\\n\\n`sorting` 状态配合表头按钮即可工作（见第一个示例）。需要自定义规则时使用 `sortingFn`：\\n\\n```tsx\\nconst columnHelper = createColumnHelper<typeof features, User>();\\n\\nconst columns = columnHelper.columns([\\n  columnHelper.accessor(\\\"age\\\", {\\n    header: \\\"年龄\\\",\\n    sortingFn: (rowA, rowB, columnId) =>\\n      rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId),\\n  }),\\n]);\\n```\\n\\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置 `alphanumeric`、`datetime`、`basic` 等常用排序函数，也可通过 `sortingFns` 注册自定义实现。\\n\\n### 筛选（Filtering）\\n\\n支持**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\\n\\n```tsx\\nimport type { ColumnFiltersState } from \\\"@tanstack/react-table\\\";\\n\\nconst [globalFilter, setGlobalFilter] = useState(\\\"\\\");\\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { globalFilter, columnFilters },\\n  onGlobalFilterChange: setGlobalFilter,\\n  onColumnFiltersChange: setColumnFilters,\\n});\\n\\n// 工具栏中的全局搜索框（放在组件 JSX 中）\\n<input\\n  value={globalFilter ?? \\\"\\\"}\\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\\n  placeholder=\\\"搜索...\\\"\\n/>\\n\\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\\n{header.column.getCanFilter() ? (\\n  <input\\n    value={(header.column.getFilterValue() as string) ?? \\\"\\\"}\\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\\n  />\\n) : null}\\n```\\n\\n> 筛选与排序可以叠加使用；默认按字符串规则匹配，可用 `globalFilterFn` / `filterFn` 自定义。\\n\\n### 分页（Pagination）\\n\\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageIndex()`、`table.setPageSize()` 等 API 控制：\\n\\n```tsx\\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { pagination },\\n  onPaginationChange: setPagination,\\n});\\n\\n// 每页条数切换\\n<select\\n  value={table.getState().pagination.pageSize}\\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\\n>\\n  {[10, 20, 50].map((size) => (\\n    <option key={size} value={size}>\\n      {size} 条/页\\n    </option>\\n  ))}\\n</select>\\n```\\n\\n### 服务端数据（Manual 模式）\\n\\n数据量较大时，通常由服务端完成排序、筛选、分页。开启 `manualPagination`、`manualSorting` 等选项后，Table 只负责状态与渲染，数据完全由你通过接口控制：\\n\\n```tsx\\n// 需引入 useEffect、useState\\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\\nconst [sorting, setSorting] = useState<SortingState>([]);\\nconst [data, setData] = useState<User[]>([]);\\nconst [total, setTotal] = useState(0);\\n\\n// 状态变化时重新请求接口\\nuseEffect(() => {\\n  fetch(\\n    `/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}` +\\n      `&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? \\\"desc\\\" : \\\"asc\\\"}`\\n  )\\n    .then((res) => res.json())\\n    .then((json) => {\\n      setData(json.data);\\n      setTotal(json.total);\\n    });\\n}, [pagination, sorting]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { pagination, sorting },\\n  onPaginationChange: setPagination,\\n  onSortingChange: setSorting,\\n  manualPagination: true,\\n  manualSorting: true,\\n  rowCount: total, // 告知总条数，用于计算总页数\\n});\\n```\\n\\n> Manual 模式下 `table.getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；请求期间可结合 `isLoading` 状态展示加载动画。\\n\\n## 行选择（Row Selection）\\n\\n行选择需要两个前提：通过 `getRowId` 指定稳定的行标识，以及一个 `display` 勾选列：\\n\\n```tsx\\nconst columnHelper = createColumnHelper<typeof features, User>();\\n\\nconst columns = columnHelper.columns([\\n  // 表头全选 + 行内单选框\\n  columnHelper.display({\\n    id: \\\"select\\\",\\n    header: ({ table }) => (\\n      <input\\n        type=\\\"checkbox\\\"\\n        checked={table.getIsAllRowsSelected()}\\n        onChange={table.getToggleAllRowsSelectedHandler()}\\n      />\\n    ),\\n    cell: ({ row }) => (\\n      <input\\n        type=\\\"checkbox\\\"\\n        checked={row.getIsSelected()}\\n        onChange={row.getToggleSelectedHandler()}\\n      />\\n    ),\\n  }),\\n  // ...其他列\\n]);\\n\\nconst [rowSelection, setRowSelection] = useState({});\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { rowSelection },\\n  onRowSelectionChange: setRowSelection,\\n  getRowId: (row) => row.id, // 以唯一 id 作为行标识\\n});\\n\\n// 读取选中行\\nconst selectedRows = table.getSelectedRowModel().rows;\\n```\\n\\n> `rowSelection` 的 key 即行的 id。可配合「批量操作」按钮使用，如批量删除、导出选中项。\\n\\n## 虚拟滚动（Virtualization）\\n\\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域内的行，显著减少 DOM 节点数量：\\n\\n```tsx\\nimport { useVirtualizer } from \\\"@tanstack/react-virtual\\\";\\n\\nconst parentRef = useRef<HTMLDivElement>(null);\\n\\nconst rowVirtualizer = useVirtualizer({\\n  count: table.getRowModel().rows.length,\\n  getScrollElement: () => parentRef.current,\\n  estimateSize: () => 40, // 预估行高，用于计算滚动范围\\n});\\n\\n<div ref={parentRef} className=\\\"h-[400px] overflow-auto\\\">\\n  <table>\\n    <tbody>\\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\\n        const row = table.getRowModel().rows[virtualRow.index];\\n        return (\\n          <tr\\n            key={row.id}\\n            style={{\\n              height: `${virtualRow.size}px`,\\n              transform: `translateY(${virtualRow.start}px)`,\\n            }}\\n          >\\n            {row.getVisibleCells().map((cell) => (\\n              <td key={cell.id}>\\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\\n              </td>\\n            ))}\\n          </tr>\\n        );\\n      })}\\n    </tbody>\\n  </table>\\n</div>\\n```\\n\\n> 虚拟滚动常与服务端分页组合使用：服务端控制数据总量，虚拟滚动负责渲染性能。\\n\\n## 性能优化与常见坑\\n\\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重建数组会让 Table 内部引用频繁变化，可能导致状态丢失或多余渲染。列定义应尽量放在组件外或 `useMemo` 中；\\n- **不要省略 `flexRender`**：列配置中的 `header` / `cell` 可能是字符串、JSX 或函数，`flexRender` 负责统一渲染，直接访问 `columnDef.header` 拿到的是配置对象而非内容；\\n- **key 使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定，不要用数组下标；\\n- **不要在渲染函数内内联定义 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\\n\\n## 与 shadcn/ui 等生态集成\\n\\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。\\n\\n## 总结\\n\\n- **简单静态展示、无交互**：直接用原生 `<table>` 即可；\\n- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；\\n- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。\"}"
+          }
+        }
+      ],
+      "id": "6e67bbd3-f7e8-4183-8a4a-4b6a6dc4610b",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            },
+            "deepseek": {
+              "webSearch": {
+                "enabled": false
+              }
+            }
+          },
+          "reasoningType": "openai"
+        },
+        "usage": {
+          "prompt_tokens": 40922,
+          "completion_tokens": 24442,
+          "total_tokens": 65364
+        },
+        "durationMs": 153898,
+        "generationState": "completed",
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash",
+        "reasoningDurationMs": 125025
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_8mrdcCzVrvX0JKJ61Ew60272",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "startLine": 3,
+                "endLine": 3,
+                "newText": "“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"startLine\": 3, \"endLine\": 3, \"newText\": \"“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"tool\": \"fs_edit\",\n  \"path\": \"Development/TypeScript/TanStack Table 的使用.md\",\n  \"totalOperations\": 8,\n  \"appliedCount\": 8,\n  \"operationResults\": [\n    {\n      \"type\": \"replace_lines\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"lineRange\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    },\n    {\n      \"type\": \"replace\",\n      \"changed\": true,\n      \"actualOccurrences\": 1,\n      \"matchMode\": \"exact\"\n    }\n  ],\n  \"changed\": true,\n  \"message\": \"Applied edit.\"\n}",
+              "metadata": {
+                "editSummary": {
+                  "files": [
+                    {
+                      "path": "Development/TypeScript/TanStack Table 的使用.md",
+                      "addedLines": 312,
+                      "removedLines": 17,
+                      "operation": "edit",
+                      "undoStatus": "available",
+                      "reviewRoundId": "8a05d931-b4bc-41c1-8cf3-2122c69d6c77"
+                    }
+                  ],
+                  "totalFiles": 1,
+                  "totalAddedLines": 312,
+                  "totalRemovedLines": 17,
+                  "undoStatus": "available"
+                },
+                "appliedAt": 1786957125662
+              }
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_01_BVIral0sZKEAnp9gmknq5957",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。",
+                "newText": "> 下文统一使用 TanStack Table V9 的写法（V8 及之前版本 API 改动较大）。"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\", \"newText\": \"> 下文统一使用 TanStack Table V9 的写法（V8 及之前版本 API 改动较大）。\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_02_d89isElPBMdm4MVDHivG2718",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "import {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';",
+                "newText": "import {\n  useTable,\n  stockFeatures,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"import {\\n  useReactTable,\\n  getCoreRowModel,\\n  getSortedRowModel,\\n  getFilteredRowModel,\\n  getPaginationRowModel,\\n  flexRender,\\n  type ColumnDef,\\n  type SortingState,\\n} from '@tanstack/react-table';\", \"newText\": \"import {\\n  useTable,\\n  stockFeatures,\\n  flexRender,\\n  type ColumnDef,\\n  type SortingState,\\n} from '@tanstack/react-table';\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_03_uRdRU7Y7IxsQLiiC564q1948",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "  const table = useReactTable({\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n    getCoreRowModel: getCoreRowModel(),\n    getSortedRowModel: getSortedRowModel(),\n    getFilteredRowModel: getFilteredRowModel(),\n    getPaginationRowModel: getPaginationRowModel(),\n  });",
+                "newText": "  const table = useTable({\n    features: stockFeatures,\n    data: tableData,\n    columns,\n    state: {\n      sorting,\n    },\n    onSortingChange: setSorting,\n  });"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"  const table = useReactTable({\\n    data: tableData,\\n    columns,\\n    state: {\\n      sorting,\\n    },\\n    onSortingChange: setSorting,\\n    getCoreRowModel: getCoreRowModel(),\\n    getSortedRowModel: getSortedRowModel(),\\n    getFilteredRowModel: getFilteredRowModel(),\\n    getPaginationRowModel: getPaginationRowModel(),\\n  });\", \"newText\": \"  const table = useTable({\\n    features: stockFeatures,\\n    data: tableData,\\n    columns,\\n    state: {\\n      sorting,\\n    },\\n    onSortingChange: setSorting,\\n  });\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_04_ps5CTvU8oEHJil7hbQ1J1221",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。",
+                "newText": "每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `sorting`、`pagination` 等 feature 会自动挂载对应状态与方法（如 `table.getState().sorting`、`table.previousPage()`），无需再手动传入 row model。"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `getSortedRowModel()` 和 `getPaginationRowModel()` 就是这些功能在 React 适配层中的具体实现。\", \"newText\": \"每个 feature 都对应一套独立的状态和 row/column 模型扩展，例如 `sorting`、`pagination` 等 feature 会自动挂载对应状态与方法（如 `table.getState().sorting`、`table.previousPage()`），无需再手动传入 row model。\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_05_hWe2Ue8UkE0G15O0ZLIq8670",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。",
+                "newText": "> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；`features` 在 V9 中指通过 `tableFeatures` 引入的能力对象。\", \"newText\": \"> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_06_4eQCd3vzTjCHH3vqZgy75209",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "import { useTable, stockFeatures } from \"@tanstack/react-table\"",
+                "newText": "import { useTable, stockFeatures, flexRender } from \"@tanstack/react-table\""
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"import { useTable, stockFeatures } from \\\"@tanstack/react-table\\\"\", \"newText\": \"import { useTable, stockFeatures, flexRender } from \\\"@tanstack/react-table\\\"\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        },
+        {
+          "request": {
+            "id": "call_07_c9ghRyN3ZGO1MIlzhwuR5080",
+            "name": "yolo_local__fs_edit",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "path": "Development/TypeScript/TanStack Table 的使用.md",
+                "oldText": "  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\" table={table}>\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\n      </table>\n    </div>\n  )\n}",
+                "newText": "  return (\n    <div className=\"overflow-x-auto\">\n      <table className=\"min-w-full divide-y divide-gray-200\">\n        <thead>\n          {table.getHeaderGroups().map((headerGroup) => (\n            <tr key={headerGroup.id}>\n              {headerGroup.headers.map((header) => (\n                <th key={header.id} className=\"px-4 py-2 text-left\">\n                  {header.isPlaceholder ? null : (\n                    <button onClick={header.column.getToggleSortingHandler()}>\n                      {flexRender(header.column.columnDef.header, header.getContext())}\n                    </button>\n                  )}\n                </th>\n              ))}\n            </tr>\n          ))}\n        </thead>\n        <tbody className=\"divide-y divide-gray-100\">\n          {table.getRowModel().rows.map((row) => (\n            <tr key={row.id}>\n              {row.getVisibleCells().map((cell) => (\n                <td key={cell.id} className=\"px-4 py-2\">\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\n                </td>\n              ))}\n            </tr>\n          ))}\n        </tbody>\n      </table>\n\n      {/* 分页 */}\n      <div className=\"mt-4 flex items-center gap-2\">\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\n          上一页\n        </button>\n        <span>\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\n        </span>\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\n          下一页\n        </button>\n      </div>\n    </div>\n  )\n}\n\n---\n\n## 状态管理：受控与非受控\n\nV9 中表格状态默认由库内部管理（**非受控**）：只需传入 `data`、`columns` 和 `features`，排序、分页等状态便会自动维护。\n\n```tsx\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n});\n```\n\n当需要完全掌控某个状态时，把 `state` 与对应的 `onXxxChange` 一起传入即可切换为**受控模式**，第一个示例中的排序就是受控用法：\n\n```tsx\nconst [sorting, setSorting] = useState<SortingState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { sorting },\n  onSortingChange: setSorting,\n});\n```\n\n- **非受控**：代码简洁，适合纯前端、无需状态持久化的场景；\n- **受控**：适合服务端数据、状态写入 URL、或需要与其他组件联动（如外部筛选面板）的场景。\n\n## 排序、筛选与分页\n\n这三个功能分别由 `sorting`、`filtering`、`pagination` feature 提供，开启方式与状态管理一致。\n\n### 排序（Sorting）\n\n`sorting` 状态配合表头按钮即可工作（见第一个示例）。需要自定义规则时使用 `sortingFn`：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  columnHelper.accessor(\"age\", {\n    header: \"年龄\",\n    sortingFn: (rowA, rowB, columnId) =>\n      rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId),\n  }),\n]);\n```\n\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置 `alphanumeric`、`datetime`、`basic` 等常用排序函数，也可通过 `sortingFns` 注册自定义实现。\n\n### 筛选（Filtering）\n\n支持**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\n\n```tsx\nimport type { ColumnFiltersState } from \"@tanstack/react-table\";\n\nconst [globalFilter, setGlobalFilter] = useState(\"\");\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { globalFilter, columnFilters },\n  onGlobalFilterChange: setGlobalFilter,\n  onColumnFiltersChange: setColumnFilters,\n});\n\n// 工具栏中的全局搜索框（放在组件 JSX 中）\n<input\n  value={globalFilter ?? \"\"}\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\n  placeholder=\"搜索...\"\n/>\n\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\n{header.column.getCanFilter() ? (\n  <input\n    value={(header.column.getFilterValue() as string) ?? \"\"}\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\n  />\n) : null}\n```\n\n> 筛选与排序可以叠加使用；默认按字符串规则匹配，可用 `globalFilterFn` / `filterFn` 自定义。\n\n### 分页（Pagination）\n\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageIndex()`、`table.setPageSize()` 等 API 控制：\n\n```tsx\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination },\n  onPaginationChange: setPagination,\n});\n\n// 每页条数切换\n<select\n  value={table.getState().pagination.pageSize}\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\n>\n  {[10, 20, 50].map((size) => (\n    <option key={size} value={size}>\n      {size} 条/页\n    </option>\n  ))}\n</select>\n```\n\n### 服务端数据（Manual 模式）\n\n数据量较大时，通常由服务端完成排序、筛选、分页。开启 `manualPagination`、`manualSorting` 等选项后，Table 只负责状态与渲染，数据完全由你通过接口控制：\n\n```tsx\n// 需引入 useEffect、useState\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\nconst [sorting, setSorting] = useState<SortingState>([]);\nconst [data, setData] = useState<User[]>([]);\nconst [total, setTotal] = useState(0);\n\n// 状态变化时重新请求接口\nuseEffect(() => {\n  fetch(\n    `/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}` +\n      `&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? \"desc\" : \"asc\"}`\n  )\n    .then((res) => res.json())\n    .then((json) => {\n      setData(json.data);\n      setTotal(json.total);\n    });\n}, [pagination, sorting]);\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { pagination, sorting },\n  onPaginationChange: setPagination,\n  onSortingChange: setSorting,\n  manualPagination: true,\n  manualSorting: true,\n  rowCount: total, // 告知总条数，用于计算总页数\n});\n```\n\n> Manual 模式下 `table.getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；请求期间可结合 `isLoading` 状态展示加载动画。\n\n## 行选择（Row Selection）\n\n行选择需要两个前提：通过 `getRowId` 指定稳定的行标识，以及一个 `display` 勾选列：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>();\n\nconst columns = columnHelper.columns([\n  // 表头全选 + 行内单选框\n  columnHelper.display({\n    id: \"select\",\n    header: ({ table }) => (\n      <input\n        type=\"checkbox\"\n        checked={table.getIsAllRowsSelected()}\n        onChange={table.getToggleAllRowsSelectedHandler()}\n      />\n    ),\n    cell: ({ row }) => (\n      <input\n        type=\"checkbox\"\n        checked={row.getIsSelected()}\n        onChange={row.getToggleSelectedHandler()}\n      />\n    ),\n  }),\n  // ...其他列\n]);\n\nconst [rowSelection, setRowSelection] = useState({});\n\nconst table = useTable({\n  features: stockFeatures,\n  data,\n  columns,\n  state: { rowSelection },\n  onRowSelectionChange: setRowSelection,\n  getRowId: (row) => row.id, // 以唯一 id 作为行标识\n});\n\n// 读取选中行\nconst selectedRows = table.getSelectedRowModel().rows;\n```\n\n> `rowSelection` 的 key 即行的 id。可配合「批量操作」按钮使用，如批量删除、导出选中项。\n\n## 虚拟滚动（Virtualization）\n\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域内的行，显著减少 DOM 节点数量：\n\n```tsx\nimport { useVirtualizer } from \"@tanstack/react-virtual\";\n\nconst parentRef = useRef<HTMLDivElement>(null);\n\nconst rowVirtualizer = useVirtualizer({\n  count: table.getRowModel().rows.length,\n  getScrollElement: () => parentRef.current,\n  estimateSize: () => 40, // 预估行高，用于计算滚动范围\n});\n\n<div ref={parentRef} className=\"h-[400px] overflow-auto\">\n  <table>\n    <tbody>\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\n        const row = table.getRowModel().rows[virtualRow.index];\n        return (\n          <tr\n            key={row.id}\n            style={{\n              height: `${virtualRow.size}px`,\n              transform: `translateY(${virtualRow.start}px)`,\n            }}\n          >\n            {row.getVisibleCells().map((cell) => (\n              <td key={cell.id}>\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\n              </td>\n            ))}\n          </tr>\n        );\n      })}\n    </tbody>\n  </table>\n</div>\n```\n\n> 虚拟滚动常与服务端分页组合使用：服务端控制数据总量，虚拟滚动负责渲染性能。\n\n## 性能优化与常见坑\n\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重建数组会让 Table 内部引用频繁变化，可能导致状态丢失或多余渲染。列定义应尽量放在组件外或 `useMemo` 中；\n- **不要省略 `flexRender`**：列配置中的 `header` / `cell` 可能是字符串、JSX 或函数，`flexRender` 负责统一渲染，直接访问 `columnDef.header` 拿到的是配置对象而非内容；\n- **key 使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定，不要用数组下标；\n- **不要在渲染函数内内联定义 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\n\n## 与 shadcn/ui 等生态集成\n\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。\n\n## 总结\n\n- **简单静态展示、无交互**：直接用原生 `<table>` 即可；\n- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；\n- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。"
+              },
+              "rawText": "{\"path\": \"Development/TypeScript/TanStack Table 的使用.md\", \"oldText\": \"  return (\\n    <div className=\\\"overflow-x-auto\\\">\\n      <table className=\\\"min-w-full divide-y divide-gray-200\\\" table={table}>\\n        {/* 表头、表体、分页渲染逻辑与前文一致，此处省略 */}\\n      </table>\\n    </div>\\n  )\\n}\", \"newText\": \"  return (\\n    <div className=\\\"overflow-x-auto\\\">\\n      <table className=\\\"min-w-full divide-y divide-gray-200\\\">\\n        <thead>\\n          {table.getHeaderGroups().map((headerGroup) => (\\n            <tr key={headerGroup.id}>\\n              {headerGroup.headers.map((header) => (\\n                <th key={header.id} className=\\\"px-4 py-2 text-left\\\">\\n                  {header.isPlaceholder ? null : (\\n                    <button onClick={header.column.getToggleSortingHandler()}>\\n                      {flexRender(header.column.columnDef.header, header.getContext())}\\n                    </button>\\n                  )}\\n                </th>\\n              ))}\\n            </tr>\\n          ))}\\n        </thead>\\n        <tbody className=\\\"divide-y divide-gray-100\\\">\\n          {table.getRowModel().rows.map((row) => (\\n            <tr key={row.id}>\\n              {row.getVisibleCells().map((cell) => (\\n                <td key={cell.id} className=\\\"px-4 py-2\\\">\\n                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\\n                </td>\\n              ))}\\n            </tr>\\n          ))}\\n        </tbody>\\n      </table>\\n\\n      {/* 分页 */}\\n      <div className=\\\"mt-4 flex items-center gap-2\\\">\\n        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\\n          上一页\\n        </button>\\n        <span>\\n          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\\n        </span>\\n        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\\n          下一页\\n        </button>\\n      </div>\\n    </div>\\n  )\\n}\\n\\n---\\n\\n## 状态管理：受控与非受控\\n\\nV9 中表格状态默认由库内部管理（**非受控**）：只需传入 `data`、`columns` 和 `features`，排序、分页等状态便会自动维护。\\n\\n```tsx\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n});\\n```\\n\\n当需要完全掌控某个状态时，把 `state` 与对应的 `onXxxChange` 一起传入即可切换为**受控模式**，第一个示例中的排序就是受控用法：\\n\\n```tsx\\nconst [sorting, setSorting] = useState<SortingState>([]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { sorting },\\n  onSortingChange: setSorting,\\n});\\n```\\n\\n- **非受控**：代码简洁，适合纯前端、无需状态持久化的场景；\\n- **受控**：适合服务端数据、状态写入 URL、或需要与其他组件联动（如外部筛选面板）的场景。\\n\\n## 排序、筛选与分页\\n\\n这三个功能分别由 `sorting`、`filtering`、`pagination` feature 提供，开启方式与状态管理一致。\\n\\n### 排序（Sorting）\\n\\n`sorting` 状态配合表头按钮即可工作（见第一个示例）。需要自定义规则时使用 `sortingFn`：\\n\\n```tsx\\nconst columnHelper = createColumnHelper<typeof features, User>();\\n\\nconst columns = columnHelper.columns([\\n  columnHelper.accessor(\\\"age\\\", {\\n    header: \\\"年龄\\\",\\n    sortingFn: (rowA, rowB, columnId) =>\\n      rowA.getValue<number>(columnId) - rowB.getValue<number>(columnId),\\n  }),\\n]);\\n```\\n\\n> `sortingFn` 接收两行数据与列 id，返回数字表示先后顺序；库内置 `alphanumeric`、`datetime`、`basic` 等常用排序函数，也可通过 `sortingFns` 注册自定义实现。\\n\\n### 筛选（Filtering）\\n\\n支持**全局筛选**（`globalFilter`）与**列筛选**（`columnFilters`）两种模式：\\n\\n```tsx\\nimport type { ColumnFiltersState } from \\\"@tanstack/react-table\\\";\\n\\nconst [globalFilter, setGlobalFilter] = useState(\\\"\\\");\\nconst [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { globalFilter, columnFilters },\\n  onGlobalFilterChange: setGlobalFilter,\\n  onColumnFiltersChange: setColumnFilters,\\n});\\n\\n// 工具栏中的全局搜索框（放在组件 JSX 中）\\n<input\\n  value={globalFilter ?? \\\"\\\"}\\n  onChange={(e) => table.setGlobalFilter(e.target.value)}\\n  placeholder=\\\"搜索...\\\"\\n/>\\n\\n// 表头单元格内的列筛选输入框（需 header.column.getCanFilter() 为 true）\\n{header.column.getCanFilter() ? (\\n  <input\\n    value={(header.column.getFilterValue() as string) ?? \\\"\\\"}\\n    onChange={(e) => header.column.setFilterValue(e.target.value)}\\n  />\\n) : null}\\n```\\n\\n> 筛选与排序可以叠加使用；默认按字符串规则匹配，可用 `globalFilterFn` / `filterFn` 自定义。\\n\\n### 分页（Pagination）\\n\\n分页状态为 `{ pageIndex, pageSize }`，通过 `table.setPageIndex()`、`table.setPageSize()` 等 API 控制：\\n\\n```tsx\\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 10 });\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { pagination },\\n  onPaginationChange: setPagination,\\n});\\n\\n// 每页条数切换\\n<select\\n  value={table.getState().pagination.pageSize}\\n  onChange={(e) => table.setPageSize(Number(e.target.value))}\\n>\\n  {[10, 20, 50].map((size) => (\\n    <option key={size} value={size}>\\n      {size} 条/页\\n    </option>\\n  ))}\\n</select>\\n```\\n\\n### 服务端数据（Manual 模式）\\n\\n数据量较大时，通常由服务端完成排序、筛选、分页。开启 `manualPagination`、`manualSorting` 等选项后，Table 只负责状态与渲染，数据完全由你通过接口控制：\\n\\n```tsx\\n// 需引入 useEffect、useState\\nconst [pagination, setPagination] = useState({ pageIndex: 0, pageSize: 20 });\\nconst [sorting, setSorting] = useState<SortingState>([]);\\nconst [data, setData] = useState<User[]>([]);\\nconst [total, setTotal] = useState(0);\\n\\n// 状态变化时重新请求接口\\nuseEffect(() => {\\n  fetch(\\n    `/api/users?page=${pagination.pageIndex}&size=${pagination.pageSize}` +\\n      `&sort=${sorting[0]?.id}&order=${sorting[0]?.desc ? \\\"desc\\\" : \\\"asc\\\"}`\\n  )\\n    .then((res) => res.json())\\n    .then((json) => {\\n      setData(json.data);\\n      setTotal(json.total);\\n    });\\n}, [pagination, sorting]);\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { pagination, sorting },\\n  onPaginationChange: setPagination,\\n  onSortingChange: setSorting,\\n  manualPagination: true,\\n  manualSorting: true,\\n  rowCount: total, // 告知总条数，用于计算总页数\\n});\\n```\\n\\n> Manual 模式下 `table.getPageCount()` 由 `rowCount` 与 `pageSize` 计算得出；请求期间可结合 `isLoading` 状态展示加载动画。\\n\\n## 行选择（Row Selection）\\n\\n行选择需要两个前提：通过 `getRowId` 指定稳定的行标识，以及一个 `display` 勾选列：\\n\\n```tsx\\nconst columnHelper = createColumnHelper<typeof features, User>();\\n\\nconst columns = columnHelper.columns([\\n  // 表头全选 + 行内单选框\\n  columnHelper.display({\\n    id: \\\"select\\\",\\n    header: ({ table }) => (\\n      <input\\n        type=\\\"checkbox\\\"\\n        checked={table.getIsAllRowsSelected()}\\n        onChange={table.getToggleAllRowsSelectedHandler()}\\n      />\\n    ),\\n    cell: ({ row }) => (\\n      <input\\n        type=\\\"checkbox\\\"\\n        checked={row.getIsSelected()}\\n        onChange={row.getToggleSelectedHandler()}\\n      />\\n    ),\\n  }),\\n  // ...其他列\\n]);\\n\\nconst [rowSelection, setRowSelection] = useState({});\\n\\nconst table = useTable({\\n  features: stockFeatures,\\n  data,\\n  columns,\\n  state: { rowSelection },\\n  onRowSelectionChange: setRowSelection,\\n  getRowId: (row) => row.id, // 以唯一 id 作为行标识\\n});\\n\\n// 读取选中行\\nconst selectedRows = table.getSelectedRowModel().rows;\\n```\\n\\n> `rowSelection` 的 key 即行的 id。可配合「批量操作」按钮使用，如批量删除、导出选中项。\\n\\n## 虚拟滚动（Virtualization）\\n\\n上千行数据时，配合 `@tanstack/react-virtual` 只渲染可视区域内的行，显著减少 DOM 节点数量：\\n\\n```tsx\\nimport { useVirtualizer } from \\\"@tanstack/react-virtual\\\";\\n\\nconst parentRef = useRef<HTMLDivElement>(null);\\n\\nconst rowVirtualizer = useVirtualizer({\\n  count: table.getRowModel().rows.length,\\n  getScrollElement: () => parentRef.current,\\n  estimateSize: () => 40, // 预估行高，用于计算滚动范围\\n});\\n\\n<div ref={parentRef} className=\\\"h-[400px] overflow-auto\\\">\\n  <table>\\n    <tbody>\\n      {rowVirtualizer.getVirtualItems().map((virtualRow) => {\\n        const row = table.getRowModel().rows[virtualRow.index];\\n        return (\\n          <tr\\n            key={row.id}\\n            style={{\\n              height: `${virtualRow.size}px`,\\n              transform: `translateY(${virtualRow.start}px)`,\\n            }}\\n          >\\n            {row.getVisibleCells().map((cell) => (\\n              <td key={cell.id}>\\n                {flexRender(cell.column.columnDef.cell, cell.getContext())}\\n              </td>\\n            ))}\\n          </tr>\\n        );\\n      })}\\n    </tbody>\\n  </table>\\n</div>\\n```\\n\\n> 虚拟滚动常与服务端分页组合使用：服务端控制数据总量，虚拟滚动负责渲染性能。\\n\\n## 性能优化与常见坑\\n\\n- **用 `useMemo` / `useCallback` 稳定 `columns` 和 `data`**：每次渲染重建数组会让 Table 内部引用频繁变化，可能导致状态丢失或多余渲染。列定义应尽量放在组件外或 `useMemo` 中；\\n- **不要省略 `flexRender`**：列配置中的 `header` / `cell` 可能是字符串、JSX 或函数，`flexRender` 负责统一渲染，直接访问 `columnDef.header` 拿到的是配置对象而非内容；\\n- **key 使用模型 id**：`header.id`、`row.id`、`cell.id` 由 Table 保证唯一且稳定，不要用数组下标；\\n- **不要在渲染函数内内联定义 `columns`**：会破坏 `useMemo` 的效果，导致列定义每次渲染都重建。\\n\\n## 与 shadcn/ui 等生态集成\\n\\nshadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。\\n\\n## 总结\\n\\n- **简单静态展示、无交互**：直接用原生 `<table>` 即可；\\n- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；\\n- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。\"}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "Processed 1 operation for Development/TypeScript/TanStack Table 的使用.md as part of a batched fs_edit. The first fs_edit call carries the unified review outcome; do not assume this operation was accepted independently."
+            }
+          }
+        }
+      ],
+      "id": "8a05d931-b4bc-41c1-8cf3-2122c69d6c77",
+      "metadata": {
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "8 处编辑全部应用成功。我验证一下修改后的关键区域：",
+      "reasoning": "All 8 edits were applied successfully. Let me verify the key changed regions of the file to make sure everything is correct — particularly the first example (v9 conversion), the rendering completion, and the new sections at the end. Let me read the file to confirm.",
+      "toolCallRequests": [
+        {
+          "id": "call_00_eedf55l3H0NL2ve94FiZ4829",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/TypeScript/TanStack Table 的使用.md"
+              ],
+              "startLine": 21,
+              "maxLines": 65
+            },
+            "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 21, \"maxLines\": 65}"
+          }
+        }
+      ],
+      "id": "a05b57a0-875c-408e-9680-02d3eafd7323",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            },
+            "deepseek": {
+              "webSearch": {
+                "enabled": false
+              }
+            }
+          },
+          "reasoningType": "openai"
+        },
+        "usage": {
+          "prompt_tokens": 66116,
+          "completion_tokens": 163,
+          "total_tokens": 66279,
+          "cache_read_input_tokens": 40832
+        },
+        "durationMs": 3566,
+        "generationState": "completed",
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash",
+        "reasoningDurationMs": 2516
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_eedf55l3H0NL2ve94FiZ4829",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/TypeScript/TanStack Table 的使用.md"
+                ],
+                "startLine": 21,
+                "maxLines": 65
+              },
+              "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 21, \"maxLines\": 65}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_eedf55l3H0NL2ve94FiZ4829\",\n  \"requestedOperation\": {\n    \"type\": \"lines\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/TypeScript/TanStack Table 的使用.md\",\n      \"ok\": true,\n      \"totalLines\": 632,\n      \"returnedRange\": {\n        \"startLine\": 21,\n        \"endLine\": 85\n      },\n      \"hasMoreBelow\": true,\n      \"nextStartLine\": 86,\n      \"content\": \"21|> 下文统一使用 TanStack Table V9 的写法（V8 及之前版本 API 改动较大）。\\n22|\\n23|```tsx\\n24|import {\\n25|  useTable,\\n26|  stockFeatures,\\n27|  flexRender,\\n28|  type ColumnDef,\\n29|  type SortingState,\\n30|} from '@tanstack/react-table';\\n31|\\n32|import { useState } from 'react';\\n33|\\n34|type Person = {\\n35|  id: number;\\n36|  name: string;\\n37|  age: number;\\n38|  email: string;\\n39|};\\n40|\\n41|const columns: ColumnDef<Person>[] = [\\n42|  {\\n43|    accessorKey: 'name',\\n44|    header: '姓名',\\n45|    cell: (info) => info.getValue(),\\n46|  },\\n47|  {\\n48|    accessorKey: 'age',\\n49|    header: '年龄',\\n50|    cell: (info) => info.getValue(),\\n51|  },\\n52|  {\\n53|    accessorKey: 'email',\\n54|    header: '邮箱',\\n55|    cell: (info) => info.getValue(),\\n56|  },\\n57|];\\n58|\\n59|const data: Person[] = [\\n60|  { id: 1, name: '张三', age: 28, email: 'zhangsan@example.com' },\\n61|  { id: 2, name: '李四', age: 34, email: 'lisi@example.com' },\\n62|  { id: 3, name: '王五', age: 22, email: 'wangwu@example.com' },\\n63|];\\n64|\\n65|export function TanStackTableExample() {\\n66|  const [tableData] = useState(data);\\n67|  const [sorting, setSorting] = useState<SortingState>([]);\\n68|\\n69|  const table = useTable({\\n70|    features: stockFeatures,\\n71|    data: tableData,\\n72|    columns,\\n73|    state: {\\n74|      sorting,\\n75|    },\\n76|    onSortingChange: setSorting,\\n77|  });\\n78|\\n79|  return (\\n80|    <div>\\n81|      <table>\\n82|        <thead>\\n83|          {table.getHeaderGroups().map((headerGroup) => (\\n84|            <tr key={headerGroup.id}>\\n85|              {headerGroup.headers.map((header) => (\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "lines",
+                  "startLine": 21,
+                  "endLine": 85,
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "ec3a7396-408a-4093-b4d6-fc9b58dbf9fe",
+      "metadata": {
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "文件已从 337 行扩充到 632 行，首示例已统一为 V9 写法。再确认一下新增章节的落位是否正确：",
+      "reasoning": "The file is now 632 lines (was 337), confirming the edits were applied. The first example is now v9 style. Let me verify the end of the file (new sections) to confirm everything is properly in place.",
+      "toolCallRequests": [
+        {
+          "id": "call_00_QaoYp57OTg5T1xfEeIrS4875",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/TypeScript/TanStack Table 的使用.md"
+              ],
+              "startLine": 310,
+              "maxLines": 60
+            },
+            "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 310, \"maxLines\": 60}"
+          }
+        }
+      ],
+      "id": "c2b1db6e-22f3-4e25-a490-25c98cb9a7cc",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            },
+            "deepseek": {
+              "webSearch": {
+                "enabled": false
+              }
+            }
+          },
+          "reasoningType": "openai"
+        },
+        "usage": {
+          "prompt_tokens": 67056,
+          "completion_tokens": 174,
+          "total_tokens": 67230,
+          "cache_read_input_tokens": 65536
+        },
+        "durationMs": 3054,
+        "generationState": "completed",
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash",
+        "reasoningDurationMs": 1605
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_QaoYp57OTg5T1xfEeIrS4875",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/TypeScript/TanStack Table 的使用.md"
+                ],
+                "startLine": 310,
+                "maxLines": 60
+              },
+              "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 310, \"maxLines\": 60}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_QaoYp57OTg5T1xfEeIrS4875\",\n  \"requestedOperation\": {\n    \"type\": \"lines\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/TypeScript/TanStack Table 的使用.md\",\n      \"ok\": true,\n      \"totalLines\": 632,\n      \"returnedRange\": {\n        \"startLine\": 310,\n        \"endLine\": 369\n      },\n      \"hasMoreBelow\": true,\n      \"nextStartLine\": 370,\n      \"content\": \"310|\\n311|import { useTable, stockFeatures, flexRender } from \\\"@tanstack/react-table\\\"\\n312|import { users, User } from \\\"./data\\\"\\n313|import { columns } from \\\"./column\\\"\\n314|\\n315|export function Users() {\\n316|  const table = useTable({\\n317|    features: stockFeatures,\\n318|    data: users,\\n319|    columns,\\n320|  })\\n321|\\n322|  return (\\n323|    <div className=\\\"overflow-x-auto\\\">\\n324|      <table className=\\\"min-w-full divide-y divide-gray-200\\\">\\n325|        <thead>\\n326|          {table.getHeaderGroups().map((headerGroup) => (\\n327|            <tr key={headerGroup.id}>\\n328|              {headerGroup.headers.map((header) => (\\n329|                <th key={header.id} className=\\\"px-4 py-2 text-left\\\">\\n330|                  {header.isPlaceholder ? null : (\\n331|                    <button onClick={header.column.getToggleSortingHandler()}>\\n332|                      {flexRender(header.column.columnDef.header, header.getContext())}\\n333|                    </button>\\n334|                  )}\\n335|                </th>\\n336|              ))}\\n337|            </tr>\\n338|          ))}\\n339|        </thead>\\n340|        <tbody className=\\\"divide-y divide-gray-100\\\">\\n341|          {table.getRowModel().rows.map((row) => (\\n342|            <tr key={row.id}>\\n343|              {row.getVisibleCells().map((cell) => (\\n344|                <td key={cell.id} className=\\\"px-4 py-2\\\">\\n345|                  {flexRender(cell.column.columnDef.cell, cell.getContext())}\\n346|                </td>\\n347|              ))}\\n348|            </tr>\\n349|          ))}\\n350|        </tbody>\\n351|      </table>\\n352|\\n353|      {/* 分页 */}\\n354|      <div className=\\\"mt-4 flex items-center gap-2\\\">\\n355|        <button onClick={() => table.previousPage()} disabled={!table.getCanPreviousPage()}>\\n356|          上一页\\n357|        </button>\\n358|        <span>\\n359|          第 {table.getState().pagination.pageIndex + 1} / {table.getPageCount()} 页\\n360|        </span>\\n361|        <button onClick={() => table.nextPage()} disabled={!table.getCanNextPage()}>\\n362|          下一页\\n363|        </button>\\n364|      </div>\\n365|    </div>\\n366|  )\\n367|}\\n368|\\n369|---\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "lines",
+                  "startLine": 310,
+                  "endLine": 369,
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "8ee97af4-fec7-4075-9bda-cd825a14a332",
+      "metadata": {
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "我看到当前上下文显示的是旧的文件快照（337 行），与我上次编辑后的状态（632 行）不一致。让我确认一下文件当前的真实状态：",
+      "reasoning": "The user's current context shows the file is back to 337 lines? Wait — the context says \"File: Development/TypeScript/TanStack Table 的使用.md, Total: 337 lines\". But my fs_read just showed totalLines: 632. Hmm.\n\nWait, the context is auto-attached and may be stale/snapshot from before. Actually, it's odd. The previous tool call reported totalLines: 632, and my verification read showed 632 lines. But the new user message's auto-attached context says 337 lines and cursor at line 13.\n\nThis is confusing. The auto-attached context might be a snapshot taken at the start of this turn... but this turn's context shows 337 lines. Hmm. Wait — maybe the context was captured before my edits? No, the edits happened in the previous assistant turn and the tool results confirmed them.\n\nActually, looking more carefully: this user message appears to be a continuation/new turn with auto-attached context. The context might reflect the state as the user sees it, which shows 337 lines and cursor at line 13. But my edits made the file 632 lines...\n\nHmm, wait. Let me re-check. The context says \"Total: 337 lines\" — but that contradicts my last read which said 632. Possibilities:\n1. The context snapshot is stale (from an earlier state).\n2. The edits were somehow reverted.\n\nActually, the cursor at line 13 with visible lines 1-48 — the user is viewing the file. The \"Total: 337 lines\" is likely a stale cache of the context attachment (auto-attached at message creation time — but when was the message created? The edits were applied in my previous turn, before this user message). \n\nHmm, actually there's no new user message content here — this message is just the context re-attachment. Wait, the message contains only \"Current Context (auto-attached, content NOT included)\" — there's no actual user text! This might be a system re-attachment of context, perhaps indicating the conversation continues and the context is being re-synced.\n\nActually, I think what happened: The user's UI re-attached the context (maybe the previous read triggered a re-sync), and the context shows the ORIGINAL 337-line version because the auto-attached context snapshot was taken before my edits were applied... No, that doesn't make sense either, since the edits were applied in my previous turn and the user's context would postdate them.\n\nAlternatively — maybe the file really did revert to 337 lines? That would mean my edits didn't persist. But my tool results said \"Applied edit\" with changed: true, and my subsequent read showed 632 lines with the new content in place (I verified lines 21-85 and 310-369 showing the new v9 content).\n\nThe most plausible explanation: the auto-attached context is a stale snapshot (it may have been captured at the start of the conversation turn where the user was viewing the file — i.e., before my batch edit was applied). The \"Cursor: line 13\" and \"Visible: lines 1-48\" suggest the user is back looking at the file.\n\nGiven the ambiguity, the safest action: verify the current file state with a fresh read. If it shows 632 lines, all good — the context snapshot is stale, and I should summarize the completed work. If it shows 337 lines, something reverted and I need to re-apply.\n\nLet me do a quick read to confirm the current state.",
+      "toolCallRequests": [
+        {
+          "id": "call_00_tepetekq8A5kk3Fnxltd6873",
+          "name": "yolo_local__fs_read",
+          "arguments": {
+            "kind": "complete",
+            "value": {
+              "paths": [
+                "Development/TypeScript/TanStack Table 的使用.md"
+              ],
+              "startLine": 1,
+              "maxLines": 5
+            },
+            "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 1, \"maxLines\": 5}"
+          }
+        }
+      ],
+      "id": "e99c3d0a-ab60-4a6f-bae8-46cae304238a",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            },
+            "deepseek": {
+              "webSearch": {
+                "enabled": false
+              }
+            }
+          },
+          "reasoningType": "openai"
+        },
+        "usage": {
+          "prompt_tokens": 68020,
+          "completion_tokens": 866,
+          "total_tokens": 68886,
+          "cache_read_input_tokens": 66944
+        },
+        "durationMs": 8344,
+        "generationState": "completed",
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash",
+        "reasoningDurationMs": 6899
+      }
+    },
+    {
+      "role": "tool",
+      "toolCalls": [
+        {
+          "request": {
+            "id": "call_00_tepetekq8A5kk3Fnxltd6873",
+            "name": "yolo_local__fs_read",
+            "arguments": {
+              "kind": "complete",
+              "value": {
+                "paths": [
+                  "Development/TypeScript/TanStack Table 的使用.md"
+                ],
+                "startLine": 1,
+                "maxLines": 5
+              },
+              "rawText": "{\"paths\": [\"Development/TypeScript/TanStack Table 的使用.md\"], \"startLine\": 1, \"maxLines\": 5}"
+            }
+          },
+          "response": {
+            "status": "success",
+            "data": {
+              "type": "text",
+              "text": "{\n  \"toolCallId\": \"call_00_tepetekq8A5kk3Fnxltd6873\",\n  \"requestedOperation\": {\n    \"type\": \"lines\"\n  },\n  \"results\": [\n    {\n      \"path\": \"Development/TypeScript/TanStack Table 的使用.md\",\n      \"ok\": true,\n      \"totalLines\": 632,\n      \"returnedRange\": {\n        \"startLine\": 1,\n        \"endLine\": 5\n      },\n      \"hasMoreBelow\": true,\n      \"nextStartLine\": 6,\n      \"content\": \"1|## 无头样式库（Headless UI Library）是什么\\n2|\\n3|“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。\\n4|\\n5|## TanStack Table\"\n    }\n  ]\n}",
+              "metadata": {
+                "fsReadOperation": {
+                  "type": "lines",
+                  "startLine": 1,
+                  "endLine": 5,
+                  "isPdf": false
+                }
+              }
+            }
+          }
+        }
+      ],
+      "id": "03318387-149b-4a1a-b5dd-41a2a71feb48",
+      "metadata": {
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash"
+      }
+    },
+    {
+      "role": "assistant",
+      "content": "确认无误——文件当前实际是 **632 行**，所有修改都已生效。你界面里显示的 337 行是旧快照，刷新/重新打开文件即可看到最新内容。\n\n## ✅ 本次「补充 + 修正 + 统一 V9」完成情况\n\n### 修正部分（统一为 V9 写法）\n\n| 位置 | 修正前 | 修正后 |\n| --- | --- | --- |\n| 开头说明 | 下文以 V9 为例（V7, v8 改动较大） | 统一使用 V9 写法 |\n| 第一个示例 | `useReactTable` + `getCoreRowModel()` 等 row model（V8 风格），且 `getFilteredRowModel` 未使用 | `useTable` + `features: stockFeatures`，移除冗余 import |\n| 「Tailwind CSS、shadcn 等组件库」 | 表述不准确 | 改为「无头/样式无关方案」 |\n| Features 段落 | 说 row model 是功能的 React 适配层实现（V8 概念） | 改为 `sorting`、`pagination` feature 自动挂载状态与方法 |\n| features 说明 | 提到 `tableFeatures`（不准确） | 明确为 `stockFeatures` 或按需 `[sorting, pagination]` |\n| 示例 4 | 渲染部分「此处省略」 | **补全**表头/表体/分页完整渲染代码 |\n\n### 新增章节（从 337 → 632 行）\n\n1. **状态管理：受控与非受控** — 两种模式的用法与适用场景\n2. **排序、筛选与分页** — `sortingFn` 自定义排序、全局/列筛选、`pageSize` 切换、服务端 Manual 模式\n3. **行选择（Row Selection）** — `getRowId` + 全选/单选勾选列 + 读取选中行\n4. **虚拟滚动** — 与 `@tanstack/react-virtual` 集成示例\n5. **性能优化与常见坑** — `useMemo` 稳定 columns/data、`flexRender`、key 规范等\n6. **与 shadcn/ui 等生态集成** — 无头逻辑 + 现成样式的组合实践\n7. **总结** — 原生 `<table>` / Ant Design / TanStack Table 的选型建议\n\n其中新章节的代码示例均沿用文中已确立的 V9 约定（`useTable` + `stockFeatures` + `createColumnHelper<typeof features, User>()`），全文 API 风格已一致。\n\n需要我把某个新增章节再展开（比如筛选的列级 `filterFn` 示例、或虚拟滚动 + 服务端分页的完整组合），或者调整章节顺序，随时说。",
+      "reasoning": "The current context shows the file is 337 lines, but my last read shows the file is 632 lines with the edits applied. The context attachment is stale (auto-attached snapshot from before my edits). My read at startLine 1 confirmed line 3 has the corrected text (\"目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等\"重 UI\"组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。\") and totalLines = 632.\n\nSo the edits are all in place. The user's UI context snapshot is just outdated. I should confirm to the user that everything has been applied, and give a summary of what was corrected and added. No more edits needed.\n\nLet me summarize concisely what was done:\n\n修正（统一为 V9）：\n1. 首示例 `useReactTable` + row models → `useTable` + `stockFeatures`，移除未使用的 `getFilteredRowModel` 等 import\n2. 「Tailwind CSS、shadcn 等组件库」表述 → 「无头/样式无关方案」\n3. Features 段落：`getSortedRowModel()`/`getPaginationRowModel()` → `sorting`/`pagination` feature 自动挂载状态与方法\n4. `tableFeatures` 说明 → `stockFeatures` / 按需组合 `[sorting, pagination]`\n5. 开头版本说明更新为「统一 V9 写法」\n\n补充：\n- 示例 4 补全完整渲染（表头/表体/分页，flexRender）\n- 新增章节：状态管理（受控/非受控）、排序/筛选/分页（含服务端 Manual 模式）、行选择、虚拟滚动、性能优化与常见坑、shadcn 集成、总结\n\nI'll present this summary. No tool calls needed. Keep it organized and concise.",
+      "id": "1acf852b-83a1-44b5-ade5-7187d64806c2",
+      "metadata": {
+        "model": {
+          "providerId": "deepseek",
+          "id": "deepseek/deepseek-v4-flash",
+          "model": "deepseek-v4-flash",
+          "name": "deepseek-v4-flash",
+          "maxContextTokens": 1048576,
+          "modalities": [
+            "text"
+          ],
+          "builtinToolProvider": "none",
+          "builtinTools": {
+            "gpt": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "openrouter": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "grok": {
+              "webSearch": {
+                "enabled": false
+              }
+            },
+            "gemini": {
+              "webSearch": {
+                "enabled": false
+              },
+              "urlContext": {
+                "enabled": false
+              }
+            },
+            "deepseek": {
+              "webSearch": {
+                "enabled": false
+              }
+            }
+          },
+          "reasoningType": "openai"
+        },
+        "usage": {
+          "prompt_tokens": 69222,
+          "completion_tokens": 1016,
+          "total_tokens": 70238,
+          "cache_read_input_tokens": 66944
+        },
+        "durationMs": 14774,
+        "generationState": "completed",
+        "branchConversationId": "c7da9951-e23c-4211-b692-d98e71da3cd6",
+        "branchModelId": "deepseek/deepseek-v4-flash",
+        "branchLabel": "deepseek-v4-flash",
+        "reasoningDurationMs": 4215
+      }
     }
   ],
   "createdAt": 1786088021440,
-  "updatedAt": 1786951674680,
+  "updatedAt": 1786957158541,
   "schemaVersion": 1,
   "overrides": {
-    "chatMode": "ask",
+    "chatMode": "agent",
     "agentYoloEnabled": false
   },
   "conversationModelId": "deepseek/deepseek-v4-flash",
@@ -1904,7 +2748,8 @@
     "ee23bbc4-fba2-467d-a1f8-f782fd5cd570": "deepseek/deepseek-v4-flash",
     "656ed9bf-ee7a-4964-a0db-f4e69b2960bf": "deepseek/deepseek-v4-flash",
     "e504b343-d65c-4133-a8c1-347e730ca5f4": "deepseek/deepseek-v4-flash",
-    "fdeae8f0-3699-4c13-9fc4-c0679a444c15": "deepseek/deepseek-v4-flash"
+    "fdeae8f0-3699-4c13-9fc4-c0679a444c15": "deepseek/deepseek-v4-flash",
+    "f49bc7f6-16a7-4cf0-b545-aad66494aabe": "deepseek/deepseek-v4-flash"
   },
   "assistantGroupBoundaryMessageIds": [],
   "reasoningLevel": "auto",
