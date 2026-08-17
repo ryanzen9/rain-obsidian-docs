@@ -307,28 +307,43 @@ const columns = columnHelper.columns([
 
 `columnHelper.accessor("name", ...)` 中的 `"name"` 会被推断为 `User` 的字段名，拼错字段或传错类型时 TypeScript 会直接报错；`cell` 回调中的 `info.getValue()` 也会自动推导出对应字段的类型（如 `name` 为 `string`、`age` 为 `number`），无需手动标注。
 
-#### 4. 使用 useTable (users.tsx)
+#### 4. 使用 useTable（users.tsx）
+
+最后在页面组件中把前面定义好的三部分组装起来，调用 `useTable` 生成 `table` 实例，再传给负责渲染的 UI 组件：
 
 ```tsx
-  const table = useTable({
-    features: dataTableFeatures,
-    data: users,
-    columns: userColumns,
-    defaultColumn: {
-      size: 140,
-      minSize: 80,
-      maxSize: 420,
-    },
-    state: { columnFilters, pagination: { pageIndex, pageSize } },
-    onColumnFiltersChange: setColumnFilters,
-    onPaginationChange: handlePageChange,
-    autoResetPageIndex: false,
-    initialState: {
-      columnVisibility: { group: false, search: false },
-    },
-  });
-  
-  ...
-  
-  <UserTable table={table}><UserTable/>
+const table = useTable({
+  features: dataTableFeatures,
+  data: users,
+  columns: userColumns,
+
+  // 所有列的默认宽度约束，可被单列配置覆盖
+  defaultColumn: {
+    size: 140,
+    minSize: 80,
+    maxSize: 420,
+  },
+
+  // 受控模式：筛选与分页状态由组件持有并传入
+  state: {
+    columnFilters,
+    pagination: { pageIndex, pageSize },
+  },
+  onColumnFiltersChange: setColumnFilters,
+  onPaginationChange: handlePageChange,
+
+  // 筛选变化时保持当前页，不自动回到第一页
+  autoResetPageIndex: false,
+
+  // 初始隐藏 group、search 两列
+  initialState: {
+    columnVisibility: { group: false, search: false },
+  },
+})
+
+// ...
+
+<UserTable table={table} />
 ```
+
+`useTable` 返回的 `table` 封装了全部状态与操作方法，直接传给 `<UserTable>`；`getRowModel()`、`getHeaderGroups()` 等渲染细节在 `UserTable` 内部完成。这里的 `onPaginationChange` 传的是自定义 `handlePageChange`（例如与 URL 参数同步），简单场景下也可以直接传 `setPagination`。
