@@ -1,0 +1,97 @@
+{
+  "id": "41c90d34-c856-47a7-9902-81810b726f3c",
+  "title": "润色 TanStack Table 使用章节",
+  "messages": [
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "TanStack Table 的使… (267 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "TanStack Table 的使用.md (267 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/TypeScript/TanStack Table 的使用.md",
+                    "startLine": 179,
+                    "endLine": 281,
+                    "source": "selection-pinned",
+                    "contentHash": "3e0dbb4a",
+                    "contentCount": 267,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 帮我润色这段章节，根据内容，整理格式，补充内容",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "2bc55251"
+      },
+      "id": "8138a427-3fe4-4526-80e6-86207710ab7d",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "### 示例\n\n以定义一套 User Table 为例。\n\n**对象模型定义**： 在 `users/_components/user-table/data.ts`\n\n```typescript\n\ninterface User{\n  id: string\n  name: string\n  age: number\n  email: string\n  status: \"active\" | \"disabled\"\n  createdAt: string\n}\n\n```\n\n**列定义**： 在 `users/_components/user-table/column.ts`\n\n> 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs\n> features 在 v9 中指使用 tableFeatures 引入的对象\n> 分为三种： Accessor列， Display列， Group 列\n> tip： 应该让 accessor 保持原始、有语义的数据值，再通过 `cell` 转换成 Badge、货币、日期等 UI。这样排序、过滤和服务端查询逻辑都更稳定。\n\n```tsx\nimport type { ColumnDef } from \"@tanstack/react-table\"\n\nconst columns: ColumnDef<typeof features, User>[] = [\n  {\n    accessorKey: \"name\",\n    header: \"姓名\",\n  },\n  {\n    accessorKey: \"age\",\n    header: \"年龄\",\n  },\n  {\n\t id: 'action',\n\t header: '操作',\n\t cell: ({row}) => {\n\t\t const user = row.original\n\n\t     return (\n\t      <Button onClick={() => editUser(user.id)}>\t\n\t        编辑\n\t      </Button>\n\t    )\n\t }\n  }\n]\n```\n\n在 v9 中可以使用 `createColumnHelper` 来进行定义(利于  Typescript 推导)：\n\n```tsx\nconst columnHelper = createColumnHelper<typeof features, User>()\n\nconst columns = columnHelper.columns([\n  columnHelper.accessor(\"name\", {\n    header: \"姓名\",\n\n    cell: (info) => {\n      return info.getValue()\n    },\n  }),\n\n  columnHelper.accessor(\"age\", {\n    header: \"年龄\",\n\n    cell: (info) => {\n      return `${info.getValue()} 岁`\n    },\n  }),\n  \n  columnHelper.display({\n  id: \"actions\",\n\n  header: \"操作\",\n\n  cell: ({ row }) => (\n    <Button>\n      编辑 {row.original.name}\n    </Button>\n  ),\n}),\n\ncolumnHelper.group({\n  header: \"用户信息\",\n\n  columns: [\n    columnHelper.accessor(\"name\", {\n      header: \"姓名\",\n    }),\n\n    columnHelper.accessor(\"age\", {\n      header: \"年龄\",\n    }),\n  ],\n})\n])\n```",
+          "file": "Development/TypeScript/TanStack Table 的使用.md",
+          "startLine": 179,
+          "endLine": 281,
+          "source": "selection-pinned",
+          "contentHash": "3e0dbb4a",
+          "contentCount": 267,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-17 15:08 (Monday)"
+    }
+  ],
+  "createdAt": 1786950535521,
+  "updatedAt": 1786950535768,
+  "schemaVersion": 1,
+  "compaction": [],
+  "origin": "user",
+  "overrides": {
+    "chatMode": "agent",
+    "agentYoloEnabled": false
+  },
+  "conversationModelId": "deepseek/deepseek-v4-pro",
+  "messageModelMap": {
+    "8138a427-3fe4-4526-80e6-86207710ab7d": "deepseek/deepseek-v4-pro"
+  },
+  "assistantGroupBoundaryMessageIds": [],
+  "reasoningLevel": "auto"
+}

@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "entries": {
+    "2bc55251": {
+      "hash": "2bc55251",
+      "content": [
+        {
+          "type": "text",
+          "text": "<user_selected_content path=\"Development/TypeScript/TanStack Table 的使用.md\" startLine=\"179\" endLine=\"281\">\n```Development/TypeScript/TanStack Table 的使用.md\n179|### 示例\n180|\n181|以定义一套 User Table 为例。\n182|\n183|**对象模型定义**： 在 `users/_components/user-table/data.ts`\n184|\n185|```typescript\n186|\n187|interface User{\n188|  id: string\n189|  name: string\n190|  age: number\n191|  email: string\n192|  status: \"active\" | \"disabled\"\n193|  createdAt: string\n194|}\n195|\n196|```\n197|\n198|**列定义**： 在 `users/_components/user-table/column.ts`\n199|\n200|> 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs\n201|> features 在 v9 中指使用 tableFeatures 引入的对象\n202|> 分为三种： Accessor列， Display列， Group 列\n203|> tip： 应该让 accessor 保持原始、有语义的数据值，再通过 `cell` 转换成 Badge、货币、日期等 UI。这样排序、过滤和服务端查询逻辑都更稳定。\n204|\n205|```tsx\n206|import type { ColumnDef } from \"@tanstack/react-table\"\n207|\n208|const columns: ColumnDef<typeof features, User>[] = [\n209|  {\n210|    accessorKey: \"name\",\n211|    header: \"姓名\",\n212|  },\n213|  {\n214|    accessorKey: \"age\",\n215|    header: \"年龄\",\n216|  },\n217|  {\n218|\t id: 'action',\n219|\t header: '操作',\n220|\t cell: ({row}) => {\n221|\t\t const user = row.original\n222|\n223|\t     return (\n224|\t      <Button onClick={() => editUser(user.id)}>\t\n225|\t        编辑\n226|\t      </Button>\n227|\t    )\n228|\t }\n229|  }\n230|]\n231|```\n232|\n233|在 v9 中可以使用 `createColumnHelper` 来进行定义(利于  Typescript 推导)：\n234|\n235|```tsx\n236|const columnHelper = createColumnHelper<typeof features, User>()\n237|\n238|const columns = columnHelper.columns([\n239|  columnHelper.accessor(\"name\", {\n240|    header: \"姓名\",\n241|\n242|    cell: (info) => {\n243|      return info.getValue()\n244|    },\n245|  }),\n246|\n247|  columnHelper.accessor(\"age\", {\n248|    header: \"年龄\",\n249|\n250|    cell: (info) => {\n251|      return `${info.getValue()} 岁`\n252|    },\n253|  }),\n254|  \n255|  columnHelper.display({\n256|  id: \"actions\",\n257|\n258|  header: \"操作\",\n259|\n260|  cell: ({ row }) => (\n261|    <Button>\n262|      编辑 {row.original.name}\n263|    </Button>\n264|  ),\n265|}),\n266|\n267|columnHelper.group({\n268|  header: \"用户信息\",\n269|\n270|  columns: [\n271|    columnHelper.accessor(\"name\", {\n272|      header: \"姓名\",\n273|    }),\n274|\n275|    columnHelper.accessor(\"age\", {\n276|      header: \"年龄\",\n277|    }),\n278|  ],\n279|})\n280|])\n281|```\n```\n</user_selected_content>\n\n\nTanStack Table 的使用.md (267 词/字) 帮我润色这段章节，根据内容，整理格式，补充内容\n\n"
+        }
+      ],
+      "createdAt": 1786950535514,
+      "updatedAt": 1786950535514
+    }
+  }
+}
