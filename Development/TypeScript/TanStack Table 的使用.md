@@ -249,5 +249,17 @@ const columns = columnHelper.columns([
       return `${info.getValue()} 岁`
     },
   }),
+  
+  columnHelper.display({
+  id: "actions",
+
+  header: "操作",
+
+  cell: ({ row }) => (
+    <Button>
+      编辑 {row.original.name}
+    </Button>
+  ),
+})
 ])
 ```
