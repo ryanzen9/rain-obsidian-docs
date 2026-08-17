@@ -1,3 +1,9 @@
+---
+title: TanStack Table 快速入门
+summary: 讲解如何在 Next.js 中快速入门使用 TanStack Table：从基础安装、配置到高级用法。
+publishedAt: '2026-08-17'
+---
+
 ## 无头样式库（Headless UI Library）是什么
 
 “无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的方案如 Tailwind CSS、shadcn 等，都与传统的 Ant Design 等“重 UI”组件库不同——它们将组件的行为与样式彻底分离，样式完全交给使用者。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。
@@ -216,7 +222,7 @@ TanStack Table 提供三种列类型，分别适用于不同场景：
 
 > **Tip**：尽量让 accessor 保持**原始、有语义**的数据值（如时间戳、状态码），再通过 `cell` 转换成 Badge、货币、日期等 UI 表现。这样排序、过滤以及服务端查询的逻辑都更稳定，UI 变化也不会污染数据层。
 
-> 列定义详见：<https://tanstack.com/table/latest/docs/guide/column-defs>；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。
+> [TanStack Table 列定义文档](https://tanstack.com/table/latest/docs/guide/column-defs)；V9 中 `features` 是传入 `useTable` 的功能数组，`stockFeatures` 包含全部内置功能，也可按需组合（如 `[sorting, pagination]`）。
 
 最简单的写法是直接声明 `ColumnDef` 数组：
 
