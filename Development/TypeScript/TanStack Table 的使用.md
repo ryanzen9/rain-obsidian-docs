@@ -200,7 +200,7 @@ interface User{
 > 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
 > features 在 v9 中指使用 tableFeatures 引入的对象
 
-```ts
+```tsx
 import type { ColumnDef } from "@tanstack/react-table"
 
 const columns: ColumnDef<typeof features, User>[] = [
@@ -216,7 +216,13 @@ const columns: ColumnDef<typeof features, User>[] = [
 	 id: 'action',
 	 header: '操作',
 	 cell: ({row}) => {
-		 
+		 const user = row.original
+
+	     return (
+	      <Button onClick={() => editUser(user.id)}>	
+	        编辑
+	      </Button>
+	    )
 	 }
   }
 ]
