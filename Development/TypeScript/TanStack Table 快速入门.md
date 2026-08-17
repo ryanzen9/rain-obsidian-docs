@@ -622,9 +622,3 @@ const rowVirtualizer = useVirtualizer({
 ## 与 shadcn/ui 等生态集成
 
 shadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「无头逻辑 + 现成样式」的经典组合：用 TanStack Table 管理状态与行为，用 shadcn 的 `<Table>`、`<TableHead>`、`<TableRow>` 等组件提供外观。这正是无头组件库「行为与样式分离」理念的落地实践，也方便与 Tailwind CSS 等任意样式体系搭配。
-
-## 总结
-
-- **简单静态展示、无交互**：直接用原生 `<table>` 即可；
-- **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；
-- **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。
