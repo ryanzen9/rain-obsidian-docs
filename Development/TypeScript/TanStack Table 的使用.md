@@ -212,6 +212,13 @@ const columns: ColumnDef<typeof features, User>[] = [
     accessorKey: "age",
     header: "年龄",
   },
+  {
+	 id: 'action',
+	 header: '操作',
+	 cell: ({row}) => {
+		 
+	 }
+  }
 ]
 ```
 
