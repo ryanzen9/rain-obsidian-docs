@@ -307,4 +307,8 @@ const columns = columnHelper.columns([
 
 `columnHelper.accessor("name", ...)` 中的 `"name"` 会被推断为 `User` 的字段名，拼错字段或传错类型时 TypeScript 会直接报错；`cell` 回调中的 `info.getValue()` 也会自动推导出对应字段的类型（如 `name` 为 `string`、`age` 为 `number`），无需手动标注。
 
-#### 4. 使用 
+#### 4. 使用 useTable
+
+```tsx
+
+```
