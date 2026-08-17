@@ -196,7 +196,9 @@ interface User{
 ```
 
 **列定义**： 在 `users/_components/user-table/column.ts`
-列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
+
+> 列定义详见：https://tanstack.com/table/latest/docs/guide/column-defs
+> features 
 
 ```ts
 import type { ColumnDef } from "@tanstack/react-table"
