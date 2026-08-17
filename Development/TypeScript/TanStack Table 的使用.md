@@ -175,3 +175,9 @@ const table = useTable({
 `columns` 还支持**分组**（grouping）、**固定列**（pinned）、**聚合**（aggregation）等高级配置，这些都由 features 提供能力支撑。
 
 当你把 `data`、`columns`、`features` 传递给 `useTable` 后，它会返回一个 `table` 实例，封装了所有状态和操作方法，比如我们之前用到的 `table.getHeaderGroups()`、`table.getRowModel()`、`table.nextPage()`。接下来要做的，就是把这些方法返回的模型对象（如 header groups、rows、cells）手动映射到你的 JSX 结构中——这正是“无头”的体现：渲染结构由你掌控，但状态和逻辑已经由 Table 内部管理好了。
+
+### 示例
+
+以定义一套 User Table 为例。
+
+**列定义**： 
