@@ -1014,16 +1014,8 @@
         }
       },
       "promptContent": null,
-      "snapshotRef": {
-        "hash": "336a62f9"
-      },
       "id": "656ed9bf-ee7a-4964-a0db-f4e69b2960bf",
-      "mentionables": [
-        {
-          "type": "file",
-          "file": "Todo/购物清单.md"
-        }
-      ],
+      "mentionables": [],
       "selectedSkills": [],
       "selectedModelIds": [],
       "reasoningLevel": "auto",
@@ -1643,13 +1635,89 @@
         "branchModelId": "deepseek/deepseek-v4-flash",
         "branchLabel": "deepseek-v4-flash"
       }
+    },
+    {
+      "role": "user",
+      "content": {
+        "root": {
+          "children": [
+            {
+              "children": [
+                {
+                  "detail": 1,
+                  "format": 0,
+                  "mode": "token",
+                  "style": "",
+                  "text": "TanStack Table 的使… (591 词/字)",
+                  "type": "mention",
+                  "version": 1,
+                  "mentionName": "TanStack Table 的使用.md (591 词/字)",
+                  "mentionable": {
+                    "type": "block",
+                    "file": "Development/TypeScript/TanStack Table 的使用.md",
+                    "startLine": 1,
+                    "endLine": 48,
+                    "source": "selection-sync",
+                    "contentHash": "de5e5a66",
+                    "contentCount": 591,
+                    "contentUnit": "wordsCharacters"
+                  }
+                },
+                {
+                  "detail": 0,
+                  "format": 0,
+                  "mode": "normal",
+                  "style": "",
+                  "text": " 完整查看该文章，你认为还有什么需要补充的吗",
+                  "type": "text",
+                  "version": 1
+                }
+              ],
+              "direction": "ltr",
+              "format": "",
+              "indent": 0,
+              "type": "paragraph",
+              "version": 1,
+              "textFormat": 0,
+              "textStyle": ""
+            }
+          ],
+          "direction": "ltr",
+          "format": "",
+          "indent": 0,
+          "type": "root",
+          "version": 1
+        }
+      },
+      "promptContent": null,
+      "snapshotRef": {
+        "hash": "cacf615a"
+      },
+      "id": "fdeae8f0-3699-4c13-9fc4-c0679a444c15",
+      "mentionables": [
+        {
+          "type": "block",
+          "content": "## 无头样式库（Headless UI Library）是什么\n\n“无头”指的是**只提供逻辑与行为，不提供任何预设的 UI 外观（CSS）和固定的 DOM 结构**。通俗来说，它给你一套“大脑”和“骨架”，但“长相”完全由你决定。这种设计让开发者可以自由地将组件接入任意样式体系，而不必受制于框架自带的模板。目前比较流行的组件库如 Tailwind CSS、shadcn 等，都倾向于与传统的 Ant Design 等“重 UI”组件库不同，将组件的行为与样式彻底分离。这也意味着更低的耦合度、更高的自定义能力，同时也更适合与 AI 协同编程——AI 可以更精准地控制逻辑，而样式交给用户自定义，极大提升了开发效率与灵活性。\n\n## TanStack Table\n\nTanStack Table 是一款典型的**无头（Headless）表格库**，延续了“只提供逻辑与行为，不预设 UI 外观”的设计理念。\n\n它提供了完整的表格状态管理、排序、筛选、分页、行选择、列固定、虚拟滚动等复杂功能，但**不输出任何 HTML 结构或 CSS**。开发者可以基于它的 API 和 Hooks，使用任何 UI 框架（React、Vue、Solid、Svelte 等）或纯 HTML 来构建自己的表格外观。\n\n### 核心特点\n\n- **框架无关**：官方支持 React、Vue、Solid、Svelte、Lit 等，核心逻辑与视图层解耦。\n- **受控与非受控模式**：可以完全掌控表格状态，也可以交给库内部管理。\n- **强大的功能组合**：排序、过滤、分组、分页、列排序、行展开、虚拟化等均可组合使用。\n- **TypeScript 友好**：提供完整类型推导，提升开发体验。\n- **与 Tailwind CSS、shadcn 等无头/样式无关生态配合良好**，适合需要深度自定义表格样式的项目。\n\n由于它不限制 JSX 结构和 CSS，开发者可以轻松地将它接入现有的设计系统或 Tailwind CSS，也能更方便地与 AI 协同——AI 负责逻辑与状态管理，开发者专注于视觉呈现。\n\n> 下文以 TanStack Table V9 为例（V7, v8 改动较大）。\n\n```tsx\nimport {\n  useReactTable,\n  getCoreRowModel,\n  getSortedRowModel,\n  getFilteredRowModel,\n  getPaginationRowModel,\n  flexRender,\n  type ColumnDef,\n  type SortingState,\n} from '@tanstack/react-table';\n\nimport { useState } from 'react';\n\ntype Person = {\n  id: number;\n  name: string;\n  age: number;\n  email: string;\n};\n\nconst columns: ColumnDef<Person>[] = [\n  {\n    accessorKey: 'name',\n    header: '姓名',\n    cell: (info) => info.getValue(),",
+          "file": "Development/TypeScript/TanStack Table 的使用.md",
+          "startLine": 1,
+          "endLine": 48,
+          "source": "selection-sync",
+          "contentHash": "de5e5a66",
+          "contentCount": 591,
+          "contentUnit": "wordsCharacters"
+        }
+      ],
+      "selectedSkills": [],
+      "selectedModelIds": [],
+      "reasoningLevel": "auto",
+      "timeContext": "2026-08-17 15:27 (Monday)"
     }
   ],
   "createdAt": 1786088021440,
-  "updatedAt": 1786095913629,
+  "updatedAt": 1786951638088,
   "schemaVersion": 1,
   "overrides": {
-    "chatMode": "agent",
+    "chatMode": "ask",
     "agentYoloEnabled": false
   },
   "conversationModelId": "deepseek/deepseek-v4-flash",
@@ -1658,7 +1726,8 @@
     "4f775415-9c1f-47ff-8af4-471375fbab9f": "deepseek/deepseek-v4-flash",
     "ee23bbc4-fba2-467d-a1f8-f782fd5cd570": "deepseek/deepseek-v4-flash",
     "656ed9bf-ee7a-4964-a0db-f4e69b2960bf": "deepseek/deepseek-v4-flash",
-    "e504b343-d65c-4133-a8c1-347e730ca5f4": "deepseek/deepseek-v4-flash"
+    "e504b343-d65c-4133-a8c1-347e730ca5f4": "deepseek/deepseek-v4-flash",
+    "fdeae8f0-3699-4c13-9fc4-c0679a444c15": "deepseek/deepseek-v4-flash"
   },
   "assistantGroupBoundaryMessageIds": [],
   "reasoningLevel": "auto",
