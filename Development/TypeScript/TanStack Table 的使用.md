@@ -628,4 +628,3 @@ shadcn/ui 的 Table 组件本身就是基于 TanStack Table 构建的，是「�
 - **简单静态展示、无交互**：直接用原生 `<table>` 即可；
 - **需要开箱即用、带完整样式**：考虑 Ant Design 等重 UI 组件库；
 - **需要深度自定义、复杂交互（排序、筛选、虚拟滚动、状态受控）**：选择 TanStack Table，配合 Tailwind CSS / shadcn 等生态自由构建 UI。
-```
