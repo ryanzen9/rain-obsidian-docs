@@ -7,4 +7,5 @@
 [ ] TODO: 优化 blog 项目结构 OR 编写 Swift App OR 二开 next-shadcn-admin-dashboard
 [ ] TODO: Gist 调整
 [] TODO: 订阅管理
+[] TODO: GetX 详解
 
