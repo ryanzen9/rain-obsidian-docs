@@ -20,32 +20,6 @@ publishedAt: '2026-08-07'
 
 整体流程如下：
 
-```mermaid
-flowchart TD
-    S([网站内容]) --> D
-
-    subgraph CRAWL["① 爬取 Crawling"]
-        D["发现页面：a href / sitemap.xml / 站内导航"] --> V["请求 URL 访问网页"]
-        V --> R["拉取结构化数据与各类资源，渲染 HTML"]
-        R --> P["解析文本、图片、脚本等内容"]
-    end
-
-    P --> IDX
-
-    subgraph INDEX["② 索引 Indexing"]
-        IDX["理解页面主题：title / description / 结构化数据"] --> DB[("搜索引擎索引库")]
-    end
-
-    DB --> Q
-
-    subgraph RANK["③ 排名 Ranking"]
-        Q["用户输入搜索词"] --> M["从索引库挑选最相关、最有价值的页面"]
-        M --> O["按数百种算法因子排序：内容质量 / 关键词匹配 / 用户体验 / 页面速度 / 移动端适配"]
-        O --> RES([返回搜索结果页展示])
-    end
-```
-
-其中「爬取」阶段爬虫与站点之间的交互细节：
 
 ```mermaid
 sequenceDiagram
