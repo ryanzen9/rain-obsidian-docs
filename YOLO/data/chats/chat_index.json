@@ -10,7 +10,7 @@
   {
     "id": "c7da9951-e23c-4211-b692-d98e71da3cd6",
     "title": "Next.js SEO优化指南续写",
-    "updatedAt": 1786095913629,
+    "updatedAt": 1786957158541,
     "schemaVersion": 1,
     "isPinned": false,
     "origin": "user"
@@ -18,7 +18,15 @@
   {
     "id": "41c90d34-c856-47a7-9902-81810b726f3c",
     "title": "润色 TanStack Table 使用章节",
-    "updatedAt": 1786950535768,
+    "updatedAt": 1786951233697,
+    "schemaVersion": 1,
+    "isPinned": false,
+    "origin": "user"
+  },
+  {
+    "id": "000f1b45-cda3-4c31-99ff-34a785aefea7",
+    "title": "基于 Next.js SEO 集成内容创建流程图/时序图",
+    "updatedAt": 1789634278069,
     "schemaVersion": 1,
     "isPinned": false,
     "origin": "user"
