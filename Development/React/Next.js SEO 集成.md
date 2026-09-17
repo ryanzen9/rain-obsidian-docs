@@ -1,6 +1,6 @@
 ---
 title: Next.js SEO 集成
-summary: 系统讲解如何在 Next.js 中做好 SEO：从搜索引擎的爬取、索引、排名机制讲起，对比 SSG、SSR、ISR、CSR 等渲染方式对 SEO 的影响，并给出元数据、结构化数据、站点地图、Core Web Vitals 等 8 个实操优化步骤。
+summary: 系统讲解如何在 Next.js 中做好 SEO：从搜索引擎的爬取、索引、排名机制讲起，对比 SSG、SSR、ISR、CSR 等渲染方式对 SEO 的影响，并给出优化步骤。
 publishedAt: '2026-08-07'
 ---
 
@@ -17,6 +17,50 @@ publishedAt: '2026-08-07'
 3. **排名**：当用户输入搜索词时，搜索引擎会从索引库中挑选最相关、最有价值的页面，按照数百种算法因子排序后展示。排名的依据包括内容质量、关键词匹配、用户体验、页面速度、移动端适配等。
 
 具体来说，爬虫会先遍历站内链接来**发现**页面，可抓取的入口包括但不限于：`<a href>` 超链接、`sitemap.xml` 中的条目以及站内导航等。随后爬虫通过请求 URL **访问**网页，获取页面上的结构化数据与各类资源，渲染 HTML 后解析内容，最终**建立索引数据**。
+
+整体流程如下：
+
+```mermaid
+flowchart TD
+    S([网站内容]) --> D
+
+    subgraph CRAWL["① 爬取 Crawling"]
+        D["发现页面：a href / sitemap.xml / 站内导航"] --> V["请求 URL 访问网页"]
+        V --> R["拉取结构化数据与各类资源，渲染 HTML"]
+        R --> P["解析文本、图片、脚本等内容"]
+    end
+
+    P --> IDX
+
+    subgraph INDEX["② 索引 Indexing"]
+        IDX["理解页面主题：title / description / 结构化数据"] --> DB[("搜索引擎索引库")]
+    end
+
+    DB --> Q
+
+    subgraph RANK["③ 排名 Ranking"]
+        Q["用户输入搜索词"] --> M["从索引库挑选最相关、最有价值的页面"]
+        M --> O["按数百种算法因子排序：内容质量 / 关键词匹配 / 用户体验 / 页面速度 / 移动端适配"]
+        O --> RES([返回搜索结果页展示])
+    end
+```
+
+其中「爬取」阶段爬虫与站点之间的交互细节：
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as 爬虫（Googlebot）
+    participant W as 站点网页
+    participant I as 搜索引擎索引库
+
+    C->>W: 发现：遍历超链接 / sitemap.xml / 站内导航
+    C->>W: 访问：请求目标 URL
+    W-->>C: 返回 HTML 与各类资源
+    C->>C: 渲染 HTML 并解析内容与结构化数据
+    C->>I: 写入索引数据
+    Note over I: 建立页面到关键词的索引，供后续排名使用
+```
 
 ## Next.js 为什么比普通 SPA 更容易做好 SEO？
 
